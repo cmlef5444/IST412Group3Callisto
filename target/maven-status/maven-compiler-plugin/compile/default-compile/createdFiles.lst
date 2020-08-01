@@ -3,8 +3,10 @@ Navigation\NavigationCntl.class
 Data\Loan.class
 Data\Customer.class
 com\mycompany\ist412group3callisto\resources\JavaEE8Resource.class
+Data\DBConnection.class
 LoanBalance\BalanceCntl.class
 EditCustomerInfo\EditCustomerInfoCntl.class
+Servlets\NavigationServlet.class
 LoanApplication\FactoryMethod\WordDocument.class
 LoanApplication\LoanApplicationCntl.class
 Data\LoanList.class
