@@ -5,6 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +27,16 @@ public class CustomerList {
     
     private Customer currentUser;
     
+    private Connection myConnection;
+    private Statement myStmt;
+    private ResultSet myRs;
+    ResultSet rowRs;
+    
+    private int updateRs;
+    private int numRows;
+    int count;
+    int num;
+    
     /**
      *Constructor for the CustomerList array
      * 
@@ -31,12 +46,58 @@ public class CustomerList {
      */
     public CustomerList(){
         customerArray = new ArrayList();
-        readCustomerFile();
+        
+        System.out.println("Number of rows = " + getNumRowsMethod());
+        
+//        String email = "Erin@example.com";
+//        String password = "ThisP$$sw0rd";
+//        String firstName = "Erin";
+//        String lastName = "Fever";
+//        String address = "456 Second Way";
+//        String phoneNumber = "098-765-4321";
+        //addCustomer(email, password, firstName, lastName, address, phoneNumber);
+        editCustomer("Connor@example.com", "NotPa$$w0rd", 3, "Connor", "TwoYears", "123 Sesame St", "123-123-1234");
+
+        check();
+        
+//        readCustomerFile();
 //        Customer c1 = new Customer("kam6564@psu.edu",  "MyPa$$w0rd", 1, "Kristina", "Mantha", "313 Nittany Lane", "352-123-5555",  555512L);
 //        customerArray.add(c1);//FIX_ME right now the above (or below) instance is repeatedly being added to the ser file. Needs to be cleared
 //        writeCustomerFile();
 //        //addCustomer("kam6564@psu.edu",  "MyPa$$w0rd", "Kristina", "Mantha", "313 Nittany Lane", "352-123-5555",  555512L);
         
+    }
+    
+    public void check(){
+         try{
+            System.out.println("Testing check statement");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
+        
+            myStmt = myConnection.createStatement();
+            myRs = myStmt.executeQuery("select * from callistotest.customer");
+            while (myRs.next()){
+                System.out.println(myRs.getString("customerID") + ", " + myRs.getString("customerLastName") + ", " + myRs.getString("customerFirstName"));
+            }
+            
+        }catch(Exception e){
+            System.out.println("Failed to get connection");
+            e.printStackTrace();
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+            }
+            if( getMyStmt() != null){
+                    getMyStmt().close();
+            }
+            if( getMyConnection() !=null){
+                    getMyConnection().close();
+            }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
     
     public static CustomerList getInstance(){
@@ -52,69 +113,162 @@ public class CustomerList {
                 int p = i;
 
                 if (inputPassword.equals(getCustomerArray().get(p).getPassword())) {
-                    currentUser = new Customer(getCustomerArray().get(p).getEmail(),
-                    getCustomerArray().get(p).getPassword(),
-                    getCustomerArray().get(p).getCustomerId(),
-                    getCustomerArray().get(p).getFirstName(),
-                    getCustomerArray().get(p).getLastName(),
-                    getCustomerArray().get(p).getAddress(),
-                    getCustomerArray().get(p).getPhoneNumber(),
-                    getCustomerArray().get(p).getLoanID());
+                    setCurrentUser(new Customer(getCustomerArray().get(p).getEmail(),
+                            getCustomerArray().get(p).getPassword(),
+                            getCustomerArray().get(p).getCustomerId(),
+                            getCustomerArray().get(p).getFirstName(),
+                            getCustomerArray().get(p).getLastName(),
+                            getCustomerArray().get(p).getAddress(),
+                            getCustomerArray().get(p).getPhoneNumber()));
                 }
             } else {
             }       
         }
-        return currentUser;
+        return getCurrentUser();
     }
-    /**
-     *  Creates a customer profile based on the inputted data and adds it to the ArrayList
-     * @param email - a String representing the email in a customer profile
-     * @param password - a String representing the password in a customer profile
-     * @param customerId - a long representing the customer id in a customer profile
-     * @param firstName - a String representing the customer's first name in the customer profile
-     * @param lastName - a String representing the customer's last name in the customer profile
-     * @param address - a String representing the customer's address in the customer profile
-     * @param phoneNumber - a String representing the customer's phone number in the customer profile
-     * @param loanID - a String representing the customer's loan id in the customer profile
-     */
-    public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber, long loanID){
-        getCustomerArray();
-
-        this.readCustomerFile();
-        Customer c1 = new Customer (email, password, customerArray.size() + 1, firstName, lastName, address, phoneNumber, 0L);
-        customerArray.add(c1);
+    public int getNumRowsMethod(){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
+            
+            myStmt = myConnection.createStatement();
+            ResultSet rs = myStmt.executeQuery("select count(*) as rowcount from callistotest.customer");
+            rs.next();
+            count = rs.getInt("rowcount");
+            rs.close();
+            return count; 
+        }catch(Exception e){
+            
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+            }
+            if( getMyStmt() != null){
+                    getMyStmt().close();
+            }
+            if( getMyConnection() !=null){
+                    getMyConnection().close();
+            }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }            
+        }
+        return count;
+    }
+    public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber){
+        numRows = getNumRowsMethod();
+        try{
+            System.out.println("Testing addCustomer()");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
         
-        this.writeCustomerFile();
-        this.readCustomerFile();
-        //System.out.println("Testing: AddCustomer");
-    }
 
-     /**
-     *  Edits a customer profile based on the inputted data in the arrayList
-     * @param email - a String representing the email in a customer profile
-     * @param password - a String representing the password in a customer profile
-     * @param customerId - a long representing the customer id in a customer profile
-     * @param firstName - a String representing the customer's first name in the customer profile
-     * @param lastName - a String representing the customer's last name in the customer profile
-     * @param address - a String representing the customer's address in the customer profile
-     * @param phoneNumber - a String representing the customer's phone number in the customer profile
-     * @param loanID - a String representing the customer's loan id in the customer profile
-     */
-    public void editCustomer(String email, String password, long customerId, String firstName, String lastName, String address, String phoneNumber, long loanID){
-        for(int i = 0; i < customerArray.size(); i++){
-            if(customerArray.get(i).getCustomerId() == 1){
-                customerArray.get(i).setEmail(email);
-                customerArray.get(i).setPassword(password);
-                customerArray.get(i).setFirstName(firstName);
-                customerArray.get(i).setLastName(lastName);
-                customerArray.get(i).setAddress(address);
-                customerArray.get(i).setPhoneNumber(phoneNumber);
-                customerArray.get(i).setLoanID(loanID);
+            myStmt = myConnection.createStatement();
+            String query = "insert into callistotest.customer"
+                    + " values ("
+                    + numRows + ", '"
+                    + firstName + "', '"
+                    + lastName + "', '"
+                    + email + "', '" 
+                    + password + "', '" 
+                    + address + "', '" 
+                    + phoneNumber + "')";
+
+                myStmt.executeUpdate(query);        
+        }catch(Exception e){            
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
             }
-            else{
-                //edit fail message
+            if( getMyStmt() != null){
+                    getMyStmt().close();
             }
-//            if(customerArray.get(i).getCustomerId() == customerId){
+            if( getMyConnection() !=null){
+                    getMyConnection().close();
+            }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }            
+        }
+    }
+    public void editCustomer(String email, String password, long customerId, String firstName, String lastName, String address, String phoneNumber){
+        try{           
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
+
+            myStmt = myConnection.createStatement();            
+            String query = "UPDATE callistotest.customer "
+                    + "set customerFirstName = '" + firstName 
+                    + "', customerLastName = '" + lastName
+                    + "', customerEmail = '" + email
+                    + "', customerPassword = '" + password
+                    + "', customerAddress = '" + address
+                    + "', customerPhoneNumber = '" + phoneNumber
+                    + "' WHERE customerID = " + customerId;
+//            query = "UPDATE callistotest.customer set customerFirstName='Connor' WHERE customerID=3";
+//            
+            
+            myStmt.executeUpdate(query);
+        }catch(Exception e){            
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+            }
+            if( getMyStmt() != null){
+                    getMyStmt().close();
+            }
+            if( getMyConnection() !=null){
+                    getMyConnection().close();
+            }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
+    
+    
+//    /**
+//     *  Creates a customer profile based on the inputted data and adds it to the ArrayList
+//     * @param email - a String representing the email in a customer profile
+//     * @param password - a String representing the password in a customer profile
+//     * @param customerId - a long representing the customer id in a customer profile
+//     * @param firstName - a String representing the customer's first name in the customer profile
+//     * @param lastName - a String representing the customer's last name in the customer profile
+//     * @param address - a String representing the customer's address in the customer profile
+//     * @param phoneNumber - a String representing the customer's phone number in the customer profile
+//     * @param loanID - a String representing the customer's loan id in the customer profile
+//     */
+//    public void addCustomerToArray(String email, String password, String firstName, String lastName, String address, String phoneNumber, long loanID){
+//        getCustomerArray();
+//
+//        this.readCustomerFile();
+//        Customer c1 = new Customer (email, password, customerArray.size() + 1, firstName, lastName, address, phoneNumber, 0L);
+//        customerArray.add(c1);
+//        
+//        this.writeCustomerFile();
+//        this.readCustomerFile();
+//        //System.out.println("Testing: AddCustomer");
+//    }
+//
+//     /**
+//     *  Edits a customer profile based on the inputted data in the arrayList
+//     * @param email - a String representing the email in a customer profile
+//     * @param password - a String representing the password in a customer profile
+//     * @param customerId - a long representing the customer id in a customer profile
+//     * @param firstName - a String representing the customer's first name in the customer profile
+//     * @param lastName - a String representing the customer's last name in the customer profile
+//     * @param address - a String representing the customer's address in the customer profile
+//     * @param phoneNumber - a String representing the customer's phone number in the customer profile
+//     * @param loanID - a String representing the customer's loan id in the customer profile
+//     */
+//    public void editCustomerToArray(String email, String password, long customerId, String firstName, String lastName, String address, String phoneNumber, long loanID){
+//        for(int i = 0; i < customerArray.size(); i++){
+//            if(customerArray.get(i).getCustomerId() == 1){
 //                customerArray.get(i).setEmail(email);
 //                customerArray.get(i).setPassword(password);
 //                customerArray.get(i).setFirstName(firstName);
@@ -126,67 +280,79 @@ public class CustomerList {
 //            else{
 //                //edit fail message
 //            }
-        }
-        this.writeCustomerFile();
-        this.readCustomerFile();
-    }
-
-    /**
-     *Deletes a customer from the customerArray
-     * @param customerID - a long representing the costumer id in a customer profile to be deleted
-     */
-    public void deleteCustomer(long customerID){
-        getCustomerArray().remove(customerID);
-    }
-    
-    /**
-     *Reads the (persistent) customerFile
-     */
-    public void readCustomerFile(){
-        FileInputStream fis = null;
-        ObjectInputStream in = null;
-
-        try {
-            fis = new FileInputStream(customerFile);
-            in = new ObjectInputStream(fis);
-            setCustomerArray((ArrayList<Customer>) in.readObject());          //needs a serialVersionUID, will reaserch this
-            in.close();
-
-            if (!customerArray.isEmpty()) {
-                //System.out.println("There are Parents on the list");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    /**
-     * writes the current customer array to the customer file (persistent)
-     */
-    
-    public void writeCustomerFile() {
-        FileOutputStream fos = null;
-        ObjectOutputStream out = null;
-
-        try {
-            fos = new FileOutputStream(customerFile);
-            out = new ObjectOutputStream(fos);
-            out.writeObject(getCustomerArray());
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * prints the customer file (primarily for debugging
-     */
-    public void printCustomerFile() {
-        System.out.println("The Customer List has these Customers");
-        for (int i = 0; i < getCustomerArray().size(); i++) {
-            Customer currentCustomer = (Customer) getCustomerArray().get(i);
-            System.out.println(currentCustomer.toString());
-        }
-    }
+////            if(customerArray.get(i).getCustomerId() == customerId){
+////                customerArray.get(i).setEmail(email);
+////                customerArray.get(i).setPassword(password);
+////                customerArray.get(i).setFirstName(firstName);
+////                customerArray.get(i).setLastName(lastName);
+////                customerArray.get(i).setAddress(address);
+////                customerArray.get(i).setPhoneNumber(phoneNumber);
+////                customerArray.get(i).setLoanID(loanID);
+////            }
+////            else{
+////                //edit fail message
+////            }
+//        }
+//        this.writeCustomerFile();
+//        this.readCustomerFile();
+//    }
+//
+//    /**
+//     *Deletes a customer from the customerArray
+//     * @param customerID - a long representing the costumer id in a customer profile to be deleted
+//     */
+//    public void deleteCustomer(long customerID){
+//        getCustomerArray().remove(customerID);
+//    }
+//    
+//    /**
+//     *Reads the (persistent) customerFile
+//     */
+//    public void readCustomerFile(){
+//        FileInputStream fis = null;
+//        ObjectInputStream in = null;
+//
+//        try {
+//            fis = new FileInputStream(customerFile);
+//            in = new ObjectInputStream(fis);
+//            setCustomerArray((ArrayList<Customer>) in.readObject());          //needs a serialVersionUID, will reaserch this
+//            in.close();
+//
+//            if (!customerArray.isEmpty()) {
+//                //System.out.println("There are Parents on the list");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    /**
+//     * writes the current customer array to the customer file (persistent)
+//     */
+//    
+//    public void writeCustomerFile() {
+//        FileOutputStream fos = null;
+//        ObjectOutputStream out = null;
+//
+//        try {
+//            fos = new FileOutputStream(customerFile);
+//            out = new ObjectOutputStream(fos);
+//            out.writeObject(getCustomerArray());
+//            out.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    /**
+//     * prints the customer file (primarily for debugging
+//     */
+//    public void printCustomerFile() {
+//        System.out.println("The Customer List has these Customers");
+//        for (int i = 0; i < getCustomerArray().size(); i++) {
+//            Customer currentCustomer = (Customer) getCustomerArray().get(i);
+//            System.out.println(currentCustomer.toString());
+//        }
+//    }
 
     //==========================================================================
     //Getter and Setters
@@ -213,5 +379,89 @@ public class CustomerList {
      */
     public void setCurrentUser(Customer currentUser) {
         this.currentUser = currentUser;
+    }
+
+    /**
+     * @param aInstance the instance to set
+     */
+    public static void setInstance(CustomerList aInstance) {
+        instance = aInstance;
+    }
+
+    /**
+     * @return the customerFile
+     */
+    public String getCustomerFile() {
+        return customerFile;
+    }
+
+    /**
+     * @param customerFile the customerFile to set
+     */
+    public void setCustomerFile(String customerFile) {
+        this.customerFile = customerFile;
+    }
+
+    /**
+     * @return the currentUser
+     */
+    public Customer getCurrentUser() {
+        return currentUser;
+    }
+
+    /**
+     * @return the myConnection
+     */
+    public Connection getMyConnection() {
+        return myConnection;
+    }
+
+    /**
+     * @param myConnection the myConnection to set
+     */
+    public void setMyConnection(Connection myConnection) {
+        this.myConnection = myConnection;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
+
+    /**
+     * @param numRows the numRows to set
+     */
+    public void setNumRows(int numRows) {
+        this.numRows = numRows;
+    }
+
+    /**
+     * @return the numRows
+     */
+    public int getNumRows() {
+        return numRows;
     }
 }

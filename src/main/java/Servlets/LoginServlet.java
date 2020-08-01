@@ -5,6 +5,7 @@
  */
 package Servlets;
 
+import Data.CustomerList;
 import Data.DBConnection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,8 +59,9 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        DBConnection connection = new DBConnection();
-        connection.init();
+//        DBConnection connection = new DBConnection();
+//        connection.init();
+        CustomerList customerList = new CustomerList();
         
         response.setContentType("text/html;charset=UTF-8");
         

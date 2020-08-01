@@ -33,25 +33,57 @@ public class DBConnection {
                 System.out.println(myRs.getString("customerLastName") + ", " + myRs.getString("customerFirstName"));
             }
             
+            
+            
         }catch(Exception e){
             System.out.println("Failed to get connection");
             e.printStackTrace();
         }finally{
             try{
-                if (myRs != null){
-                myRs.close();
+                if (myRs!= null){
+                    myRs.close();
             }
-            if(myStmt != null){
-                myStmt.close();
+            if( myStmt != null){
+                    myStmt.close();
             }
-            if(myConnection !=null){
-                myConnection.close();
+            if( getMyConnection() !=null){
+                    getMyConnection().close();
             }
             }catch(SQLException e){
                 e.printStackTrace();
             }
-            
         }
+        try{
+            System.out.println("Testing database Statement");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
+        
+            myStmt = myConnection.createStatement();
+            String query = "insert into callistotest.customer values (5, 'bob', 'marley', 'marley@example.com', 'MyPa$$w0rd', '123 main', '123-123-1234')";
+        
+            myStmt.executeUpdate(query);
+            
+            
+            
+        }catch(Exception e){
+            System.out.println("Failed to get connection");
+            e.printStackTrace();
+        }finally{
+            try{
+                if (myRs!= null){
+                    myRs.close();
+            }
+            if( myStmt != null){
+                    myStmt.close();
+            }
+            if( getMyConnection() !=null){
+                    getMyConnection().close();
+            }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+
     }
     public Connection getMyConnection(){
         return myConnection;

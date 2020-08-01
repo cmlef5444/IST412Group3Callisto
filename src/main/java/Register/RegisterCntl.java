@@ -91,6 +91,6 @@ public class RegisterCntl {
      */
     public void createAccount(String userEmail, String password){
         CustomerList customerList = new CustomerList();
-        customerList.addCustomer(userEmail, password, "", "", "", "", 0L);
+        customerList.addCustomer(userEmail, password, "", "", "", "");
     }
 }

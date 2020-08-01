@@ -18,7 +18,7 @@ public class Customer implements Serializable{
     private String lastName;
     private String address;
     private String phoneNumber;
-    private long loanID; //FIX_ME we may want to remove loanID since users may have multiple loans
+    //private long loanID; //FIX_ME we may want to remove loanID since users may have multiple loans
 
     /**
      * This is the constructor for the Customer class
@@ -32,8 +32,7 @@ public class Customer implements Serializable{
      * @param loanID  - a String representing the customer's loan id in the customer profile
      */
     public Customer(String customerEmail, String customerPassword, long id,
-            String firstName, String lastName, String address, String phoneNumber,
-            long loanID) {
+            String firstName, String lastName, String address, String phoneNumber) {
         this.email = customerEmail;
         this.password = customerPassword;
         this.customerId = id;
@@ -41,7 +40,7 @@ public class Customer implements Serializable{
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.loanID = loanID;
+//        this.loanID = loanID;
     }
 
     public Customer() {
@@ -50,7 +49,7 @@ public class Customer implements Serializable{
 
     public String toString(){
       return  "Customer [Customer ID: " + customerId + ", Name: " + firstName + " " + lastName + ","
-              + " Email: " + email + ", Phone: " + phoneNumber + ", Address: " + address + ", Loan ID: " + loanID + "]";
+              + " Email: " + email + ", Phone: " + phoneNumber + ", Address: " + address;
     }
     /**
      * Returns an email address for the customer
@@ -168,16 +167,16 @@ public class Customer implements Serializable{
      * Returns the customer's loan id number
      * @return A long representing the customer's loan id number
      */
-    public long getLoanID() {
-        return loanID;
-    }
-
-    /**
-     * Sets the customer's loan id number
-     * @param loanID the loanID to set
-     */
-    public void setLoanID(long loanID) {
-        this.loanID = loanID;
-    }
+//    public long getLoanID() {
+//        return loanID;
+//    }
+//
+//    /**
+//     * Sets the customer's loan id number
+//     * @param loanID the loanID to set
+//     */
+//    public void setLoanID(long loanID) {
+//        this.loanID = loanID;
+//    }
 
 }
