@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * This is the Customer List class. It contains an ArrayList of all Callisto customers
@@ -36,6 +37,23 @@ public class CustomerList {
     private int numRows;
     int count;
     int num;
+    //Azure database info
+    //===============================================
+        String host = "ist412group3server.database.windows.net:1433";
+        String database = "Callisto";
+        String user = "azureuser@ist412group3server";
+        String password = "IST412Pa$$w0rd";
+    //==================================================
+    //Azure connection Strings
+//   jdbc:sqlserver://ist412group3server.database.windows.net:1433;
+//        database=Callisto;
+//        user=azureuser@ist412group3server;
+//        password=IST412Pa$$w0rd;
+//        encrypt=true;
+//        trustServerCertificate=false;
+//        hostNameInCertificate=*.database.windows.net;
+//        loginTimeout=30;
+        //========================================================
     
     /**
      *Constructor for the CustomerList array
@@ -46,8 +64,8 @@ public class CustomerList {
      */
     public CustomerList(){
         customerArray = new ArrayList();
-        
-        System.out.println("Number of rows = " + getNumRowsMethod());
+        azureDB();
+        //System.out.println("Number of rows = " + getNumRowsMethod());
         
 //        String email = "Erin@example.com";
 //        String password = "ThisP$$sw0rd";
@@ -56,9 +74,9 @@ public class CustomerList {
 //        String address = "456 Second Way";
 //        String phoneNumber = "098-765-4321";
         //addCustomer(email, password, firstName, lastName, address, phoneNumber);
-        editCustomer("Connor@example.com", "NotPa$$w0rd", 3, "Connor", "TwoYears", "123 Sesame St", "123-123-1234");
+        //editCustomer("Connor@example.com", "NotPa$$w0rd", 3, "Connor", "TwoYears", "123 Sesame St", "123-123-1234");
 
-        check();
+        //check();
         
 //        readCustomerFile();
 //        Customer c1 = new Customer("kam6564@psu.edu",  "MyPa$$w0rd", 1, "Kristina", "Mantha", "313 Nittany Lane", "352-123-5555",  555512L);
@@ -66,6 +84,64 @@ public class CustomerList {
 //        writeCustomerFile();
 //        //addCustomer("kam6564@psu.edu",  "MyPa$$w0rd", "Kristina", "Mantha", "313 Nittany Lane", "352-123-5555",  555512L);
         
+    }
+    
+    public void azureDB(){
+        try
+		{
+                    
+                    
+                        Class.forName("org.mariadb.jdbc.Driver");
+			String url = String.format("jdbc:mariadb://%s/%s", host, database);
+
+//                        myConnection = DriverManager.getConnection(url, user, password);
+////                        String selectSql = "SELECT * FROM customer";
+//                        Statement statement = myConnection.createStatement();
+//                        ResultSet resultSet = statement.executeQuery(selectSql);
+			// Set connection properties.
+			Properties properties = new Properties();
+			properties.setProperty("user", user);
+			properties.setProperty("password", password);
+			properties.setProperty("useSSL", "false");
+			properties.setProperty("verifyServerCertificate", "true");
+			properties.setProperty("requireSSL", "false");
+
+			// get connection
+			myConnection = DriverManager.getConnection(url, properties);
+		}
+		catch (SQLException e)
+		{
+                    e.printStackTrace();
+                    System.out.println("Failed to create connection to azure database. conneciton = null");
+//		
+			//throw new SQLException("Failed to create connection to database.", e);
+		}
+                catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                    System.out.println("Could not find class");
+                }
+//                if (myConnection != null) 
+//		{ 
+//			System.out.println("Successfully created connection to database.");
+//		
+//			// Perform some SQL queries over the connection.
+//			try
+//			{
+//                            Statement statement = myConnection.createStatement();
+//                            
+//                            
+//                            
+//                        }
+//                        catch (SQLException e)
+//			{
+//                            System.out.println("Encountered an error when executing given sql statement");
+////				throw new SQLException("Encountered an error when executing given sql statement.", e);
+//			}		
+//		}
+//		else {
+//			System.out.println("Failed to create connection to azure database. conneciton = null");
+//		}
+		System.out.println("Execution finished.");
     }
     
     public void check(){
@@ -107,7 +183,7 @@ public class CustomerList {
         return instance;
     }
     public Customer setupCurrentUser(String userEmail, String inputPassword){
-        
+        //FIX_ME This is from the old Java build, It will need to be modified or discarded for the web app build
         for (int i = 0; i < getCustomerArray().size(); i++) {                       
             if (userEmail.equals(getCustomerArray().get(i).getEmail())) {
                 int p = i;

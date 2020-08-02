@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author cjani
+ * @author Chris Lefebvre
  */
 public class LoginServlet extends HttpServlet {
 
