@@ -91,23 +91,27 @@ public class CustomerList {
 		{
                     
                     
-                        Class.forName("org.mariadb.jdbc.Driver");
-			String url = String.format("jdbc:mariadb://%s/%s", host, database);
-
+//                        Class.forName("org.mariadb.jdbc.Driver");
+//			String url = String.format("jdbc:mariadb://%s/%s", host, database);
+   //String url = "jdbc:mysql://ist412group3server.database.windows.net:1433/Callisto?useSSL=true?verifyServerCertificate=false";
+   String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+                                       //Class.forName("com.mysql.cj.jdbc.Driver");
+                                       myConnection = DriverManager.getConnection(connectionUrl);
+               //"jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false";
 //                        myConnection = DriverManager.getConnection(url, user, password);
 ////                        String selectSql = "SELECT * FROM customer";
 //                        Statement statement = myConnection.createStatement();
 //                        ResultSet resultSet = statement.executeQuery(selectSql);
 			// Set connection properties.
-			Properties properties = new Properties();
-			properties.setProperty("user", user);
-			properties.setProperty("password", password);
-			properties.setProperty("useSSL", "false");
-			properties.setProperty("verifyServerCertificate", "true");
-			properties.setProperty("requireSSL", "false");
+//			Properties properties = new Properties();
+//			properties.setProperty("user", user);
+//			properties.setProperty("password", password);
+//			properties.setProperty("useSSL", "false");
+//			properties.setProperty("verifyServerCertificate", "true");
+//			properties.setProperty("requireSSL", "false");
 
 			// get connection
-			myConnection = DriverManager.getConnection(url, properties);
+			//myConnection = DriverManager.getConnection(url, properties);
 		}
 		catch (SQLException e)
 		{
@@ -116,10 +120,10 @@ public class CustomerList {
 //		
 			//throw new SQLException("Failed to create connection to database.", e);
 		}
-                catch(ClassNotFoundException e){
-                    e.printStackTrace();
-                    System.out.println("Could not find class");
-                }
+//                catch(ClassNotFoundException e){
+//                    e.printStackTrace();
+//                    System.out.println("Could not find class");
+//                }
 //                if (myConnection != null) 
 //		{ 
 //			System.out.println("Successfully created connection to database.");
