@@ -96,12 +96,16 @@ public class CustomerList {
    //String url = "jdbc:mysql://ist412group3server.database.windows.net:1433/Callisto?useSSL=true?verifyServerCertificate=false";
    String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
                                        //Class.forName("com.mysql.cj.jdbc.Driver");
+                                       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                                        myConnection = DriverManager.getConnection(connectionUrl);
                //"jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false";
 //                        myConnection = DriverManager.getConnection(url, user, password);
-////                        String selectSql = "SELECT * FROM customer";
-//                        Statement statement = myConnection.createStatement();
-//                        ResultSet resultSet = statement.executeQuery(selectSql);
+                        String selectSql = "select * from customer";
+                        myStmt = myConnection.createStatement();
+                        myRs = myStmt.executeQuery(selectSql);
+                        while (myRs.next()){
+                            System.out.println(myRs.getString("customerId") + ", " + myRs.getString("customerLastName") + ", " + myRs.getString("customerFirstName"));
+                        }
 			// Set connection properties.
 //			Properties properties = new Properties();
 //			properties.setProperty("user", user);
@@ -120,31 +124,24 @@ public class CustomerList {
 //		
 			//throw new SQLException("Failed to create connection to database.", e);
 		}
-//                catch(ClassNotFoundException e){
-//                    e.printStackTrace();
-//                    System.out.println("Could not find class");
-//                }
-//                if (myConnection != null) 
-//		{ 
-//			System.out.println("Successfully created connection to database.");
-//		
-//			// Perform some SQL queries over the connection.
-//			try
-//			{
-//                            Statement statement = myConnection.createStatement();
-//                            
-//                            
-//                            
-//                        }
-//                        catch (SQLException e)
-//			{
-//                            System.out.println("Encountered an error when executing given sql statement");
-////				throw new SQLException("Encountered an error when executing given sql statement.", e);
-//			}		
-//		}
-//		else {
-//			System.out.println("Failed to create connection to azure database. conneciton = null");
-//		}
+                catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                    System.out.println("Could not find class");
+                }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+            }
+            if( getMyStmt() != null){
+                    getMyStmt().close();
+            }
+            if( getMyConnection() !=null){
+                    getMyConnection().close();
+            }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }               
 		System.out.println("Execution finished.");
     }
     
