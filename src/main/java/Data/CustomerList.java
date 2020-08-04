@@ -64,118 +64,60 @@ public class CustomerList {
      */
     public CustomerList(){
         customerArray = new ArrayList();
-        azureDB();
-        //System.out.println("Number of rows = " + getNumRowsMethod());
-        
+//        
 //        String email = "Erin@example.com";
 //        String password = "ThisP$$sw0rd";
 //        String firstName = "Erin";
 //        String lastName = "Fever";
 //        String address = "456 Second Way";
 //        String phoneNumber = "098-765-4321";
+        
         //addCustomer(email, password, firstName, lastName, address, phoneNumber);
-        //editCustomer("Connor@example.com", "NotPa$$w0rd", 3, "Connor", "TwoYears", "123 Sesame St", "123-123-1234");
+        //editCustomer("Connor@example.com", "NotPa$$w0rd", 3, "Connor543", "ThreeYears", "123 Sesame St", "123-123-1234");
 
-        //check();
-        
-//        readCustomerFile();
-//        Customer c1 = new Customer("kam6564@psu.edu",  "MyPa$$w0rd", 1, "Kristina", "Mantha", "313 Nittany Lane", "352-123-5555",  555512L);
-//        customerArray.add(c1);//FIX_ME right now the above (or below) instance is repeatedly being added to the ser file. Needs to be cleared
-//        writeCustomerFile();
-//        //addCustomer("kam6564@psu.edu",  "MyPa$$w0rd", "Kristina", "Mantha", "313 Nittany Lane", "352-123-5555",  555512L);
-        
-    }
-    
-    public void azureDB(){
-        try
-		{
-                    
-                    
-                        Class.forName("org.mariadb.jdbc.Driver");
-			String url = String.format("jdbc:mariadb://%s/%s", host, database);
-
-//                        myConnection = DriverManager.getConnection(url, user, password);
-////                        String selectSql = "SELECT * FROM customer";
-//                        Statement statement = myConnection.createStatement();
-//                        ResultSet resultSet = statement.executeQuery(selectSql);
-			// Set connection properties.
-			Properties properties = new Properties();
-			properties.setProperty("user", user);
-			properties.setProperty("password", password);
-			properties.setProperty("useSSL", "false");
-			properties.setProperty("verifyServerCertificate", "true");
-			properties.setProperty("requireSSL", "false");
-
-			// get connection
-			myConnection = DriverManager.getConnection(url, properties);
-		}
-		catch (SQLException e)
-		{
-                    e.printStackTrace();
-                    System.out.println("Failed to create connection to azure database. conneciton = null");
-//		
-			//throw new SQLException("Failed to create connection to database.", e);
-		}
-                catch(ClassNotFoundException e){
-                    e.printStackTrace();
-                    System.out.println("Could not find class");
-                }
-//                if (myConnection != null) 
-//		{ 
-//			System.out.println("Successfully created connection to database.");
-//		
-//			// Perform some SQL queries over the connection.
-//			try
-//			{
-//                            Statement statement = myConnection.createStatement();
-//                            
-//                            
-//                            
-//                        }
-//                        catch (SQLException e)
-//			{
-//                            System.out.println("Encountered an error when executing given sql statement");
-////				throw new SQLException("Encountered an error when executing given sql statement.", e);
-//			}		
-//		}
-//		else {
-//			System.out.println("Failed to create connection to azure database. conneciton = null");
-//		}
-		System.out.println("Execution finished.");
+        check();
     }
     
     public void check(){
-         try{
-            System.out.println("Testing check statement");
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
-        
-            myStmt = myConnection.createStatement();
-            myRs = myStmt.executeQuery("select * from callistotest.customer");
-            while (myRs.next()){
-                System.out.println(myRs.getString("customerID") + ", " + myRs.getString("customerLastName") + ", " + myRs.getString("customerFirstName"));
-            }
+        try{
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            String selectSql = "select * from customer";
             
-        }catch(Exception e){
-            System.out.println("Failed to get connection");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            myConnection = DriverManager.getConnection(connectionUrl);
+            
+            myStmt = myConnection.createStatement();
+            myRs = myStmt.executeQuery(selectSql);
+            
+            while (myRs.next()){
+                System.out.println(myRs.getString("customerId") + ", " + myRs.getString("customerLastName") + ", " + myRs.getString("customerFirstName"));
+            }
+        }catch (SQLException e){
             e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+         catch(ClassNotFoundException e){
+            e.printStackTrace();
+            System.out.println("Could not find class");
         }finally{
             try{
-                if (getMyRs() != null){
+                if(getMyRs() != null){
                     getMyRs().close();
-            }
-            if( getMyStmt() != null){
-                    getMyStmt().close();
-            }
-            if( getMyConnection() !=null){
-                    getMyConnection().close();
-            }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-        }
+                }
+                if(getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(getMyConnection() !=null){
+                        getMyConnection().close();
+                }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+        }               
+		System.out.println("Execution finished.");
     }
-    
+    //unsure if these two methods (getInstance() and setupCurrentUser) are still relevant in web app build
+    //==============================================================================
     public static CustomerList getInstance(){
         if(instance == null){
             instance = new CustomerList();
@@ -202,103 +144,78 @@ public class CustomerList {
         }
         return getCurrentUser();
     }
-    public int getNumRowsMethod(){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
-            
-            myStmt = myConnection.createStatement();
-            ResultSet rs = myStmt.executeQuery("select count(*) as rowcount from callistotest.customer");
-            rs.next();
-            count = rs.getInt("rowcount");
-            rs.close();
-            return count; 
-        }catch(Exception e){
-            
-        }finally{
-            try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-            }
-            if( getMyStmt() != null){
-                    getMyStmt().close();
-            }
-            if( getMyConnection() !=null){
-                    getMyConnection().close();
-            }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }            
-        }
-        return count;
-    }
+    //=========================================================================
+    
     public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber){
-        numRows = getNumRowsMethod();
         try{
             System.out.println("Testing addCustomer()");
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
-        
+            
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            myConnection = DriverManager.getConnection(connectionUrl);
 
-            myStmt = myConnection.createStatement();
-            String query = "insert into callistotest.customer"
-                    + " values ("
-                    + numRows + ", '"
+            String query = "insert into customer"
+                    + " values ('"
                     + firstName + "', '"
                     + lastName + "', '"
                     + email + "', '" 
                     + password + "', '" 
                     + address + "', '" 
                     + phoneNumber + "')";
-
-                myStmt.executeUpdate(query);        
-        }catch(Exception e){            
+            
+            myStmt = myConnection.createStatement();
+            myStmt.executeUpdate(query);        
+        }catch(Exception e){      
+            e.printStackTrace();
         }finally{
             try{
                 if (getMyRs() != null){
                     getMyRs().close();
-            }
-            if( getMyStmt() != null){
-                    getMyStmt().close();
-            }
-            if( getMyConnection() !=null){
-                    getMyConnection().close();
-            }
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if( getMyConnection() !=null){
+                        getMyConnection().close();
+                }
             }catch(SQLException e){
                 e.printStackTrace();
             }            
         }
     }
     public void editCustomer(String email, String password, long customerId, String firstName, String lastName, String address, String phoneNumber){
-        try{           
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
-
-            myStmt = myConnection.createStatement();            
-            String query = "UPDATE callistotest.customer "
+        try{    
+            
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            myConnection = DriverManager.getConnection(connectionUrl);
+            
+            String query = "UPDATE customer "
                     + "set customerFirstName = '" + firstName 
                     + "', customerLastName = '" + lastName
                     + "', customerEmail = '" + email
                     + "', customerPassword = '" + password
                     + "', customerAddress = '" + address
                     + "', customerPhoneNumber = '" + phoneNumber
-                    + "' WHERE customerID = " + customerId;
-//            query = "UPDATE callistotest.customer set customerFirstName='Connor' WHERE customerID=3";
-//            
+                    + "' WHERE customerId = " + customerId;
             
+            myStmt = myConnection.createStatement();            
             myStmt.executeUpdate(query);
-        }catch(Exception e){            
+        }catch(Exception e){ 
+            e.printStackTrace();
         }finally{
             try{
                 if (getMyRs() != null){
                     getMyRs().close();
-            }
-            if( getMyStmt() != null){
-                    getMyStmt().close();
-            }
-            if( getMyConnection() !=null){
-                    getMyConnection().close();
-            }
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if( getMyConnection() !=null){
+                        getMyConnection().close();
+                }
             }catch(SQLException e){
                 e.printStackTrace();
             }
