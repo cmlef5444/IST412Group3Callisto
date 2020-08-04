@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class RegisterCntl {
     /**
      * The is the initial constructor for the RegisterCntl
+     * https://www.c-sharpcorner.com/article/how-to-send-activation-link-in-email-after-user-registration-details-in-mvc/
+     * https://medium.com/@angela.amarapala/sending-email-confirmation-for-account-activation-with-spring-java-cc3f5bb1398e
      */
 
     protected ArrayList<Customer> customerArray;
