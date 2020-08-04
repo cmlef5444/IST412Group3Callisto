@@ -71,6 +71,7 @@ public class CustomerList {
 //        String lastName = "Fever";
 //        String address = "456 Second Way";
 //        String phoneNumber = "098-765-4321";
+
         
         //addCustomer(email, password, firstName, lastName, address, phoneNumber);
         //editCustomer("Connor@example.com", "NotPa$$w0rd", 3, "Connor543", "ThreeYears", "123 Sesame St", "123-123-1234");

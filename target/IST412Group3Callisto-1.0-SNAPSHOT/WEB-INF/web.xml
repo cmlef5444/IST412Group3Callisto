@@ -8,6 +8,26 @@
         <servlet-name>NavigationServlet</servlet-name>
         <servlet-class>Servlets.NavigationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>Servlets.RegistrationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanApplicationServlet</servlet-name>
+        <servlet-class>Servlets.LoanApplicationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanBalanceServlet</servlet-name>
+        <servlet-class>Servlets.LoanBalanceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanPaymentServlet</servlet-name>
+        <servlet-class>Servlets.LoanPaymentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerProfileServlet</servlet-name>
+        <servlet-class>Servlets.CustomerProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -15,6 +35,26 @@
     <servlet-mapping>
         <servlet-name>NavigationServlet</servlet-name>
         <url-pattern>/Navigation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/Registration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanApplicationServlet</servlet-name>
+        <url-pattern>/LoanApplication</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanBalanceServlet</servlet-name>
+        <url-pattern>/LoanBalance</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanPaymentServlet</servlet-name>
+        <url-pattern>/LoanPayment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerProfileServlet</servlet-name>
+        <url-pattern>/CustomerProfile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
