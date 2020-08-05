@@ -10,6 +10,7 @@ import Data.DBConnection;
 import Data.LoanList;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Chris Lefebvre
  */
+
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -63,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 //        DBConnection connection = new DBConnection();
 //        connection.init();
 //        CustomerList customerList = new CustomerList();
-        LoanList loanList = new LoanList();
+//        CustomerList customerList = new CustomerList();
         
         response.setContentType("text/html;charset=UTF-8");
         
@@ -81,7 +83,30 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        response.setContentType("text/html");  
+        PrintWriter out = response.getWriter();  
+        
+        System.out.println("Login button pressed");
+            
+            String email = request.getParameter("customerEmail");
+            String password = request.getParameter("customerPassword");
+
+            Login.LoginCntl loginCntl = new Login.LoginCntl();
+
+            if(loginCntl.authenticator(email, password)){
+                System.out.println("LoginServlet: authenticator passed");
+                RequestDispatcher rd = request.getRequestDispatcher("Navigation");
+                rd.forward(request, response);
+            }
+            else{
+                System.out.println("Email or Password is incorrect.");
+//                RequestDispatcher rd=request.getRequestDispatcher("index.html");  
+//                rd.include(request,response);  
+            }  
+        out.close();
+           
+        
     }
 
     /**

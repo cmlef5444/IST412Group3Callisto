@@ -56,7 +56,9 @@ public class NavigationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        
+        request.getRequestDispatcher("navigation.jsp").forward(request, response);
     }
 
     /**

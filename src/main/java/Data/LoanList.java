@@ -34,7 +34,8 @@ public class LoanList {
     /**
      *Constructor for LoanList
      */
-    public LoanList(){        
+    public LoanList(){   
+        check();
     }
     
     public static LoanList getInstance() {

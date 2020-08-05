@@ -13,5 +13,9 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        
+        <input type="text" name="customerFirstNameInput" value="1" />
+        
+        <input type="submit" value="Submit" name="personInfoSubmitButton" />
     </body>
 </html>

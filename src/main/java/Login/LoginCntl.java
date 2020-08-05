@@ -2,6 +2,12 @@
 package Login;
 
 import Data.CustomerList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * This is the Loan Controller Class. It contains methods that allow a user
@@ -14,6 +20,13 @@ public class LoginCntl {
     
     CustomerList customerList;
 
+    private Connection myConnection;
+    private Statement myStmt;
+    private ResultSet myRs;
+    
+    private PreparedStatement ps;
+    
+    private boolean boolResult;
     /**
      * This is the initial constructor
      */
@@ -62,22 +75,50 @@ public class LoginCntl {
 //    }
     
     public boolean authenticator(String userEmail, String inputPassword) {
-           
-        boolean value = false;
-        for (int i = 0; i < customerList.getCustomerArray().size(); i++) {                       
-            if (userEmail.equals(customerList.getCustomerArray().get(i).getEmail())) {
-                int p = i;
-
-                if (inputPassword.equals(customerList.getCustomerArray().get(p).getPassword())) {
-                    value = true;
-                }
-            } else {
-                value = false;
+        setBoolResult(false);
+        try{
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            setMyConnection(DriverManager.getConnection(connectionUrl));
+            
+            setPs(myConnection.prepareStatement("select customerEmail, customerPassword "
+                    + "from customer "
+                    + "where customerEmail = '" + userEmail + "' and customerPassword = '" + inputPassword + "'"));
+//            getPs().setString(1, userEmail);
+//            getPs().setString(2, inputPassword);
+            System.out.println("Input: " + userEmail + ", " + inputPassword);
+            myRs = getPs().executeQuery();
+            setBoolResult(myRs.next());
+            while(myRs.next()){
+                System.out.println("Email Input: " + userEmail + "Email SQL: " + myRs.getString("customerEmail"));
+                System.out.println("Password Input: " + inputPassword + "Password SQL: " + myRs.getString("customerPassword"));
             }
-        }
-        System.out.println("authentictor value: " + value);
-        return value;
-        
+            if(isBoolResult() == true){
+                System.out.println("Login successful");
+     
+            }
+            else{
+                System.out.println("Login unsuccessful");                
+            }            
+        }catch(Exception e){      
+            e.printStackTrace();
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getPs() != null){
+                        getPs().close();
+                }
+                if( getMyConnection() !=null){
+                        getMyConnection().close();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }          
+        }  
+        return isBoolResult();
     }
     
     public void forgottenPassword(String userEmail){
@@ -86,4 +127,76 @@ public class LoginCntl {
     public void forgottenEmail(String securityQuestionResponse, int ssNum){
         //JUnit Test is not yet created, will change once registration email system is set up(they use same basic techniques)
     }
+
+    /**
+     * @return the myConnection
+     */
+    public Connection getMyConnection() {
+        return myConnection;
+    }
+
+    /**
+     * @param myConnection the myConnection to set
+     */
+    public void setMyConnection(Connection myConnection) {
+        this.myConnection = myConnection;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
+    
+
+    /**
+     * @param boolResult the boolResult to set
+     */
+    public void setBoolResult(boolean boolResult) {
+        this.boolResult = boolResult;
+    }
+
+    /**
+     * @return the ps
+     */
+    public PreparedStatement getPs() {
+        return ps;
+    }
+
+    /**
+     * @param ps the ps to set
+     */
+    public void setPs(PreparedStatement ps) {
+        this.ps = ps;
+    }
+
+    /**
+     * @return the boolResult
+     */
+    public boolean isBoolResult() {
+        return boolResult;
+    }
+    
 }
