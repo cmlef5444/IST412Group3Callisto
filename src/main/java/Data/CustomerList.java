@@ -33,7 +33,6 @@ public class CustomerList {
     private ResultSet myRs;
     ResultSet rowRs;
     
-    private int updateRs;
     private int numRows;
     int count;
     int num;

@@ -5,7 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * This is the Loan List class. It has an ArrayList of all active loans
@@ -14,15 +25,16 @@ import java.util.ArrayList;
  */
 public class LoanList {
     
-    private ArrayList<Loan> loanArray;
     private static LoanList instance;
     
-    private String loanFile = "src/main/resources/SerFiles/Loan.ser";
+    private Connection myConnection;
+    private Statement myStmt;
+    private ResultSet myRs;
+    
     /**
      *Constructor for LoanList
      */
-    protected LoanList(){
-        loanArray = new ArrayList<Loan>();
+    public LoanList(){        
     }
     
     public static LoanList getInstance() {
@@ -31,26 +43,106 @@ public class LoanList {
         }
         return instance;
     } 
+    public void check(){
+        try{
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            String selectSql = "select * from loan";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            setMyConnection(DriverManager.getConnection(connectionUrl));
+            
+            setMyStmt(getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+            while (getMyRs().next()){
+                System.out.println(getMyRs().getString("loanId") + ", " + getMyRs().getString("customerId") + ", " + getMyRs().getString("principalAmount")+ ", " + getMyRs().getString("currentTotal")+ ", " + getMyRs().getString("singlePayment") + ", " + getMyRs().getString("currentDate"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+         catch(ClassNotFoundException e){
+            e.printStackTrace();
+            System.out.println("Could not find class");
+        }finally{
+            try{
+                if(getMyRs() != null){
+                    getMyRs().close();
+                }
+                if(getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(getMyConnection() !=null){
+                        getMyConnection().close();
+                }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+        }               
+		System.out.println("Execution finished.");
+    }
+
     
     /**
      * Creates a loan profile based on the inputs data and adds it to the loanArray
-     * @param loanID - a long representing the load id in a loan profile
+     * @param loanID - a long representing the load id in a loan profile (deprcate)
      * @param customerID - a long representing the customer id in a loan profile
      * @param amountTotal - a long representing the total amount of the loan in the loan profile
      * @param singlePayment - a long representing the amount payed in a single transaction
      * @param date - the date the loan was created or a payment made
      */
-    public void addLoan(long loanID, long customerID,long princiaplAmount, 
-            long currentTotal, long loanLength, double annualRate, 
-            long compoundNum, long singlePayment, String date){
-        Loan L1 = new Loan(1, 1, 20000,20000, 36, 0.05, 1, 0, "27-6-2020");
-//        Loan L1 = new Loan(loanID, customerID, princiaplAmount,currentTotal, 
-//                loanLength, annualRate, compoundNum, singlePayment, date);
-        
-        loanArray.add(L1);
-        
-        this.writeLoanFile();
-        this.readLoanFile();
+    public void addLoan(int customerId, double princiaplAmount, 
+            double currentTotal, double loanLength, double annualRate, 
+            double compoundNum, double singlePayment){
+        try{
+            System.out.println("Testing addLoan()");
+            
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            myConnection = DriverManager.getConnection(connectionUrl);
+
+            
+            
+            String date;
+            //DateTimeFormatter dtf = new DateTimeFormatter("MM-dd-uuuu");
+            LocalDateTime now = LocalDateTime.now();
+            date = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(now);
+            System.out.println("The current date: " + date);
+            //date = dtf.format(now);
+
+
+        //loan id is auto generated by sql database
+            String query = "insert into loan"
+                    + " values ("
+                    + customerId + ", "
+                    + princiaplAmount + ", " 
+                    + currentTotal + ", " 
+                    + loanLength + ", " 
+                    + annualRate + ", "
+                    + compoundNum + ", "
+                    + singlePayment + ", "
+                    + "'" + date + "')";
+            
+            myStmt = myConnection.createStatement();
+            myStmt.executeUpdate(query);        
+        }catch(Exception e){      
+            e.printStackTrace();
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if( getMyConnection() !=null){
+                        getMyConnection().close();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }            
+        }
     }
     
     /**
@@ -61,104 +153,92 @@ public class LoanList {
      * @param singlePayment - a long representing the amount payed in a single transaction
      * @param date - the date the loan was created or a payment made
      */
-    public void editLoan(long loanID, long customerID,long princiaplAmount, 
-            long currentTotal, long loanLength, double annualRate, 
-            long compoundNum, long singlePayment, String date){
-        for(int i = 0; i < loanArray.size(); i++){
-            if(loanArray.get(i).getLoanID() == 1){
-                loanArray.get(i).setCustomerID(1);
-                loanArray.get(i).setPrincipalAmount(45000);
-                loanArray.get(i).setCurrentTotal(45000);
-                loanArray.get(i).setLoanLength(36);
-                loanArray.get(i).setAnnualRate(0.05);
-                loanArray.get(i).setCompoundNum(1);
-                loanArray.get(i).setSinglePayment(0);
-                loanArray.get(i).setDate("15-8-2021");
-            }
-//            if(loanArray.get(i).getLoanID() == loanID){
-//                loanArray.get(i).setCustomerID(customerID);
-//                loanArray.get(i).setAmountTotal(amountTotal);
-//                loanArray.get(i).setSinglePayment(singlePayment);
-//                loanArray.get(i).setDate(date);
-//            }
-            else{
-                
-            }
-        }
-        this.writeLoanFile();
-        this.readLoanFile();
-    }
-    
-    /**
-     * Deletes a loan from the loanArray
-     * @param loanID A long representing the loan id number.
-     */
-    public void deleteLoan(long loanID){
-        getLoanArray().remove(loanID);
-    }
-    
-    /**
-     *Reads the (persistent) loan File
-     */
-    public void readLoanFile(){
-        FileInputStream fis = null;
-        ObjectInputStream in = null;
-
-        try {
-            fis = new FileInputStream(loanFile);
-            in = new ObjectInputStream(fis);
-            setLoanArray((ArrayList<Loan>) in.readObject());          //needs a serialVersionUID, will reaserch this
-            in.close();
-
-            if (!loanArray.isEmpty()) {
-                //System.out.println("There are Parents on the list");
-            }
-        } catch (Exception e) {
+    public void editLoan(int loanId, int customerId, double principalAmount, 
+            double currentTotal, double loanLength, double annualRate, 
+            double compoundNum, double singlePayment){
+        try{    
+            
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            myConnection = DriverManager.getConnection(connectionUrl);
+            
+            String query = "UPDATE loan "
+                    + "set customerId = " + customerId 
+                    + ", principalAmount = " + principalAmount
+                    + ", currentTotal = " + currentTotal
+                    + ", loanLength = " + loanLength
+                    + ", annualRate = " + annualRate
+                    + ", compoundNum = " + compoundNum
+                    + ", singlePayment = " + singlePayment
+                    //+ ", currentDate = '" + date
+                    + " WHERE loanId = " + loanId;
+            
+            myStmt = myConnection.createStatement();            
+            myStmt.executeUpdate(query);
+        }catch(Exception e){ 
             e.printStackTrace();
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if( getMyConnection() !=null){
+                        getMyConnection().close();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
         }
     }
-    /**
-     * writes the current loan array to the loan file (persistent)
-     */
     
-    public void writeLoanFile() {
-        FileOutputStream fos = null;
-        ObjectOutputStream out = null;
-
-        try {
-            fos = new FileOutputStream(loanFile);
-            out = new ObjectOutputStream(fos);
-            out.writeObject(getLoanArray());
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * prints the loan file (primarily for debugging
-     */
-    public void printLoanFile() {
-        System.out.println("The Loan List has these Loans");
-        for (int i = 0; i < getLoanArray().size(); i++) {
-            Loan currentLoan = (Loan) getLoanArray().get(i);
-            System.out.println(currentLoan.toString());
-        }
-    }
+    
     //==========================================================================
     //Getter and Setters
     //==========================================================================
+
     /**
-     * @return the loanArray
+     * @return the myConnection
      */
-    public ArrayList<Loan> getLoanArray() {
-        return loanArray;
+    public Connection getMyConnection() {
+        return myConnection;
     }
 
     /**
-     * @param loanArray the loanArray to set
+     * @param myConnection the myConnection to set
      */
-    public void setLoanArray(ArrayList<Loan> loanArray) {
-        this.loanArray = loanArray;
+    public void setMyConnection(Connection myConnection) {
+        this.myConnection = myConnection;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
     }
 }

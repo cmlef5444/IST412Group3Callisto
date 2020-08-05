@@ -7,6 +7,7 @@ package Servlets;
 
 import Data.CustomerList;
 import Data.DBConnection;
+import Data.LoanList;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -61,7 +62,8 @@ public class LoginServlet extends HttpServlet {
         
 //        DBConnection connection = new DBConnection();
 //        connection.init();
-        CustomerList customerList = new CustomerList();
+//        CustomerList customerList = new CustomerList();
+        LoanList loanList = new LoanList();
         
         response.setContentType("text/html;charset=UTF-8");
         
