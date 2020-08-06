@@ -99,8 +99,11 @@ public class LoginServlet extends HttpServlet {
             if(loginCntl.authenticator(email, password)){
                 System.out.println("LoginServlet: authenticator passed");
                 request.getSession().setAttribute("customerId",loginCntl.setupCurrentUser(email, password));
-                RequestDispatcher rd = request.getRequestDispatcher("navigation.jsp");
-                rd.forward(request, response);
+//                NavigationServlet nav = new NavigationServlet();
+//                nav.processRequest(request, response);
+//                RequestDispatcher rd = request.getRequestDispatcher("NavigationServlet");
+//                rd.forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/Navigation");
             }
             else{
                 System.out.println("Email or Password is incorrect.");

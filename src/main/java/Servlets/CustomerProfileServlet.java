@@ -5,8 +5,14 @@
  */
 package Servlets;
 
+import Data.CustomerList;
+import Data.DBConnection;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +24,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CustomerProfileServlet extends HttpServlet {
 
+    int customerId;
+    DBConnection connect;
+    private Statement myStmt;
+    private ResultSet myRs;
+    
+    String firstName, lastName, email, password, password2, address, phoneNumber;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,18 +42,55 @@ public class CustomerProfileServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CustomerProfileServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CustomerProfileServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        customerId = (int)request.getSession().getAttribute("customerId");
+        System.out.println("CPS customerId: " + customerId);
+        String selectSql = "select customerFirstName, "
+                + "customerLastName, "
+                + "customerAddress, "
+                + "customerPhoneNumber, "
+                + "customerEmail "
+                + "from customer "
+                + "where customerId = " + customerId;
+        connect = new DBConnection();
+        connect.init();
+        
+        try{
+            
+            setMyStmt(connect.getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+        while(getMyRs().next()){
+            request.setAttribute("customerFirstNameInput", getMyRs().getString("customerFirstName"));
+            request.setAttribute("customerLastNameInput", getMyRs().getString("customerlastName") );
+            request.setAttribute("customerAddressInput", getMyRs().getString("customerAddress"));
+            request.setAttribute("customerPhoneNumberInput", getMyRs().getString("customerPhoneNumber"));
+            request.setAttribute("customerEmailInput", getMyRs().getString("customerEmail")); 
         }
+        
+        
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+         finally{
+            try{
+                if(getMyRs() != null){
+                    getMyRs().close();
+                }
+                if(getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
+                }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+            
+        }      
+        
+        RequestDispatcher view = request.getRequestDispatcher("customerProfile.jsp");
+        
+        view.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -70,7 +119,72 @@ public class CustomerProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        if(request.getParameter("personInfoSubmitButton") != null){
+            System.out.println("PersonInfoSubmitButton Pressed");
+            processPersonalInfo(request, response);
+            
+            
+            
+            if(request.getParameter("personInfoSubmitButton") != null){//Replace with error conditions
+                request.setAttribute("errorMessage", "Please corrent information");
+            }
+            processRequest(request, response);
+            request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);
+        }
+        else if(request.getParameter("emailSubmitButton") != null){
+            
+        }
+        else if(request.getParameter("passwordSubmitButton") != null){
+            
+        }
+    }
+    
+    public void processPersonalInfo(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("Testing processPersonalInfo(): ");
+        connect = new DBConnection();
+        connect.init();
+
+        try{
+            String selectSql = "select customerEmail, "
+                + "customerPassword "
+                + "from customer "
+                + "where customerId = " + customerId;
+            
+            setMyStmt(connect.getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+        while(getMyRs().next()){
+           email = getMyRs().getString("customerEmail");
+           password = getMyRs().getString("customerPassword");
+        }    
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+         finally{
+            try{
+                if(getMyRs() != null){
+                    getMyRs().close();
+                }
+                if(getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
+                }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+        }
+        System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
+        CustomerList customerList = new CustomerList();
+        customerList.editCustomer(email, 
+                password, 
+                customerId, 
+                request.getParameter("customerFirstNameInput"),
+                request.getParameter("customerLastNameInput"), 
+                request.getParameter("customerAddressInput"), 
+                request.getParameter("customerPhoneNumberInput"));
     }
 
     /**
@@ -82,5 +196,33 @@ public class CustomerProfileServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
 
 }

@@ -32,18 +32,8 @@ public class NavigationServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NavigationServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet NavigationServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        RequestDispatcher view = request.getRequestDispatcher("navigation.jsp");
+        view.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,7 +48,7 @@ public class NavigationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
         
         
         
@@ -75,19 +65,18 @@ public class NavigationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        
-        
         response.setContentType("text/html;charset=UTF-8");
         customerId = (int)request.getSession().getAttribute("customerId");
         System.out.println("doGet customerId: " + customerId);
         //request.getRequestDispatcher("navigation.jsp").forward(request, response);
-        System.out.println("customerProfileButton string: " + request.getParameter("Customer Profile"));
+       // System.out.println("customerProfileButton string: " + request.getParameter("Customer Profile"));
         if(request.getParameter("Customer Profile") != null){
             System.out.println("customerProfileButton Pressed");
             request.getSession().setAttribute("customerId",customerId);
-            RequestDispatcher rd = request.getRequestDispatcher("customerProfile.jsp");
-            rd.forward(request, response);
+            //CustomerProfileServlet cp = new CustomerProfileServlet();
+            //RequestDispatcher rd = request.getRequestDispatcher("/CustomerProfile");
+            //rd.include(request, response);
+            response.sendRedirect(request.getContextPath() + "/CustomerProfile");
         }
         else if(request.getParameter("Loan Balance") != null){
             

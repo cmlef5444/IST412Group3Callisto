@@ -38,8 +38,7 @@ public class CustomerList {
      * Once the program has been run immediately close it then uncomment/comment the respective lines to run as normal
      */
     public CustomerList(){
-        connect = new DBConnection();
-        connect.init();
+        
 //        
 //        String email = "Erin@example.com";
 //        String password = "ThisP$$sw0rd";
@@ -56,6 +55,8 @@ public class CustomerList {
     }
     
     public void check(){
+        connect = new DBConnection();
+        connect.init();
         try{
             String selectSql = "select * from customer";
 
@@ -91,6 +92,8 @@ public class CustomerList {
 		System.out.println("Execution finished.");
     }    
     public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber){
+        connect = new DBConnection();
+        connect.init();
         try{
             System.out.println("Testing addCustomer()");
 
@@ -123,7 +126,9 @@ public class CustomerList {
             }            
         }
     }
-    public void editCustomer(String email, String password, long customerId, String firstName, String lastName, String address, String phoneNumber){
+    public void editCustomer(String email, String password, int customerId, String firstName, String lastName, String address, String phoneNumber){
+        connect = new DBConnection();
+        connect.init();
         try{                
             String query = "UPDATE customer "
                     + "set customerFirstName = '" + firstName 
