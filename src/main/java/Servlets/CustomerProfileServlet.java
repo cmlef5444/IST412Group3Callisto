@@ -120,23 +120,45 @@ public class CustomerProfileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        if(request.getParameter("personInfoSubmitButton") != null){
-            System.out.println("PersonInfoSubmitButton Pressed");
-            processPersonalInfo(request, response);
-            
-            
-            
-            if(request.getParameter("personInfoSubmitButton") != null){//Replace with error conditions
-                request.setAttribute("errorMessage", "Please corrent information");
+        if(request.getParameter("personInfoSubmitButton") != null){                 
+            if(request.getParameter("personInfoSubmitButton") != null){//Replace with correct error checks and pass conditions
+                processPersonalInfo(request, response);  
+            }
+            else{//if it fails checks
+                request.setAttribute("errorMessage", "Please program correct error checks and pass conditions"); 
             }
             processRequest(request, response);
-            request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);
+            //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);
         }
-        else if(request.getParameter("emailSubmitButton") != null){
-            
+        else if(request.getParameter("emailSubmitButton") != null){    
+            processEmail(request, response);                  
+            if(request.getParameter("emailSubmitButton") != null){//Replace with correct error conditions
+             
+            }
+            else{
+                  request.setAttribute("errorMessage", "Please program correct error checks and pass conditions");
+            }
+            processRequest(request, response);
+            //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);
         }
-        else if(request.getParameter("passwordSubmitButton") != null){
-            
+        else if(request.getParameter("passwordSubmitButton") != null){                  
+            password = request.getParameter("customerPasswordInput1");
+            password2 = request.getParameter("customerPasswordInput2");
+            if(password.equals(password2)){
+                processPassword(request, response);  
+//                if(request.getParameter("passwordSubmitButton") != null){//Replace with correct error conditions
+//                     
+//                }
+//                else{
+//                    request.setAttribute("errorMessage", "Please program correct error checks and pass conditions");
+//                }
+                
+            }
+            else{
+                request.setAttribute("errorMessage", "The passwords must match");
+            }
+            processRequest(request, response);
+            //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);    
         }
     }
     
@@ -186,7 +208,110 @@ public class CustomerProfileServlet extends HttpServlet {
                 request.getParameter("customerAddressInput"), 
                 request.getParameter("customerPhoneNumberInput"));
     }
+public void processEmail(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("Testing processPersonalInfo(): ");
+        connect = new DBConnection();
+        connect.init();
 
+        try{
+            String selectSql = "select customerFirstName, "
+                + "customerLastName, "
+                + "customerAddress, "
+                + "customerPhoneNumber, "
+                + "customerPassword "
+                + "from customer "
+                + "where customerId = " + customerId;
+            
+            setMyStmt(connect.getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+        while(getMyRs().next()){
+           firstName = getMyRs().getString("customerFirstName");
+           lastName = getMyRs().getString("customerLastName");
+           address = getMyRs().getString("customerAddress");
+           phoneNumber = getMyRs().getString("customerPhoneNumber");
+           password = getMyRs().getString("customerPassword");
+        }    
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+         finally{
+            try{
+                if(getMyRs() != null){
+                    getMyRs().close();
+                }
+                if(getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
+                }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+        }
+        System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
+        CustomerList customerList = new CustomerList();
+        customerList.editCustomer(request.getParameter("customerEmailInput"), 
+                password, 
+                customerId, 
+                firstName,
+                lastName, 
+                address, 
+                phoneNumber);
+    }
+public void processPassword(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("Testing processPersonalInfo(): ");
+        connect = new DBConnection();
+        connect.init();
+
+        try{
+            String selectSql = "select customerFirstName, "
+                + "customerLastName, "
+                + "customerAddress, "
+                + "customerPhoneNumber, "
+                + "customerEmail "
+                + "from customer "
+                + "where customerId = " + customerId;
+            
+            setMyStmt(connect.getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+        while(getMyRs().next()){
+           firstName = getMyRs().getString("customerFirstName");
+           lastName = getMyRs().getString("customerLastName");
+           address = getMyRs().getString("customerAddress");
+           phoneNumber = getMyRs().getString("customerPhoneNumber");
+           email = getMyRs().getString("customerEmail");
+        }    
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+         finally{
+            try{
+                if(getMyRs() != null){
+                    getMyRs().close();
+                }
+                if(getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
+                }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+        }
+        System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
+        CustomerList customerList = new CustomerList();
+        customerList.editCustomer(email, 
+                request.getParameter("customerPasswordInput1"), 
+                customerId, 
+                firstName,
+                lastName, 
+                address, 
+                phoneNumber);
+    }
     /**
      * Returns a short description of the servlet.
      *

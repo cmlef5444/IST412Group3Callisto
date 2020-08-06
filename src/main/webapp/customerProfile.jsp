@@ -21,11 +21,11 @@
         <input type="text" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
         <input type="submit" value="Submit" name="personInfoSubmitButton" />
         </form>
-        <form>
-        <input type="text" name="customerEmail" value="${customerEmailInput}" />
+        <form action="CustomerProfile" method="post">        
+        <input type="text" name="customerEmailInput" value="${customerEmailInput}" />
         <input type="submit" value="Submit" name="emailSubmitButton" />
         </form>
-        <form>
+        <form action="CustomerProfile" method="post">
         <input type="text" name="customerPasswordInput1" value="" />
         <input type="text" name="customerPasswordInput2" value="" />
         <input type="submit" value="Submit" name="passwordSubmitButton" />
