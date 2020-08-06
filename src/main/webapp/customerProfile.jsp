@@ -12,8 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-       <!-- <jsp:include page="/customerProfile.jsp"/>
-    <c:out value ="${customerFirstNameInput}"></c:out>-->
         <h1>Hello World!</h1>
         <form>
         <input type="text" name="customerFirstNameInput" value="${customerFirstNameInput}"/>

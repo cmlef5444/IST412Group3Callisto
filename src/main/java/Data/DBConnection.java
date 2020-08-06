@@ -14,8 +14,23 @@ import java.sql.*;
 public class DBConnection {
     
     private Connection myConnection;
-    Statement myStmt;
-    ResultSet myRs;
+    //Azure database info
+    //===============================================
+        String host = "ist412group3server.database.windows.net:1433";
+        String database = "Callisto";
+        String user = "azureuser@ist412group3server";
+        String password = "IST412Pa$$w0rd";
+    //==================================================
+    //Azure connection Strings
+//   jdbc:sqlserver://ist412group3server.database.windows.net:1433;
+//        database=Callisto;
+//        user=azureuser@ist412group3server;
+//        password=IST412Pa$$w0rd;
+//        encrypt=true;
+//        trustServerCertificate=false;
+//        hostNameInCertificate=*.database.windows.net;
+//        loginTimeout=30;
+        //========================================================
     
     public DBConnection(){
         
@@ -23,67 +38,25 @@ public class DBConnection {
     
     public void init(){
         try{
-            System.out.println("Testing database Statement");
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
-        
-            myStmt = myConnection.createStatement();
-            myRs = myStmt.executeQuery("select * from callistotest.customer");
-            while (myRs.next()){
-                System.out.println(myRs.getString("customerLastName") + ", " + myRs.getString("customerFirstName"));
-            }
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            String selectSql = "select * from customer";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            setMyConnection(DriverManager.getConnection(connectionUrl));
             
             
             
         }catch(Exception e){
             System.out.println("Failed to get connection");
             e.printStackTrace();
-        }finally{
-            try{
-                if (myRs!= null){
-                    myRs.close();
-            }
-            if( myStmt != null){
-                    myStmt.close();
-            }
-            if( getMyConnection() !=null){
-                    getMyConnection().close();
-            }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
         }
+    }
+    public void closeMyConnection(){
         try{
-            System.out.println("Testing database Statement");
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            myConnection=DriverManager.getConnection("jdbc:mysql://cmlef-Surface:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false", "admin", "admin");
-        
-            myStmt = myConnection.createStatement();
-            String query = "insert into callistotest.customer values (5, 'bob', 'marley', 'marley@example.com', 'MyPa$$w0rd', '123 main', '123-123-1234')";
-        
-            myStmt.executeUpdate(query);
-            
-            
-            
-        }catch(Exception e){
-            System.out.println("Failed to get connection");
-            e.printStackTrace();
-        }finally{
-            try{
-                if (myRs!= null){
-                    myRs.close();
-            }
-            if( myStmt != null){
-                    myStmt.close();
-            }
-            if( getMyConnection() !=null){
-                    getMyConnection().close();
-            }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
+            getMyConnection().close();
+        }catch(SQLException e){
+            e.printStackTrace();            
         }
-
     }
     public Connection getMyConnection(){
         return myConnection;
@@ -91,38 +64,45 @@ public class DBConnection {
     
    
     
-    public void close(ResultSet rs){
-        
-        if(rs !=null){
-            try{
-               rs.close();
-            }
-            catch(Exception e){}
-        
-        }
+//    public void close(ResultSet rs){
+//        
+//        if(rs !=null){
+//            try{
+//               rs.close();
+//            }
+//            catch(Exception e){}
+//        
+//        }
+//    }
+//    
+//     public void close(java.sql.Statement stmt){
+//        
+//        if(stmt !=null){
+//            try{
+//               stmt.close();
+//            }
+//            catch(Exception e){}
+//        
+//        }
+//    }
+//     
+//  public void destroy(){
+//  
+//    if( getMyConnection() !=null){
+//    
+//         try{
+//                getMyConnection().close();
+//            }
+//            catch(Exception e){}
+//        
+//        
+//    }
+//  }
+
+    /**
+     * @param myConnection the myConnection to set
+     */
+    public void setMyConnection(Connection myConnection) {
+        this.myConnection = myConnection;
     }
-    
-     public void close(java.sql.Statement stmt){
-        
-        if(stmt !=null){
-            try{
-               stmt.close();
-            }
-            catch(Exception e){}
-        
-        }
-    }
-     
-  public void destroy(){
-  
-    if(myConnection !=null){
-    
-         try{
-               myConnection.close();
-            }
-            catch(Exception e){}
-        
-        
-    }
-  }
 }

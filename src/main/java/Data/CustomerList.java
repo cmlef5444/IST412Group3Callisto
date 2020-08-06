@@ -20,39 +20,15 @@ import java.util.Properties;
  * @author kristinamaantha
  */
 public class CustomerList {
-    
-    private ArrayList<Customer> customerArray;
-    private static CustomerList instance;
-    
-    private String customerFile = "src/main/resources/SerFiles/Customer.ser";
-    
+
     private Customer currentUser;
-    
-    private Connection myConnection;
+
     private Statement myStmt;
     private ResultSet myRs;
-    ResultSet rowRs;
+
     
-    private int numRows;
-    int count;
-    int num;
-    //Azure database info
-    //===============================================
-        String host = "ist412group3server.database.windows.net:1433";
-        String database = "Callisto";
-        String user = "azureuser@ist412group3server";
-        String password = "IST412Pa$$w0rd";
-    //==================================================
-    //Azure connection Strings
-//   jdbc:sqlserver://ist412group3server.database.windows.net:1433;
-//        database=Callisto;
-//        user=azureuser@ist412group3server;
-//        password=IST412Pa$$w0rd;
-//        encrypt=true;
-//        trustServerCertificate=false;
-//        hostNameInCertificate=*.database.windows.net;
-//        loginTimeout=30;
-        //========================================================
+    DBConnection connect;
+ 
     
     /**
      *Constructor for the CustomerList array
@@ -62,7 +38,8 @@ public class CustomerList {
      * Once the program has been run immediately close it then uncomment/comment the respective lines to run as normal
      */
     public CustomerList(){
-        customerArray = new ArrayList();
+        connect = new DBConnection();
+        connect.init();
 //        
 //        String email = "Erin@example.com";
 //        String password = "ThisP$$sw0rd";
@@ -80,13 +57,9 @@ public class CustomerList {
     
     public void check(){
         try{
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
             String selectSql = "select * from customer";
-            
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            myConnection = DriverManager.getConnection(connectionUrl);
-            
-            myStmt = myConnection.createStatement();
+
+            myStmt = connect.getMyConnection().createStatement();
             myRs = myStmt.executeQuery(selectSql);
             
             while (myRs.next()){
@@ -96,10 +69,11 @@ public class CustomerList {
             e.printStackTrace();
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
-         catch(ClassNotFoundException e){
-            e.printStackTrace();
-            System.out.println("Could not find class");
-        }finally{
+//         catch(ClassNotFoundException e){
+//            e.printStackTrace();
+//            System.out.println("Could not find class");
+//        }
+            finally{
             try{
                 if(getMyRs() != null){
                     getMyRs().close();
@@ -107,33 +81,18 @@ public class CustomerList {
                 if(getMyStmt() != null){
                         getMyStmt().close();
                 }
-                if(getMyConnection() !=null){
-                        getMyConnection().close();
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
                 }
                 }catch(SQLException e){
                     e.printStackTrace();
                 }
         }               
 		System.out.println("Execution finished.");
-    }
-    //unsure if these two methods (getInstance() and setupCurrentUser) are still relevant in web app build
-    //==============================================================================
-    public static CustomerList getInstance(){
-        if(instance == null){
-            instance = new CustomerList();
-        }
-        return instance;
-    }
-    //=========================================================================
-    
+    }    
     public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber){
         try{
             System.out.println("Testing addCustomer()");
-            
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
-            
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            myConnection = DriverManager.getConnection(connectionUrl);
 
             String query = "insert into customer"
                     + " values ('"
@@ -144,7 +103,7 @@ public class CustomerList {
                     + address + "', '" 
                     + phoneNumber + "')";
             
-            myStmt = myConnection.createStatement();
+            myStmt = connect.getMyConnection().createStatement();
             myStmt.executeUpdate(query);        
         }catch(Exception e){      
             e.printStackTrace();
@@ -156,8 +115,8 @@ public class CustomerList {
                 if( getMyStmt() != null){
                         getMyStmt().close();
                 }
-                if( getMyConnection() !=null){
-                        getMyConnection().close();
+               if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
                 }
             }catch(SQLException e){
                 e.printStackTrace();
@@ -165,13 +124,7 @@ public class CustomerList {
         }
     }
     public void editCustomer(String email, String password, long customerId, String firstName, String lastName, String address, String phoneNumber){
-        try{    
-            
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
-            
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            myConnection = DriverManager.getConnection(connectionUrl);
-            
+        try{                
             String query = "UPDATE customer "
                     + "set customerFirstName = '" + firstName 
                     + "', customerLastName = '" + lastName
@@ -181,7 +134,7 @@ public class CustomerList {
                     + "', customerPhoneNumber = '" + phoneNumber
                     + "' WHERE customerId = " + customerId;
             
-            myStmt = myConnection.createStatement();            
+            myStmt = connect.getMyConnection().createStatement();            
             myStmt.executeUpdate(query);
         }catch(Exception e){ 
             e.printStackTrace();
@@ -193,158 +146,17 @@ public class CustomerList {
                 if( getMyStmt() != null){
                         getMyStmt().close();
                 }
-                if( getMyConnection() !=null){
-                        getMyConnection().close();
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
                 }
             }catch(SQLException e){
                 e.printStackTrace();
             }
         }
     }
-    
-    
-    
-    
-//    /**
-//     *  Creates a customer profile based on the inputted data and adds it to the ArrayList
-//     * @param email - a String representing the email in a customer profile
-//     * @param password - a String representing the password in a customer profile
-//     * @param customerId - a long representing the customer id in a customer profile
-//     * @param firstName - a String representing the customer's first name in the customer profile
-//     * @param lastName - a String representing the customer's last name in the customer profile
-//     * @param address - a String representing the customer's address in the customer profile
-//     * @param phoneNumber - a String representing the customer's phone number in the customer profile
-//     * @param loanID - a String representing the customer's loan id in the customer profile
-//     */
-//    public void addCustomerToArray(String email, String password, String firstName, String lastName, String address, String phoneNumber, long loanID){
-//        getCustomerArray();
-//
-//        this.readCustomerFile();
-//        Customer c1 = new Customer (email, password, customerArray.size() + 1, firstName, lastName, address, phoneNumber, 0L);
-//        customerArray.add(c1);
-//        
-//        this.writeCustomerFile();
-//        this.readCustomerFile();
-//        //System.out.println("Testing: AddCustomer");
-//    }
-//
-//     /**
-//     *  Edits a customer profile based on the inputted data in the arrayList
-//     * @param email - a String representing the email in a customer profile
-//     * @param password - a String representing the password in a customer profile
-//     * @param customerId - a long representing the customer id in a customer profile
-//     * @param firstName - a String representing the customer's first name in the customer profile
-//     * @param lastName - a String representing the customer's last name in the customer profile
-//     * @param address - a String representing the customer's address in the customer profile
-//     * @param phoneNumber - a String representing the customer's phone number in the customer profile
-//     * @param loanID - a String representing the customer's loan id in the customer profile
-//     */
-//    public void editCustomerToArray(String email, String password, long customerId, String firstName, String lastName, String address, String phoneNumber, long loanID){
-//        for(int i = 0; i < customerArray.size(); i++){
-//            if(customerArray.get(i).getCustomerId() == 1){
-//                customerArray.get(i).setEmail(email);
-//                customerArray.get(i).setPassword(password);
-//                customerArray.get(i).setFirstName(firstName);
-//                customerArray.get(i).setLastName(lastName);
-//                customerArray.get(i).setAddress(address);
-//                customerArray.get(i).setPhoneNumber(phoneNumber);
-//                customerArray.get(i).setLoanID(loanID);
-//            }
-//            else{
-//                //edit fail message
-//            }
-////            if(customerArray.get(i).getCustomerId() == customerId){
-////                customerArray.get(i).setEmail(email);
-////                customerArray.get(i).setPassword(password);
-////                customerArray.get(i).setFirstName(firstName);
-////                customerArray.get(i).setLastName(lastName);
-////                customerArray.get(i).setAddress(address);
-////                customerArray.get(i).setPhoneNumber(phoneNumber);
-////                customerArray.get(i).setLoanID(loanID);
-////            }
-////            else{
-////                //edit fail message
-////            }
-//        }
-//        this.writeCustomerFile();
-//        this.readCustomerFile();
-//    }
-//
-//    /**
-//     *Deletes a customer from the customerArray
-//     * @param customerID - a long representing the costumer id in a customer profile to be deleted
-//     */
-//    public void deleteCustomer(long customerID){
-//        getCustomerArray().remove(customerID);
-//    }
-//    
-//    /**
-//     *Reads the (persistent) customerFile
-//     */
-//    public void readCustomerFile(){
-//        FileInputStream fis = null;
-//        ObjectInputStream in = null;
-//
-//        try {
-//            fis = new FileInputStream(customerFile);
-//            in = new ObjectInputStream(fis);
-//            setCustomerArray((ArrayList<Customer>) in.readObject());          //needs a serialVersionUID, will reaserch this
-//            in.close();
-//
-//            if (!customerArray.isEmpty()) {
-//                //System.out.println("There are Parents on the list");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    /**
-//     * writes the current customer array to the customer file (persistent)
-//     */
-//    
-//    public void writeCustomerFile() {
-//        FileOutputStream fos = null;
-//        ObjectOutputStream out = null;
-//
-//        try {
-//            fos = new FileOutputStream(customerFile);
-//            out = new ObjectOutputStream(fos);
-//            out.writeObject(getCustomerArray());
-//            out.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    /**
-//     * prints the customer file (primarily for debugging
-//     */
-//    public void printCustomerFile() {
-//        System.out.println("The Customer List has these Customers");
-//        for (int i = 0; i < getCustomerArray().size(); i++) {
-//            Customer currentCustomer = (Customer) getCustomerArray().get(i);
-//            System.out.println(currentCustomer.toString());
-//        }
-//    }
-
     //==========================================================================
     //Getter and Setters
     //==========================================================================
-    /**
-     * Returns an ArrayList of customers
-     * @return An ArrayList representing the customers
-     */
-    public ArrayList<Customer> getCustomerArray() {
-        return customerArray;
-    }
-
-    /**
-     * Sets the CustomerArray
-     * @param customerArray the customerArray to set
-     */
-    public void setCustomerArray(ArrayList<Customer> customerArray) {
-        this.customerArray = customerArray;
-    }
 
 
     /**
@@ -354,46 +166,13 @@ public class CustomerList {
         this.currentUser = currentUser;
     }
 
-    /**
-     * @param aInstance the instance to set
-     */
-    public static void setInstance(CustomerList aInstance) {
-        instance = aInstance;
-    }
 
-    /**
-     * @return the customerFile
-     */
-    public String getCustomerFile() {
-        return customerFile;
-    }
-
-    /**
-     * @param customerFile the customerFile to set
-     */
-    public void setCustomerFile(String customerFile) {
-        this.customerFile = customerFile;
-    }
 
     /**
      * @return the currentUser
      */
     public Customer getCurrentUser() {
         return currentUser;
-    }
-
-    /**
-     * @return the myConnection
-     */
-    public Connection getMyConnection() {
-        return myConnection;
-    }
-
-    /**
-     * @param myConnection the myConnection to set
-     */
-    public void setMyConnection(Connection myConnection) {
-        this.myConnection = myConnection;
     }
 
     /**
@@ -422,19 +201,5 @@ public class CustomerList {
      */
     public void setMyRs(ResultSet myRs) {
         this.myRs = myRs;
-    }
-
-    /**
-     * @param numRows the numRows to set
-     */
-    public void setNumRows(int numRows) {
-        this.numRows = numRows;
-    }
-
-    /**
-     * @return the numRows
-     */
-    public int getNumRows() {
-        return numRows;
     }
 }
