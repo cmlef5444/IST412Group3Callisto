@@ -7,6 +7,7 @@ package Servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class NavigationServlet extends HttpServlet {
 
-    /**
+    int customerId;
+   /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -56,9 +58,10 @@ public class NavigationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
-        request.getRequestDispatcher("navigation.jsp").forward(request, response);
+        
+        
+        
     }
 
     /**
@@ -72,7 +75,28 @@ public class NavigationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       
+        
+        
+        response.setContentType("text/html;charset=UTF-8");
+        customerId = (int)request.getSession().getAttribute("customerId");
+        System.out.println("doGet customerId: " + customerId);
+        //request.getRequestDispatcher("navigation.jsp").forward(request, response);
+        System.out.println("customerProfileButton string: " + request.getParameter("Customer Profile"));
+        if(request.getParameter("Customer Profile") != null){
+            System.out.println("customerProfileButton Pressed");
+            request.getSession().setAttribute("customerId",customerId);
+            RequestDispatcher rd = request.getRequestDispatcher("customerProfile.jsp");
+            rd.forward(request, response);
+        }
+        else if(request.getParameter("Loan Balance") != null){
+            
+        }
+        else if(request.getParameter("Loan Payment") != null){
+            
+        }
+        
+        
     }
 
     /**

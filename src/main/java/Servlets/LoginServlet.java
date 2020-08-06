@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LoginServlet extends HttpServlet {
 
+    HttpSession session;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -96,6 +98,7 @@ public class LoginServlet extends HttpServlet {
 
             if(loginCntl.authenticator(email, password)){
                 System.out.println("LoginServlet: authenticator passed");
+                request.getSession().setAttribute("customerId",loginCntl.setupCurrentUser(email, password));
                 RequestDispatcher rd = request.getRequestDispatcher("navigation.jsp");
                 rd.forward(request, response);
             }
@@ -104,10 +107,13 @@ public class LoginServlet extends HttpServlet {
 //                RequestDispatcher rd=request.getRequestDispatcher("index.html");  
 //                rd.include(request,response);  
             }  
+            
+            
         out.close();
            
         
     }
+
 
     /**
      * Returns a short description of the servlet.

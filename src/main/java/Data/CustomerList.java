@@ -124,26 +124,6 @@ public class CustomerList {
         }
         return instance;
     }
-    public Customer setupCurrentUser(String userEmail, String inputPassword){
-        //FIX_ME This is from the old Java build, It will need to be modified or discarded for the web app build
-        for (int i = 0; i < getCustomerArray().size(); i++) {                       
-            if (userEmail.equals(getCustomerArray().get(i).getEmail())) {
-                int p = i;
-
-                if (inputPassword.equals(getCustomerArray().get(p).getPassword())) {
-                    setCurrentUser(new Customer(getCustomerArray().get(p).getEmail(),
-                            getCustomerArray().get(p).getPassword(),
-                            getCustomerArray().get(p).getCustomerId(),
-                            getCustomerArray().get(p).getFirstName(),
-                            getCustomerArray().get(p).getLastName(),
-                            getCustomerArray().get(p).getAddress(),
-                            getCustomerArray().get(p).getPhoneNumber()));
-                }
-            } else {
-            }       
-        }
-        return getCurrentUser();
-    }
     //=========================================================================
     
     public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber){

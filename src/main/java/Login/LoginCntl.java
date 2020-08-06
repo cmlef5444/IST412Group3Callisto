@@ -1,6 +1,7 @@
 
 package Login;
 
+import Data.Customer;
 import Data.CustomerList;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,6 +29,8 @@ public class LoginCntl {
     
     private boolean boolResult;
     private boolean emailBoolResult;
+    
+    int currentId;
     /**
      * This is the initial constructor
      */
@@ -91,6 +94,41 @@ public class LoginCntl {
             }          
         }  
         return isEmailBoolResult();
+    }
+    public int setupCurrentUser(String userEmail, String inputPassword){
+
+        try{
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            setMyConnection(DriverManager.getConnection(connectionUrl));
+            
+            setPs(myConnection.prepareStatement("select customerId "
+                    + "from customer "
+                    + "where customerEmail = '" + userEmail + "' and customerPassword = '" + inputPassword + "'"));
+            myRs = getPs().executeQuery();
+            if(myRs.next()){
+                currentId = myRs.getInt(1);
+            }
+          
+            }catch(Exception e){      
+            e.printStackTrace();
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getPs() != null){
+                        getPs().close();
+                }
+                if( getMyConnection() !=null){
+                        getMyConnection().close();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }          
+        }    
+        return currentId;
     }
     
 //    /**
