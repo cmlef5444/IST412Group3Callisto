@@ -125,23 +125,23 @@
                     <div class="grid-container">
                         <form action="CustomerProfile" method="post">
                             <div style="color: #FF0000;">${errorMessage}</div>
-                            <input type="text" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
-                            <input type="text" name="customerLastNameInput" value="${customerLastNameInput}" />
-                            <input type="text" name="customerAddressInput" value="${customerAddressInput}" />
-                            <input type="text" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
+                            <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
+                            <input type="text" placeholder="Enter your last name" name="customerLastNameInput" value="${customerLastNameInput}" />
+                            <input type="text" placeholder="Enter your address" name="customerAddressInput" value="${customerAddressInput}" />
+                            <input type="text" placeholder="Enter your phone number" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
                             <input type="submit" value="Submit" name="personInfoSubmitButton" />
                         </form>                    
                     </div>
                     <div class="grid-container">
                         <form action="CustomerProfile" method="post">
-                            <input type="text" name="customerEmailInput" value="${customerEmailInput}" />
+                            <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
                             <input type="submit" value="Submit" name="emailSubmitButton" />
                         </form>
                     </div>
                     <div class="grid-container">
                         <form action="CustomerProfile" method="post">
-                            <input type="text" name="customerPasswordInput1" value="" />
-                            <input type="text" name="customerPasswordInput2" value="" />
+                            <input type="text" placeholder="Enter new password" name="customerPasswordInput1" value="" />
+                            <input type="text" placeholder="Confirm new password" name="customerPasswordInput2" value="" />
                             <input type="submit" value="Submit" name="passwordSubmitButton" />
                         </form>
                     </div>
