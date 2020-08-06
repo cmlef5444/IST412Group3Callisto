@@ -76,5 +76,8 @@
     </head>
     <body>
         <h1>This is the navigation page! Update 2</h1>
+        <center><a href="CustomerProfile">Click here for your Customer Profile page</a></center>
+        <center><a href="LoanBalance">Click here for Loan Balance</a></center>
+        <center><a href="LoanPayment">Click here for Loan Payment</a></center>
     </body>
 </html>

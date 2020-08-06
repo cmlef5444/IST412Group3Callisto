@@ -27,6 +27,7 @@ public class LoginCntl {
     private PreparedStatement ps;
     
     private boolean boolResult;
+    private boolean emailBoolResult;
     /**
      * This is the initial constructor
      */
@@ -43,6 +44,53 @@ public class LoginCntl {
         // TODO: check to make sure username is not taken - incorrect location, this should check if email is associated with a user
         //return userEmail.length() >= 3 && !(userEmail.contains(" "));
         return false;
+    }
+    private boolean isValidPassword(String inputPassword){
+        return false;
+    }
+    private boolean nonDoubleEmail(String userEmail){   //FIX_ME has not been implemented or tested in servlet
+         setEmailBoolResult(false);
+        try{
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            setMyConnection(DriverManager.getConnection(connectionUrl));
+            
+            setPs(myConnection.prepareStatement("select customerEmail "
+                    + "from customer "
+                    + "where customerEmail = '" + userEmail + "'"));
+            System.out.println("Input: " + userEmail);
+            myRs = getPs().executeQuery();
+            setEmailBoolResult(myRs.next());
+            setEmailBoolResult(!isEmailBoolResult());
+            while(myRs.next()){
+                System.out.println("Email Input: " + userEmail + "Email SQL: " + myRs.getString("customerEmail"));              
+            }
+            if(isEmailBoolResult() == false){
+                System.out.println("Email is not double");
+     
+            }
+            else{
+                System.out.println("Email is double");                
+            }            
+        }catch(Exception e){      
+            e.printStackTrace();
+        }finally{
+            try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getPs() != null){
+                        getPs().close();
+                }
+                if( getMyConnection() !=null){
+                        getMyConnection().close();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }          
+        }  
+        return isEmailBoolResult();
     }
     
 //    /**
@@ -61,19 +109,6 @@ public class LoginCntl {
      * @return A boolean return depending on whether combination of user name and password are correct
      * Maybe we should re add test username and passowrd as seperate entites
      */
-//    public boolean authenticator(String userEmail, String inputPassword){
-//        boolean value = false;
-//        String storedUserPassword = "";
-//        if(inputPassword.equals(storedUserPassword)){
-//            value = true;
-//        }
-//        else{
-//            value = false;
-//        }       
-//        
-//        return value;
-//    }
-    
     public boolean authenticator(String userEmail, String inputPassword) {
         setBoolResult(false);
         try{
@@ -197,6 +232,20 @@ public class LoginCntl {
      */
     public boolean isBoolResult() {
         return boolResult;
+    }
+
+    /**
+     * @return the emailBoolResult
+     */
+    public boolean isEmailBoolResult() {
+        return emailBoolResult;
+    }
+
+    /**
+     * @param emailBoolResult the emailBoolResult to set
+     */
+    public void setEmailBoolResult(boolean emailBoolResult) {
+        this.emailBoolResult = emailBoolResult;
     }
     
 }

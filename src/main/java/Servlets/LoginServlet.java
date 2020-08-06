@@ -96,7 +96,7 @@ public class LoginServlet extends HttpServlet {
 
             if(loginCntl.authenticator(email, password)){
                 System.out.println("LoginServlet: authenticator passed");
-                RequestDispatcher rd = request.getRequestDispatcher("Navigation");
+                RequestDispatcher rd = request.getRequestDispatcher("navigation.jsp");
                 rd.forward(request, response);
             }
             else{
