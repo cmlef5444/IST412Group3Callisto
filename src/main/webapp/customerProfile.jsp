@@ -121,51 +121,33 @@
                         </center>
                     </div>
                 </div>
-            </div>
-
-            <div class="container w3-light-grey pt-4 bg-warning">
-                <div class="grid-container">
-
+                <div class="container w3-light-grey pt-4 bg-warning">
+                    <div class="grid-container">
+                        <form action="CustomerProfile" method="post">
+                            <div style="color: #FF0000;">${errorMessage}</div>
+                            <input type="text" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
+                            <input type="text" name="customerLastNameInput" value="${customerLastNameInput}" />
+                            <input type="text" name="customerAddressInput" value="${customerAddressInput}" />
+                            <input type="text" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
+                            <input type="submit" value="Submit" name="personInfoSubmitButton" />
+                        </form>                    
+                    </div>
+                    <div class="grid-container">
+                        <form action="CustomerProfile" method="post">
+                            <input type="text" name="customerEmailInput" value="${customerEmailInput}" />
+                            <input type="submit" value="Submit" name="emailSubmitButton" />
+                        </form>
+                    </div>
+                    <div class="grid-container">
+                        <form action="CustomerProfile" method="post">
+                            <input type="text" name="customerPasswordInput1" value="" />
+                            <input type="text" name="customerPasswordInput2" value="" />
+                            <input type="submit" value="Submit" name="passwordSubmitButton" />
+                        </form>
+                    </div>
                 </div>
+                <div class="container w3-blue-grey pt-3 bg-warning"></div>
             </div>
-            <div class="container w3-blue-grey pt-3 bg-warning"></div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <h1>Customer Profile</h1>
-        <form action="CustomerProfile" method="post">
-            <div style="color: #FF0000;">${errorMessage}</div>
-            <input type="text" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
-            <input type="text" name="customerLastNameInput" value="${customerLastNameInput}" />
-            <input type="text" name="customerAddressInput" value="${customerAddressInput}" />
-            <input type="text" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
-            <input type="submit" value="Submit" name="personInfoSubmitButton" />
-        </form>
-        <form action="CustomerProfile" method="post">        
-            <input type="text" name="customerEmailInput" value="${customerEmailInput}" />
-            <input type="submit" value="Submit" name="emailSubmitButton" />
-        </form>
-        <form action="CustomerProfile" method="post">
-            <input type="text" name="customerPasswordInput1" value="" />
-            <input type="text" name="customerPasswordInput2" value="" />
-            <input type="submit" value="Submit" name="passwordSubmitButton" />
-        </form>
     </body>
 </html>
