@@ -98,12 +98,15 @@
             .grid-container > div {
                 background-color: rgba(240,240,240, 1.0);
                 border: 2px dark black;
+                border: 1px solid #fff;
                 text-align: left;
                 font-size: 16px;
             }
             .grid-container{
                 max-width: 800px;
+                border: 2px solid #B0B0B0;
             }
+
         </style>
         <title>Customer Profile</title>
     </head>
@@ -123,6 +126,7 @@
                 </div>
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div class="grid-container">
+                        <center>Update Personal Information</center><br>
                         <form action="CustomerProfile" method="post">
                             <div style="color: #FF0000;">${errorMessage}</div>
                             <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
@@ -133,12 +137,14 @@
                         </form>                    
                     </div>
                     <div class="grid-container">
+                        <center>Update Email</center><br>
                         <form action="CustomerProfile" method="post">
                             <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
                             <input type="submit" value="Submit" name="emailSubmitButton" />
                         </form>
                     </div>
                     <div class="grid-container">
+                        <center>Update Password</center><br>
                         <form action="CustomerProfile" method="post">
                             <input type="text" placeholder="Enter new password" name="customerPasswordInput1" value="" />
                             <input type="text" placeholder="Confirm new password" name="customerPasswordInput2" value="" />
