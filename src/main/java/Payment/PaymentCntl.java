@@ -1,6 +1,7 @@
 
 package Payment;
 
+import Data.Loan;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,42 +15,25 @@ import java.util.Date;
  */
 public class PaymentCntl {
     
-    private double amountDue;
+    private long amountDue;
     private Date dueDate;
     
     /**
      * This is a method to make a payment
-     * @param payment A Double representing the amount the user chooses to pay
-     * @param previousTotal - a double representing the loan's previous total
+     * @param currentTotal A long representing the current balance of the loan
+     * @param payment A Long representing the amount the user chooses to pay
      * @return - represents the new total after payment has been made
      */
-    public double makePayment(double payment, double previousTotal){
-        previousTotal = 30000;
-        payment = 5000;
-        double newTotal = previousTotal - payment;
-        return newTotal;
+    public long makePayment(long currentTotal, long payment){
+        return currentTotal - payment;
     }
     
     /**
      * A method that returns true/false depending on whether payment is late.
      * @return A boolean state representing late payment.
      */
-    public boolean isLate(Date dueDate, Date currentDate){
-        boolean value = false;
-        if (dueDate.after(currentDate)) {
-            System.out.println("Payment is not late");
-            value = true;
-        } else if (dueDate.before(currentDate)) {
-            System.out.println("Payment is Late");
-            value = false;
-        } else if (dueDate.equals(currentDate)) {
-            System.out.println("Payment is not late");
-            value = true;
-        } else {
-            System.out.println("How to get here?");
-        }       
-        
-        return value;
+    public boolean isLate(Date dueDate, Date currentDate){      
+        return dueDate.before(currentDate);
     }
     /**
      * A method that returns the (double) late fee amount based on that loan's interest
@@ -57,8 +41,8 @@ public class PaymentCntl {
      * @param previousTotal - a double representing the total amount left in the loan
      * @return a double the represents the late fee amount
      */
-    public double lateFee(double loanInterest, double previousTotal){
-        double lateFeeAmount;
+    public long lateFee(long loanInterest, long previousTotal){
+        long lateFeeAmount;
 //        loanInterest = .2;
 //        loanInterest = loanInterest + .05;
 //        lateFeeAmount = previousTotal * loanInterest;
@@ -71,10 +55,8 @@ public class PaymentCntl {
      * @param previousTotal - a double representing the loan's current total
      * @return - a double representing the current amount base on the interest rate and current total
      */
-    public double amountDue(double loanInterest, double previousTotal){
-        loanInterest = .15;
-        previousTotal = 30000;
-        double currentAmountDue = loanInterest * previousTotal;
+    public long amountDue(long loanInterest, long previousTotal){
+        long currentAmountDue = (loanInterest * previousTotal) + previousTotal;
         return currentAmountDue;
     }
 }
