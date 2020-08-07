@@ -23,13 +23,10 @@ public class CustomerList {
 
     private Customer currentUser;
 
+    DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
 
-    
-    DBConnection connect;
- 
-    
     /**
      *Constructor for the CustomerList array
      * 

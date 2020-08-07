@@ -5,8 +5,11 @@
  */
 package Servlets;
 
+import LoanBalance.BalanceCntl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSetMetaData;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoanBalanceServlet extends HttpServlet {
 
+    int customerId;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,18 +33,19 @@ public class LoanBalanceServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try{
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoanBalanceServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoanBalanceServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        customerId = (int)request.getSession().getAttribute("customerId");
+        System.out.println("LBS customerId: " + customerId);
+        BalanceCntl balance = new BalanceCntl();
+        balance.getSearchRecords();
+        
+       RequestDispatcher view = request.getRequestDispatcher("loanBalance.jsp");
+        view.forward(request, response);
+        }catch(ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 

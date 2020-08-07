@@ -27,9 +27,11 @@ public class LoanList {
     
     private static LoanList instance;
     
-    private Connection myConnection;
+    DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
+    
+    private int newLoanId;
     
     /**
      *Constructor for LoanList
@@ -45,14 +47,13 @@ public class LoanList {
         return instance;
     } 
     public void check(){
+        connect = new DBConnection();
+        connect.init();
+        
         try{
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
             String selectSql = "select * from loan";
-            
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            setMyConnection(DriverManager.getConnection(connectionUrl));
-            
-            setMyStmt(getMyConnection().createStatement());
+           
+            setMyStmt(connect.getMyConnection().createStatement());
             setMyRs(getMyStmt().executeQuery(selectSql));
             
             while (getMyRs().next()){
@@ -62,10 +63,7 @@ public class LoanList {
             e.printStackTrace();
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
-         catch(ClassNotFoundException e){
-            e.printStackTrace();
-            System.out.println("Could not find class");
-        }finally{
+        finally{
             try{
                 if(getMyRs() != null){
                     getMyRs().close();
@@ -73,8 +71,8 @@ public class LoanList {
                 if(getMyStmt() != null){
                         getMyStmt().close();
                 }
-                if(getMyConnection() !=null){
-                        getMyConnection().close();
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
                 }
                 }catch(SQLException e){
                     e.printStackTrace();
@@ -83,7 +81,41 @@ public class LoanList {
 		System.out.println("Execution finished.");
     }
 
-    
+    public void currentMaxLoanId(int currentUserId){
+        connect = new DBConnection();
+        connect.init();
+        try{
+           String selectSql = "select max(loanId) from loan"; 
+           
+            setMyStmt(connect.getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+            while (getMyRs().next()){
+                setNewLoanId(getMyRs().getInt("loanId"));
+                
+            }
+            setNewLoanId(getNewLoanId() + 1);
+            
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+        finally{
+            try{
+                if(getMyRs() != null){
+                    getMyRs().close();
+                }
+                if(getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
+                }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+        }
+    }
     /**
      * Creates a loan profile based on the inputs data and adds it to the loanArray
      * @param loanID - a long representing the load id in a loan profile (deprcate)
@@ -91,20 +123,19 @@ public class LoanList {
      * @param amountTotal - a long representing the total amount of the loan in the loan profile
      * @param singlePayment - a long representing the amount payed in a single transaction
      * @param date - the date the loan was created or a payment made
+     * 
+     * Note: This is only used for the creation of a new loan, while payments are
+     * stored in the same DB they use a different method to ensure loanId is correct
      */
-    public void addLoan(int customerId, double princiaplAmount, 
+    public void createLoan(int customerId, double princiaplAmount, 
             double currentTotal, double loanLength, double annualRate, 
             double compoundNum, double singlePayment){
+        currentMaxLoanId(customerId);
+        connect = new DBConnection();
+        connect.init();
         try{
-            System.out.println("Testing addLoan()");
-            
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
-            
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            myConnection = DriverManager.getConnection(connectionUrl);
+            System.out.println("Testing createLoan()");
 
-            
-            
             String date;
             //DateTimeFormatter dtf = new DateTimeFormatter("MM-dd-uuuu");
             LocalDateTime now = LocalDateTime.now();
@@ -112,10 +143,10 @@ public class LoanList {
             System.out.println("The current date: " + date);
             //date = dtf.format(now);
 
-
-        //loan id is auto generated by sql database
+            //loan id is auto generated by sql database
             String query = "insert into loan"
                     + " values ("
+                    + getNewLoanId() + ", "
                     + customerId + ", "
                     + princiaplAmount + ", " 
                     + currentTotal + ", " 
@@ -125,7 +156,7 @@ public class LoanList {
                     + singlePayment + ", "
                     + "'" + date + "')";
             
-            myStmt = myConnection.createStatement();
+            myStmt = connect.getMyConnection().createStatement();
             myStmt.executeUpdate(query);        
         }catch(Exception e){      
             e.printStackTrace();
@@ -137,8 +168,8 @@ public class LoanList {
                 if( getMyStmt() != null){
                         getMyStmt().close();
                 }
-                if( getMyConnection() !=null){
-                        getMyConnection().close();
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
                 }
             }catch(SQLException e){
                 e.printStackTrace();
@@ -157,12 +188,9 @@ public class LoanList {
     public void editLoan(int loanId, int customerId, double principalAmount, 
             double currentTotal, double loanLength, double annualRate, 
             double compoundNum, double singlePayment){
+        connect = new DBConnection();
+        connect.init();
         try{    
-            
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
-            
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            myConnection = DriverManager.getConnection(connectionUrl);
             
             String query = "UPDATE loan "
                     + "set customerId = " + customerId 
@@ -175,7 +203,7 @@ public class LoanList {
                     //+ ", currentDate = '" + date
                     + " WHERE loanId = " + loanId;
             
-            myStmt = myConnection.createStatement();            
+            myStmt = connect.getMyConnection().createStatement();            
             myStmt.executeUpdate(query);
         }catch(Exception e){ 
             e.printStackTrace();
@@ -187,8 +215,8 @@ public class LoanList {
                 if( getMyStmt() != null){
                         getMyStmt().close();
                 }
-                if( getMyConnection() !=null){
-                        getMyConnection().close();
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
                 }
             }catch(SQLException e){
                 e.printStackTrace();
@@ -200,20 +228,6 @@ public class LoanList {
     //==========================================================================
     //Getter and Setters
     //==========================================================================
-
-    /**
-     * @return the myConnection
-     */
-    public Connection getMyConnection() {
-        return myConnection;
-    }
-
-    /**
-     * @param myConnection the myConnection to set
-     */
-    public void setMyConnection(Connection myConnection) {
-        this.myConnection = myConnection;
-    }
 
     /**
      * @return the myStmt
@@ -241,5 +255,19 @@ public class LoanList {
      */
     public void setMyRs(ResultSet myRs) {
         this.myRs = myRs;
+    }
+
+    /**
+     * @return the newtLoanId
+     */
+    public int getNewLoanId() {
+        return newLoanId;
+    }
+
+    /**
+     * @param newtLoanId the newtLoanId to set
+     */
+    public void setNewLoanId(int newLoanId) {
+        this.newLoanId = newLoanId;
     }
 }

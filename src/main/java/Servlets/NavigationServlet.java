@@ -70,7 +70,7 @@ public class NavigationServlet extends HttpServlet {
         System.out.println("doGet customerId: " + customerId);
         //request.getRequestDispatcher("navigation.jsp").forward(request, response);
        // System.out.println("customerProfileButton string: " + request.getParameter("Customer Profile"));
-        if(request.getParameter("Customer Profile") != null){
+        if(request.getParameter("custProfile") != null){
             System.out.println("customerProfileButton Pressed");
             request.getSession().setAttribute("customerId",customerId);
             //CustomerProfileServlet cp = new CustomerProfileServlet();
@@ -78,11 +78,13 @@ public class NavigationServlet extends HttpServlet {
             //rd.include(request, response);
             response.sendRedirect(request.getContextPath() + "/CustomerProfile");
         }
-        else if(request.getParameter("Loan Balance") != null){
-            
+        else if(request.getParameter("loanBalance") != null){
+            request.getSession().setAttribute("customerId",customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanBalance");
         }
-        else if(request.getParameter("Loan Payment") != null){
-            
+        else if(request.getParameter("loanPayment") != null){
+            request.getSession().setAttribute("customerId",customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanPayment");
         }
         
         
