@@ -20,18 +20,24 @@
         <sql:setDataSource var = "snapshot" driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
                                        url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
                                        />   
-        <sql:query var="currentBalances" dataSource="${snapshot}">
-                        SELECT t.loanId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY loanId ORDER BY entryId DESC) row_num FROM loan WHERE customerId =${customerIdentification})t WHERE t.row_num = 1
+        <sql:query var="currentBalancesLoan" dataSource="${snapshot}">
+                SELECT t.loanId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY loanId ORDER BY entryId DESC) row_num FROM loan WHERE customerId =${customerIdentification})t WHERE t.row_num = 1
         </sql:query>
+        
                     <!--, t.entryId -->    
-                        <form action ="/loanPayment.jsp">
-                            <label for =" loans">Select your loan:</label>
-                            <select name ="loans" id=""loans">
-                                <c:forEach var="row" items="${currentBalances.rowsByIndex}">
-                                    <option> <c:out value ="Loan id: ${row[0]}"/> </option>
+                        <form action ="LoanPayment" method="post">
+                            <label for =" loanLabel">Select your Loan id:</label>
+                            <select name ="loanOptions" id=""loans">
+                                <c:forEach var="row" items="${currentBalancesLoan.rowsByIndex}">
+                                    <option> <c:out value ="${row[0]}"/> </option>
                                 </c:forEach>
                             </select>
-                        </form>               
+                            <br/><br/>
+                            <input type="submit" name="dropSubmit" value="Submit"/>
+ 
+                        </form>    
+        
+                    
     
  
         

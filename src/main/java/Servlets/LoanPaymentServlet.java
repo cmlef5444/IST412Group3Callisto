@@ -83,7 +83,14 @@ public class LoanPaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        if(request.getParameter("dropSubmit") != null){
+            int loanOptionId = Integer.parseInt(request.getParameter("loanOptions"));           
+            System.out.println("The selected loan id is: " + loanOptionId);
+            request.setAttribute("newLoanId", loanOptionId);
+            request.getRequestDispatcher("payment.jsp").include(request, response);
+            //int entryId = Integer.parseInt(request.getParameter("currentBalancesEntry"));
+            //System.out.println("The selected entry id is: " + entryId);
+        }
     }
 
     /**
@@ -106,4 +113,9 @@ public class LoanPaymentServlet extends HttpServlet {
 //                                    <option> value ="${curentBalances}"> ${currentBalances}</option>
 //                                </c:forEach>
 //                            </select>
-//                        </form>           
+//                        </form>         
+
+
+//<sql:query var="currentBalancesEntry" dataSource="${snapshot}">
+//                SELECT t.entryId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY entryId ORDER BY loanId DESC) row_num FROM loan WHERE loanId =${newLoanId})t WHERE t.row_num = 1
+//        </sql:query> 
