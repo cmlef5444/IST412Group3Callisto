@@ -16,6 +16,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="stylesheet.css">
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -102,43 +103,117 @@
             .grid-container{
                 max-width: 800px;
             }
+
+            .topnav {
+                overflow: hidden;
+                background-color: #FFFFFF;
+                border-color: black;
+            }
+
+            .topnav a {
+                float: left;
+                display: block;
+                color: white;
+                background-color: lightslategrey;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+                border-color: black;
+            }
+
+            .topnav a:hover {
+                background-color: lightsteelblue;
+                color: black;
+            }
+
+            .topnav a.active {
+                background-color: lightslategrey;
+                color: white;
+            }
+
+            .topnav .icon {
+                display: none;
+            }
+            @media screen and (max-width: 800px) {
+                .topnav a:not(:first-child) {display: none;}
+                .topnav a.icon {
+                    float: right;
+                    display: block;
+                }
+            }
+
+            @media screen and (max-width: 800px) {
+                .topnav.responsive {position: relative;}
+                .topnav.responsive .icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+                .topnav.responsive a {
+                    float: none;
+                    display: block;
+                    text-align: left;
+                }
+            }
         </style>
         <title>Callisto Navigation</title>
     </head>
     <body>
-        <div align="center">
-            <div class="container w3-blue-grey pt-4 bg-warning">
-                <div class="form-row">  
-                    <div class="form-group col-md-12">
-                        <center> 
-                            <br>
-                            <center>
-                                <h1 style="font-family: papyrus;">Make a Selection</h1>
-                            </center>
-                            <br>
+
+        <div class="topnav" id="myTopnav">
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+            }
+        </script>
+    </div>
+    <div align="center">
+        <div class="container w3-blue-grey pt-4 bg-warning">
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <center>
+                        <br>
+                        <center>
+                            <h1 style="font-family: papyrus;">Make a Selection</h1>
                         </center>
-                    </div>
+                        <br>
+                    </center>
+                </div>
+            </div>
+
+            <div class="container w3-light-grey pt-4 bg-warning">
+
+                <div class="grid-container">
+                    <!--
+         <center><a href="CustomerProfile">Click here for your Customer Profile page</a></center>
+         <center><a href="LoanBalance">Click here for Loan Balance</a></center>
+         <center><a href="LoanPayment">Click here for Loan Payment</a></center>
+                    -->
+                    <form action="Navigation" method="post">
+                        <input type="submit" name="custProfile" value="Customer Profile" />
+                        <input type="submit" name="loanBalance" value="Loan Balance" />
+                        <input type="submit" name="loanPayment" value="Loan Payment" />
+                    </form>
                 </div>
 
-                <div class="container w3-light-grey pt-4 bg-warning">
-                    
-                        <div class="grid-container">
-                            <!--
-                 <center><a href="CustomerProfile">Click here for your Customer Profile page</a></center>
-                 <center><a href="LoanBalance">Click here for Loan Balance</a></center>
-                 <center><a href="LoanPayment">Click here for Loan Payment</a></center>
-                            -->
-                            <form action="Navigation" method="post">
-                                <input type="submit" name="custProfile" value="Customer Profile" />
-                                <input type="submit" name="loanBalance" value="Loan Balance" />
-                                <input type="submit" name="loanPayment" value="Loan Payment" />
-                            </form>
-                        </div>
-                   
-                    <br>
-                </div>
-                <div class="container w3-blue-grey pt-3 bg-warning"></div>
+                <br>
             </div>
+            <div class="container w3-blue-grey pt-3 bg-warning"></div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
