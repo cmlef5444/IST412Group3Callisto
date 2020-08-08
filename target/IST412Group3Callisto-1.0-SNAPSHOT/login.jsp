@@ -27,55 +27,56 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            body {font-family: Arial, Helvetica, sans-serif;}
-            form {border: 3px solid #f1f1f1;}
+            @import "bourbon";
 
-            input[type=text], input[type=password] {
-                width: 25%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                box-sizing: border-box;
+            body {
+                background: #eee !important;	
             }
 
-            button {
-                background-color: #80a6ff;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 20%;
+            .wrapper {	
+                margin-top: 10px;
+                margin-bottom: 10px;
             }
 
-            button:hover {
-                opacity: 0.8;
-            }
+            .form-signin {
+                max-width: 380px;
+                padding: 15px 35px 45px;
+                margin: 0 auto;
+                background-color: #fff;
+                border: 1px solid rgba(0,0,0,0.1);  
 
-            .cancelbtn {
-                width: auto;
-                padding: 10px 18px;
-                background-color: #f44336;
-            }
+                .form-signin-heading,
+                .checkbox {
+                    margin-bottom: 30px;
+                }
 
-            .imgcontainer {
-                text-align: center;
-                margin: 24px 0 12px 0;
-            }
+                .checkbox {
+                    font-weight: normal;
+                }
 
-            img.avatar {
-                width: 40%;
-                border-radius: 50%;
-            }
+                .form-control {
+                    position: relative;
+                    font-size: 16px;
+                    height: auto;
+                    padding: 10px;
+                    @include box-sizing(border-box);
 
-            .container {
-                padding: 16px;
-            }
+                    &:focus {
+                        z-index: 2;
+                    }
+                }
 
-            span.psw {
-                float: right;
-                padding-top: 16px;
+                input[type="text"] {
+                    margin-bottom: -1px;
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+
+                input[type="password"] {
+                    margin-bottom: 20px;
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
+                }
             }
 
             /* Change styles for span and cancel button on extra small screens */
@@ -88,15 +89,7 @@
                     width: 100%;
                 }
             }
-            .grid-container > div {
-                background-color: rgba(240,240,240, 1.0);
-                border: 2px dark black;
-                text-align: left;
-                font-size: 16px;
-            }
-            .grid-container{
-                max-width: 800px;
-            }
+
         </style>
     </head>
 
@@ -120,41 +113,28 @@
                     </div>
                 </div>
                 <div class="container w3-light-grey pt-4 bg-warning">
-                    <div class="grid-container">
-                        <center>
-                            <div>
-                                <form  action="Login" method="post" onSubmit = "return > <div class="container">
-                                    <div>
-                                        <span>
-                                            <label for="customerEmail"><b>Email</b>
-                                        </span>
-                                    </div>                                 
-                                    <div>
-                                        <span>
-                                            <input type="text" placeholder="Enter your Email" name="customerEmail" required>
-                                        </span>                                     
-                                    </div>
-                                    <div>
-                                        <span>
-                                            <label for="customerPassword"><b>Password</b>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span>
-                                            <input type="password" placeholder="Enter Password" name="customerPassword" required>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <button type="submit" name = "loginButton">Login</button><br>    
-                                        <button type="submit" name="registerButton">Register</button>
-                                    </div>                                  
-                                </form>                              
-                            </div>
-                        </center>
-                    </div>
+
+                    <div class="grid-container">    
+                        <div class="wrapper">
+                            <form class="form-signin" action="Login" method="post" onSubmit = "return > <div class="container">
+                                <h2 class="form-signin-heading">Please login</h2>
+                                <input type="text" class="form-control" name="customerEmail" placeholder="Email Address" required="" autofocus="" />
+                                <input type="password" class="form-control" name="customerPassword" placeholder="Password" required=""/>      
+                                <label class="checkbox">
+                                    <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+                                </label>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>                                    
+                            </form>
+                            <br>
+                            <br>
+                        </div>                            
+                    </div>            
                 </div>
+                <div class="container w3-blue-grey pt-3 bg-warning"></div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
 
