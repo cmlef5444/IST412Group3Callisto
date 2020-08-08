@@ -18,9 +18,7 @@
         <h1>Hello World!</h1>
         <sql:setDataSource var = "snapshot" driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
                                        url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
-                                       />   
-        
-         
+                                       />                    
                         
         <sql:query var="currentSelectedBalance" dataSource="${snapshot}">
                 SELECT loanId, entryId, currentDate, customerId, currentTotal, singlePayment, loanLength, annualRate, PrincipalAmount FROM loan WHERE entryId=(Select MAX(entryId) from loan where loanId = ${newLoanId})

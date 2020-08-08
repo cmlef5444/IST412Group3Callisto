@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+
     </head>
     <body>
         <h1>Hello World!</h1>
@@ -23,9 +24,11 @@
         <sql:query var="currentBalancesLoan" dataSource="${snapshot}">
                 SELECT t.loanId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY loanId ORDER BY entryId DESC) row_num FROM loan WHERE customerId =${customerIdentification})t WHERE t.row_num = 1
         </sql:query>
+                
+
         
                     <!--, t.entryId -->    
-                        <form action ="LoanPayment" method="post">
+                        <form action ="LoanPayment" method="post" onSubmit="JavaScript:ExampleJS()">>
                             <label for =" loanLabel">Select your Loan id:</label>
                             <select name ="loanOptions" id=""loans">
                                 <c:forEach var="row" items="${currentBalancesLoan.rowsByIndex}">
@@ -34,7 +37,26 @@
                             </select>
                             <br/><br/>
                             <input type="submit" name="dropSubmit" value="Submit"/>
- 
+
+                        </form>    
+                    
+                    
+                            <input type="text" name="entryIdInput" value="${newEntryId}" readonly="readonly"/>
+                            <input type="text" name="loanIdInput" value="${newLoanId}" readonly="readonly"/>
+                            <input type="text" name="currentTotalInput" value="${currentTotalInput}" readonly="readonly"/>
+                            <input type="text" name="principalAmountInput" value="${principalAmountInput}" readonly="readonly"/>
+                            <input type="text" name="loanLengthInput" value="${loanLengthInput}" readonly="readonly"/>
+                            <input type="text" name="currentDateInput" value="${currentDateInput}" readonly="readonly"/>
+                            <input type="text" name="initialDateInput" value="${initialDateInput}" readonly="readonly"/>
+                    
+                    
+                    
+                    
+                    <form action="LoanPayment" method="post">
+                            <div style="color: #FF0000;">${errorMessage}</div>
+                            
+                            <input type="text" placeholder="Enter payment amount" name="customerPaymentInput""/>
+                            <input type="submit" value="Submit" name="paymentSubmitButton" />
                         </form>    
         
                     

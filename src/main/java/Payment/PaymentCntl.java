@@ -1,7 +1,11 @@
 
 package Payment;
 
+import Data.DBConnection;
 import Data.Loan;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +21,12 @@ public class PaymentCntl {
     
     private long amountDue;
     private Date dueDate;
+    
+    private DBConnection connect;
+    private Statement myStmt;
+    private ResultSet myRs;
+    
+    private int entryId;
     
     /**
      * This is a method to make a payment
@@ -58,5 +68,101 @@ public class PaymentCntl {
     public long amountDue(long loanInterest, long previousTotal){
         long currentAmountDue = (loanInterest * previousTotal) + previousTotal;
         return currentAmountDue;
+    }
+    
+    public void getEntrySQL(int loanId){
+        setConnect(new DBConnection());
+        getConnect().init();
+        
+        try{
+            String selectSql = "SELECT t.entryId from (SELECT entryId, loanId, "
+                    + "ROW_NUMBER() OVER (PARTITION BY entryId ORDER BY "
+                    + "loanId DESC) row_num FROM loan WHERE loanId =" + loanId + ")t WHERE t.row_num = 1";
+            setMyStmt(getConnect().getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+            while (getMyRs().next()){
+                setEntryId(getMyRs().getInt("entryId"));
+                System.out.println("The entryId: " + getEntryId());
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+        finally{
+            killConnections();
+        }         
+        
+    }
+    public void killConnections(){
+       try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(getConnect().getMyConnection()!=null){
+                        getConnect().closeMyConnection();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * @return the connect
+     */
+    public DBConnection getConnect() {
+        return connect;
+    }
+
+    /**
+     * @param connect the connect to set
+     */
+    public void setConnect(DBConnection connect) {
+        this.connect = connect;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
+
+    /**
+     * @return the entryId
+     */
+    public int getEntryId() {
+        return entryId;
+    }
+
+    /**
+     * @param entryId the entryId to set
+     */
+    public void setEntryId(int entryId) {
+        this.entryId = entryId;
     }
 }
