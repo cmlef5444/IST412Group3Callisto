@@ -93,15 +93,21 @@
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div>
                         <form action="loanApplication" method="post">
-                            <label for="fname">First Name</label>
-                            <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                            <label for="customerFirstName">First Name</label>
+                            <input type="text" id="customerFirstName" name="customerFirstName" placeholder="Your first name..">
 
-                            <label for="lname">Last Name</label>
-                            <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+                            <label for="customerLastName">Last Name</label>
+                            <input type="text" id="customerLastName" name="customerLastName" placeholder="Your last name..">
 
-                            <label for="address">Address</label>
-                            <input type="text" id="address" name="address" placeholder="Your address..">    
+                            <label for="customerAddress">Address</label>
+                            <input type="text" id="customerAddress" name="customerAddress" placeholder="Your address.."> 
+                            
+                            <label for="customerPhoneNumber">Phone Number</label>
+                            <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" placeholder="Your phone number..">  
 
+                            <label for="customerEmail">Email</label>
+                            <input type="text" id="customerEmail" name="customerEmail" placeholder="Your email.."> 
+                            
                             <label for="loanAmt">Loan Amount</label>
                             <input type="text" id="loanAmt" name="loanAmt" placeholder="Loan amount..">  
 
