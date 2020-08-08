@@ -34,21 +34,21 @@ public class LoanBalanceServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try{
+        //try{
         response.setContentType("text/html;charset=UTF-8");
-        LoanList loanList = new LoanList();
+        //LoanList loanList = new LoanList();
         
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         customerId = (int)request.getSession().getAttribute("customerId");
         request.setAttribute("customerIdentification", customerId);
         System.out.println("LBS customerId: " + customerId);
         BalanceCntl balance = new BalanceCntl();
         
-       RequestDispatcher view = request.getRequestDispatcher("loanBalance.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("loanBalance.jsp");
         view.forward(request, response);
-        }catch(ClassNotFoundException e){
-            e.printStackTrace();
-        }
+//        }catch(ClassNotFoundException e){
+//            e.printStackTrace();
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

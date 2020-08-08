@@ -154,6 +154,9 @@
                                        url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
                                        />                     
 
+                    <sql:query var="currentBalances" dataSource="${snapshot}">
+                        SELECT t.loanId, t.entryId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY loanId ORDER BY entryId DESC) row_num FROM loan WHERE customerId =${customerIdentification})t WHERE t.row_num = 1
+                    </sql:query>
                     <sql:query var="pastLoanBalances" dataSource="${snapshot}">
                         SELECT entryId, currentDate, loanId, customerId, currentTotal, singlePayment, loanLength, annualRate, PrincipalAmount FROM loan WHERE customerId=${customerIdentification}
                     </sql:query>

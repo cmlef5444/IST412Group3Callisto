@@ -39,7 +39,7 @@ public class LoanList {
      *Constructor for LoanList
      */
     public LoanList(){   
-        makePayment(1,5,2000.00);
+//        makePayment(1,5,2000.00);
         check();
     }
     

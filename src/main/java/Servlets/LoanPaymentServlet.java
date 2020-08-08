@@ -5,8 +5,12 @@
  */
 package Servlets;
 
+import Data.DBConnection;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +22,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoanPaymentServlet extends HttpServlet {
 
+    int customerId;
+    DBConnection connect;
+    private Statement myStmt;
+    private ResultSet myRs;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,18 +38,23 @@ public class LoanPaymentServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoanPaymentServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoanPaymentServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        customerId = (int)request.getSession().getAttribute("customerId");
+        request.setAttribute("customerIdentification", customerId);
+//        
+//        String selectSql = "SELECT loanId, entryId from"
+//                            + "(SELECT entryId, loanId, "
+//                            + "ROW_NUMBER() OVER (PARTITION BY "
+//                            + "loanId ORDER BY entryId DESC) "
+//                            + "row_num FROM loan) table "
+//                            + "WHERE row_num = 1, customerId = " + customerId;
+//        
+//        connect = new DBConnection();
+//        connect.init();
+        RequestDispatcher view = request.getRequestDispatcher("loanPayment.jsp");
+        view.forward(request, response);
+        
+        //SELECT entryId, currentDate, loanId, customerId, currentTotal, singlePayment, loanLength, annualRate, PrincipalAmount FROM loan WHERE customerId=${customerIdentification}
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -84,3 +97,13 @@ public class LoanPaymentServlet extends HttpServlet {
     }// </editor-fold>
 
 }
+
+//
+// <form action ="/loanPayment.jsp">
+//                            <label for =" loas">Select your loan:</label>
+//                            <select name ="loans">
+//                                <c:forEach var="row" items="${currentBalances.rowsByIndex}">
+//                                    <option> value ="${curentBalances}"> ${currentBalances}</option>
+//                                </c:forEach>
+//                            </select>
+//                        </form>           
