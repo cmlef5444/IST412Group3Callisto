@@ -5,6 +5,7 @@
  */
 package Servlets;
 
+import Data.LoanList;
 import LoanBalance.BalanceCntl;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,6 +36,7 @@ public class LoanBalanceServlet extends HttpServlet {
             throws ServletException, IOException {
         try{
         response.setContentType("text/html;charset=UTF-8");
+        LoanList loanList = new LoanList();
         
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         customerId = (int)request.getSession().getAttribute("customerId");

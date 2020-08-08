@@ -67,24 +67,8 @@ public class CustomerList {
             e.printStackTrace();
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
-//         catch(ClassNotFoundException e){
-//            e.printStackTrace();
-//            System.out.println("Could not find class");
-//        }
-            finally{
-            try{
-                if(getMyRs() != null){
-                    getMyRs().close();
-                }
-                if(getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
+        finally{
+            killConnections();
         }               
 		System.out.println("Execution finished.");
     }    
@@ -108,19 +92,7 @@ public class CustomerList {
         }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-               if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }            
+            killConnections();         
         }
     }
     public void editCustomer(String email, String password, int customerId, String firstName, String lastName, String address, String phoneNumber){
@@ -141,7 +113,11 @@ public class CustomerList {
         }catch(Exception e){ 
             e.printStackTrace();
         }finally{
-            try{
+            killConnections();
+        }
+    }
+    public void killConnections(){
+       try{
                 if (getMyRs() != null){
                     getMyRs().close();
                 }
@@ -154,7 +130,6 @@ public class CustomerList {
             }catch(SQLException e){
                 e.printStackTrace();
             }
-        }
     }
     //==========================================================================
     //Getter and Setters
