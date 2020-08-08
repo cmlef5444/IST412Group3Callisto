@@ -94,25 +94,25 @@
                     <div>
                         <form action="loanApplication" method="post">
                             <label for="customerFirstName">First Name</label>
-                            <input type="text" id="customerFirstName" name="customerFirstName" placeholder="Your first name..">
+                            <input type="text" id="customerFirstName" name="customerFirstName" placeholder="Your first name.." value="${customerFirstNameInput}"/>
 
                             <label for="customerLastName">Last Name</label>
-                            <input type="text" id="customerLastName" name="customerLastName" placeholder="Your last name..">
+                            <input type="text" id="customerLastName" name="customerLastName" placeholder="Your last name.." value="${customerLastNameInput}" />
 
                             <label for="customerAddress">Address</label>
-                            <input type="text" id="customerAddress" name="customerAddress" placeholder="Your address.."> 
+                            <input type="text" id="customerAddress" name="customerAddress" placeholder="Your address.." value="${customerAddressInput}" /> 
                             
                             <label for="customerPhoneNumber">Phone Number</label>
-                            <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" placeholder="Your phone number..">  
+                            <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" placeholder="Your phone number.." value="${customerPhoneNumberInput}" />  
 
                             <label for="customerEmail">Email</label>
-                            <input type="text" id="customerEmail" name="customerEmail" placeholder="Your email.."> 
+                            <input type="text" id="customerEmail" name="customerEmail" placeholder="Your email.." value="${customerEmailInput}" /> 
                             
                             <label for="loanAmt">Loan Amount</label>
-                            <input type="text" id="loanAmt" name="loanAmt" placeholder="Loan amount..">  
+                            <input type="text" id="loanAmt" name="loanAmt" placeholder="Loan amount.." value="${loanAmountInput}" />  
 
                             <label for="loanType">Type of Loan</label>
-                            <select id="loanType" name="loanType">
+                            <select id="loanType" name="loanType" value="${loanTypeInput}" />
                                 <option value="personal">Personal</option>
                                 <option value="renovation">Renovation</option>
                                 <option value="auto">Auto</option>
@@ -121,7 +121,7 @@
                             </select>
 
                             <label for="repay">Repayment Terms</label>
-                            <select id="repay" name="repay">
+                            <select id="repay" name="repay" value="${repayInput}" />
                                 <option value="6mos">6 Months</option>
                                 <option value="12mos">12 Months</option>
                                 <option value="24mos">24 Months</option>
