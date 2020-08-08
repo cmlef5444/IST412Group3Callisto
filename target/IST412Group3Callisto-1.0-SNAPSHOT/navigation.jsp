@@ -106,33 +106,36 @@
 
             .topnav {
                 overflow: hidden;
-                background-color: #333;
+                background-color: #FFFFFF;
+                border-color: black;
             }
 
             .topnav a {
                 float: left;
                 display: block;
-                color: #f2f2f2;
+                color: white;
+                background-color: lightslategrey;
                 text-align: center;
                 padding: 14px 16px;
                 text-decoration: none;
                 font-size: 17px;
+                border-color: black;
             }
 
             .topnav a:hover {
-                background-color: #ddd;
+                background-color: lightsteelblue;
                 color: black;
             }
 
             .topnav a.active {
-                background-color: #4CAF50;
+                background-color: lightslategrey;
                 color: white;
             }
 
             .topnav .icon {
                 display: none;
             }
-            @media screen and (max-width: 600px) {
+            @media screen and (max-width: 800px) {
                 .topnav a:not(:first-child) {display: none;}
                 .topnav a.icon {
                     float: right;
@@ -140,7 +143,7 @@
                 }
             }
 
-            @media screen and (max-width: 600px) {
+            @media screen and (max-width: 800px) {
                 .topnav.responsive {position: relative;}
                 .topnav.responsive .icon {
                     position: absolute;
@@ -159,8 +162,7 @@
     <body>
 
         <div class="topnav" id="myTopnav">
-            <a href="#home" class="active">Home</a>
-            <a href="#news">News</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
             <a href="#contact">Contact</a>
             <a href="#about">About</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
