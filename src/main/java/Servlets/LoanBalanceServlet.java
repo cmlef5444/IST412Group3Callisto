@@ -38,9 +38,9 @@ public class LoanBalanceServlet extends HttpServlet {
         
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         customerId = (int)request.getSession().getAttribute("customerId");
+        request.setAttribute("customerIdentification", customerId);
         System.out.println("LBS customerId: " + customerId);
         BalanceCntl balance = new BalanceCntl();
-        balance.getSearchRecords();
         
        RequestDispatcher view = request.getRequestDispatcher("loanBalance.jsp");
         view.forward(request, response);

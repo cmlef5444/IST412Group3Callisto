@@ -14,44 +14,13 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Table needs name for table, need spot for balance for loans</h1>
         
-        <!--<table border="1">
-            <thead>
-                <tr>
-                    <th>Entry ID</th>
-                    <th>Date</th>
-                    <th>Loan ID</th>
-                    <th>Customer ID</th>
-                    <th>Current Total</th>
-                    <th>Single Payment</th>
-                    <th>Loan Length Remaining</th>
-                    <th>Annual Rate</th>
-                    <th>Principal Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>              
-            </tbody>
-        </table>-->
-
         <sql:setDataSource var = "snapshot" driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
          url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
         />
-        <sql:query var="pastLoanBalances" dataSource="${snapshot}">
-            SELECT * FROM loan <!--change to column names, to try to change order -->
-        </sql:query>
+        
+        
     
         <table border="1">
             <!-- column headers -->
