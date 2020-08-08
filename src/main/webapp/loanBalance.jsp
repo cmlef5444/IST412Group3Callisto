@@ -149,41 +149,41 @@
                     </div>
                 </div>
                 <div class="container w3-light-grey pt-4 bg-warning">
-                    <div class="grid-container">
-        
-                        <<sql:setDataSource var = "snapshot" driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-                            url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
-                        />                     
-                        
-                       <sql:query var="pastLoanBalances" dataSource="${snapshot}">
-                           SELECT entryId, currentDate, loanId, customerId, currentTotal, singlePayment, loanLength, annualRate, PrincipalAmount FROM loan WHERE customerId=${customerIdentification}
-                       </sql:query>
-                        <table id="balance" border="1">
-                            <!-- column headers -->
+
+                    <<sql:setDataSource var = "snapshot" driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+                                       url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
+                                       />                     
+
+                    <sql:query var="pastLoanBalances" dataSource="${snapshot}">
+                        SELECT entryId, currentDate, loanId, customerId, currentTotal, singlePayment, loanLength, annualRate, PrincipalAmount FROM loan WHERE customerId=${customerIdentification}
+                    </sql:query>
+
+                    <table id="balance" border="1">
+                        <!-- column headers -->
+                        <tr>
+                            <!--<c:forEach var="columnName" items="${pastLoanBalances.columnNames}">
+                                <th><c:out value="${columnName}"/></th>
+                            </c:forEach>-->
+                            <th>Entry ID</th>
+                            <th>Date</th>
+                            <th>Loan ID</th>
+                            <th>Customer ID</th>
+                            <th>Current Total</th>
+                            <th>Single Payment</th>
+                            <th>Loan Length Remaining</th>
+                            <th>Annual Rate</th>
+                            <th>Principal Amount</th>
+                        </tr>
+                        <!-- column data -->
+                        <c:forEach var="row" items="${pastLoanBalances.rowsByIndex}">
                             <tr>
-                                <!--<c:forEach var="columnName" items="${pastLoanBalances.columnNames}">
-                                    <th><c:out value="${columnName}"/></th>
-                                </c:forEach>-->
-                                <th>Entry ID</th>
-                                <th>Date</th>
-                                <th>Loan ID</th>
-                                <th>Customer ID</th>
-                                <th>Current Total</th>
-                                <th>Single Payment</th>
-                                <th>Loan Length Remaining</th>
-                                <th>Annual Rate</th>
-                                <th>Principal Amount</th>
+                                <c:forEach var="column" items="${row}">
+                                    <td><c:out value="${column}"/></td>
+                                </c:forEach>
                             </tr>
-                            <!-- column data -->
-                            <c:forEach var="row" items="${pastLoanBalances.rowsByIndex}">
-                                <tr>
-                                    <c:forEach var="column" items="${row}">
-                                        <td><c:out value="${column}"/></td>
-                                    </c:forEach>
-                                </tr>
-                            </c:forEach>
-                        </table>
-                    </div>
+                        </c:forEach>
+                    </table>
+
                 </div>
                 <div class="container w3-blue-grey pt-3 bg-warning"></div>
             </div>
