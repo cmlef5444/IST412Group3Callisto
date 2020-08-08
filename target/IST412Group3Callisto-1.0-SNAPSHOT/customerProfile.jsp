@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : customerProfile
     Created on : Jul 31, 2020, 4:26:56 PM
     Author     : cjani, kajunge
@@ -30,7 +30,7 @@
             form {border: 3px solid #f1f1f1;}
 
             input[type=text], input[type=password] {
-                width: 100%;
+                width: 70%;
                 padding: 12px 20px;
                 margin: 8px 0;
                 display: inline-block;
@@ -106,7 +106,12 @@
                 max-width: 800px;
                 border: 2px solid #B0B0B0;
             }
-
+            label
+            {
+                float: left;
+                width: 10em;
+                margin-right: 1em;
+            }
         </style>
         <title>Customer Profile</title>
     </head>
@@ -115,7 +120,7 @@
             <div class="container w3-blue-grey pt-4 bg-warning">
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <center> 
+                        <center>
                             <br>
                             <center>
                                 <h1 style="font-family: papyrus;">Customer Profile</h1>
@@ -129,16 +134,21 @@
                         <center>Update Personal Information</center><br>
                         <form action="CustomerProfile" method="post">
                             <div style="color: #FF0000;">${errorMessage}</div>
+                            <label for="customerFirstNameInput">First Name</label>
                             <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
+                            <label for="customerLastNameInput">Last Name</label>
                             <input type="text" placeholder="Enter your last name" name="customerLastNameInput" value="${customerLastNameInput}" />
+                            <label for="customerAddressInput">Address</label>
                             <input type="text" placeholder="Enter your address" name="customerAddressInput" value="${customerAddressInput}" />
+                            <label for="customerPhoneNumberInput">Phone Number</label>
                             <input type="text" placeholder="Enter your phone number" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
                             <input type="submit" value="Submit" name="personInfoSubmitButton" />
-                        </form>                    
+                        </form>
                     </div>
                     <div class="grid-container">
                         <center>Update Email</center><br>
                         <form action="CustomerProfile" method="post">
+                            <label for="customerEmailInput">Email</label>
                             <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
                             <input type="submit" value="Submit" name="emailSubmitButton" />
                         </form>
@@ -146,7 +156,9 @@
                     <div class="grid-container">
                         <center>Update Password</center><br>
                         <form action="CustomerProfile" method="post">
+                            <label for="customerPasswordInput1">Password</label>
                             <input type="text" placeholder="Enter new password" name="customerPasswordInput1" value="" />
+                            <label for="customerPasswordInput2">Confirm Password</label>
                             <input type="text" placeholder="Confirm new password" name="customerPasswordInput2" value="" />
                             <input type="submit" value="Submit" name="passwordSubmitButton" />
                         </form>

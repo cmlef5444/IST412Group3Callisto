@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
- 
+
             .grid-container {
                 display: grid;
                 grid-template-columns: auto auto;
@@ -47,7 +47,7 @@
                 border: 2px solid #B0B0B0;
             }
             input[type=text], select {
-                width: 100%;
+                width: 70%;
                 padding: 12px 20px;
                 margin: 8px 0;
                 display: inline-block;
@@ -57,7 +57,7 @@
             }
 
             input[type=submit] {
-                width: 100%;
+                width: 20%;
                 background-color: #4CAF50;
                 color: white;
                 padding: 14px 20px;
@@ -70,8 +70,12 @@
             input[type=submit]:hover {
                 background-color: #45a049;
             }
-
-          
+            label
+            {
+                float: left;
+                width: 10em;
+                margin-right: 1em;
+            }
 
         </style>
         <title>Callisto Finance Loan Application</title>
@@ -101,32 +105,32 @@
 
                             <label for="customerAddress">Address</label>
                             <input type="text" id="customerAddress" name="customerAddress" placeholder="Your address.." value="${customerAddressInput}" /> 
-                            
+
                             <label for="customerPhoneNumber">Phone Number</label>
                             <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" placeholder="Your phone number.." value="${customerPhoneNumberInput}" />  
 
                             <label for="customerEmail">Email</label>
                             <input type="text" id="customerEmail" name="customerEmail" placeholder="Your email.." value="${customerEmailInput}" /> 
-                            
+
                             <label for="loanAmt">Loan Amount</label>
                             <input type="text" id="loanAmt" name="loanAmt" placeholder="Loan amount.." value="${loanAmountInput}" />  
 
                             <label for="loanType">Type of Loan</label>
                             <select id="loanType" name="loanType" value="${loanTypeInput}" />
-                                <option value="personal">Personal</option>
-                                <option value="renovation">Renovation</option>
-                                <option value="auto">Auto</option>
-                                <option value="project">Project</option>
-                                <option value="business">Business</option>
+                            <option value="personal">Personal</option>
+                            <option value="renovation">Renovation</option>
+                            <option value="auto">Auto</option>
+                            <option value="project">Project</option>
+                            <option value="business">Business</option>
                             </select>
 
                             <label for="repay">Repayment Terms</label>
                             <select id="repay" name="repay" value="${repayInput}" />
-                                <option value="6mos">6 Months</option>
-                                <option value="12mos">12 Months</option>
-                                <option value="24mos">24 Months</option>
-                                <option value="36mos">36 Months</option>
-                                <option value="48mos">48 Months</option>
+                            <option value="6mos">6 Months</option>
+                            <option value="12mos">12 Months</option>
+                            <option value="24mos">24 Months</option>
+                            <option value="36mos">36 Months</option>
+                            <option value="48mos">48 Months</option>
                             </select>
 
                             <input type="submit" value="Submit">
