@@ -389,7 +389,7 @@ public class LoanPaymentServlet extends HttpServlet {
 //                SELECT loanId, entryId, currentDate, customerId, currentTotal, singlePayment, loanLength, annualRate, PrincipalAmount FROM loan WHERE entryId=(Select MAX(entryId) from loan where loanId = ${document.getElementId(loanOptions)})
 //        </sql:query>  
 //     }
-//     </script>//     </script>
+//     </script>
 //=======
 ///*
 // * To change this license header, choose License Headers in Project Properties.
