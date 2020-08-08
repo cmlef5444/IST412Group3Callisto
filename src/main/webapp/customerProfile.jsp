@@ -112,10 +112,82 @@
                 width: 10em;
                 margin-right: 1em;
             }
+            .topnav {
+                overflow: hidden;
+                background-color: #FFFFFF;
+                border-color: black;
+            }
+
+            .topnav a {
+                float: left;
+                display: block;
+                color: white;
+                background-color: lightslategrey;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+                border-color: black;
+            }
+
+            .topnav a:hover {
+                background-color: lightsteelblue;
+                color: black;
+            }
+
+            .topnav a.active {
+                background-color: lightslategrey;
+                color: white;
+            }
+
+            .topnav .icon {
+                display: none;
+            }
+            @media screen and (max-width: 800px) {
+                .topnav a:not(:first-child) {display: none;}
+                .topnav a.icon {
+                    float: right;
+                    display: block;
+                }
+            }
+
+            @media screen and (max-width: 800px) {
+                .topnav.responsive {position: relative;}
+                .topnav.responsive .icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+                .topnav.responsive a {
+                    float: none;
+                    display: block;
+                    text-align: left;
+                }
+            }
         </style>
         <title>Customer Profile</title>
     </head>
     <body>
+        <div class="topnav" id="myTopnav">
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanApplication.jsp">Loan Application</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanBalance.jsp">Loan Balance</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanPayment.jsp">Loan Payment</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+            }
+        </script>
         <div align="center">
             <div class="container w3-blue-grey pt-4 bg-warning">
                 <div class="form-row">

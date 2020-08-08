@@ -131,10 +131,88 @@
                 background-color: #5c6670;
                 color: white;
             }
+            label
+            {
+                float: left;
+                width: 10em;
+                margin-right: 1em;
+            }
+            .topnav {
+                overflow: hidden;
+                background-color: #FFFFFF;
+                border-color: black;
+            }
+
+            .topnav a {
+                float: left;
+                display: block;
+                color: white;
+                background-color: lightslategrey;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+                border-color: black;
+            }
+
+            .topnav a:hover {
+                background-color: lightsteelblue;
+                color: black;
+            }
+
+            .topnav a.active {
+                background-color: lightslategrey;
+                color: white;
+            }
+
+            .topnav .icon {
+                display: none;
+            }
+            @media screen and (max-width: 800px) {
+                .topnav a:not(:first-child) {display: none;}
+                .topnav a.icon {
+                    float: right;
+                    display: block;
+                }
+            }
+
+            @media screen and (max-width: 800px) {
+                .topnav.responsive {position: relative;}
+                .topnav.responsive .icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+                .topnav.responsive a {
+                    float: none;
+                    display: block;
+                    text-align: left;
+                }
+            }
         </style>
         <title>Loan Balance</title>
     </head>
     <body>
+        <div class="topnav" id="myTopnav">
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/customerProfile.jsp">Customer Profile</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanApplication.jsp">Loan Application</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanPayment.jsp">Loan Payment</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+
+        <script>
+            function myFunction() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
+            }
+        </script>
         <div align="center">
             <div class="container w3-blue-grey pt-4 bg-warning">
                 <div class="form-row">
@@ -153,13 +231,13 @@
                     <sql:setDataSource var = "snapshot" driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
                                        url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
                                        />                     
-
                     <sql:query var="currentBalances" dataSource="${snapshot}">
                         SELECT t.loanId, t.entryId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY loanId ORDER BY entryId DESC) row_num FROM loan WHERE customerId =${customerIdentification})t WHERE t.row_num = 1
                     </sql:query>
                     <sql:query var="pastLoanBalances" dataSource="${snapshot}">
                         SELECT entryId, currentDate, loanId, customerId, currentTotal, singlePayment, loanLength, annualRate, PrincipalAmount FROM loan WHERE customerId=${customerIdentification}
                     </sql:query>
+                    
 
                     <table id="balance" border="1">
                         <!-- column headers -->
