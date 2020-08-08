@@ -89,3 +89,7 @@ public class LoanBalanceServlet extends HttpServlet {
     }// </editor-fold>
 
 }
+
+//<sql:query var="currentLoanBalances" dataSource="${snapshot}">
+//                           SELECT loanId FROM loan WHERE customerId=${customerIdentification}
+//                       </sql:query>

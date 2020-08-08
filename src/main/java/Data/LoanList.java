@@ -26,6 +26,14 @@ public class LoanList {
     
     private int newLoanId;
     private int newEntityId;
+    private double staticPrincipalAmount;
+    private double staticCurrentTotal;
+    private double staticLoanLength;
+    private double staticAnnualRate;
+    private double staticCompoundNum;
+    private String staticPrincipalDate;
+    
+    
     
     /**
      *Constructor for LoanList
@@ -177,6 +185,7 @@ public class LoanList {
             double compoundNum, double singlePayment){
         selectMaxEntityFromLoan(loanId, customerId);
         updateCurrentLoan(newEntityId);
+        selectStaticData(newEntityId);
         newEntityId = 0;
         
         connect = new DBConnection();
@@ -196,13 +205,13 @@ public class LoanList {
                     + " values ("
                     + loanId + ", "
                     + customerId + ", "
-                    + princiaplAmount + ", " 
-                    + (currentTotal - singlePayment) + ", " 
-                    + loanLength + ", " 
-                    + annualRate + ", "
-                    + compoundNum + ", "
+                    + getStaticPrincipalAmount() + ", " 
+                    + (getStaticCurrentTotal() - singlePayment) + ", " 
+                    + getStaticLoanLength() + ", " 
+                    + getStaticAnnualRate() + ", "
+                    + getStaticCompoundNum() + ", "
                     + singlePayment + ", "
-                  //  + "'" + principalDate + "'"
+                    + "'" + getStaticPrincipalDate() + "'"
                     + "'" + date + "'"
                     + "'True')";
             
@@ -225,6 +234,14 @@ public class LoanList {
                 e.printStackTrace();
             }            
         }
+        
+        setStaticPrincipalAmount(0);
+        setStaticCurrentTotal(0);
+        setStaticLoanLength(0);
+        setStaticAnnualRate(0);
+        setStaticCompoundNum(0);
+        setStaticPrincipalDate("");
+        
         //long methods, long parameters, large class
     }
     public void selectStaticData(int entityId){
@@ -242,13 +259,12 @@ public class LoanList {
             setMyRs(getMyStmt().executeQuery(selectSql));
             
             while (getMyRs().next()){
-                setNewEntityId(getMyRs().getInt("principalAmount"));
-                setNewEntityId(getMyRs().getInt("currentTotal"));
-                setNewEntityId(getMyRs().getInt("loanLength"));
-                setNewEntityId(getMyRs().getInt("annualRate"));
-                setNewEntityId(getMyRs().getInt("compoundNum"));
-                setNewEntityId(getMyRs().getInt("principalDate"));
-                
+                setStaticPrincipalAmount(getMyRs().getInt("principalAmount"));
+                setStaticCurrentTotal(getMyRs().getInt("currentTotal"));
+                setStaticLoanLength(getMyRs().getInt("loanLength"));
+                setStaticAnnualRate(getMyRs().getInt("annualRate"));
+                setStaticCompoundNum(getMyRs().getInt("compoundNum"));
+                setStaticPrincipalDate(getMyRs().getString("principalDate"));
             }
             
         }catch (SQLException e){
@@ -440,5 +456,89 @@ public class LoanList {
      */
     public void setNewEntityId(int newEntityId) {
         this.newEntityId = newEntityId;
+    }
+
+    /**
+     * @return the staticPrincipalAmount
+     */
+    public double getStaticPrincipalAmount() {
+        return staticPrincipalAmount;
+    }
+
+    /**
+     * @param staticPrincipalAmount the staticPrincipalAmount to set
+     */
+    public void setStaticPrincipalAmount(double staticPrincipalAmount) {
+        this.staticPrincipalAmount = staticPrincipalAmount;
+    }
+
+    /**
+     * @return the staticCurrentTotal
+     */
+    public double getStaticCurrentTotal() {
+        return staticCurrentTotal;
+    }
+
+    /**
+     * @param staticCurrentTotal the staticCurrentTotal to set
+     */
+    public void setStaticCurrentTotal(double staticCurrentTotal) {
+        this.staticCurrentTotal = staticCurrentTotal;
+    }
+
+    /**
+     * @return the staticLoanLength
+     */
+    public double getStaticLoanLength() {
+        return staticLoanLength;
+    }
+
+    /**
+     * @param staticLoanLength the staticLoanLength to set
+     */
+    public void setStaticLoanLength(double staticLoanLength) {
+        this.staticLoanLength = staticLoanLength;
+    }
+
+    /**
+     * @return the staticAnnualRate
+     */
+    public double getStaticAnnualRate() {
+        return staticAnnualRate;
+    }
+
+    /**
+     * @param staticAnnualRate the staticAnnualRate to set
+     */
+    public void setStaticAnnualRate(double staticAnnualRate) {
+        this.staticAnnualRate = staticAnnualRate;
+    }
+
+    /**
+     * @return the staticCompoundNum
+     */
+    public double getStaticCompoundNum() {
+        return staticCompoundNum;
+    }
+
+    /**
+     * @param staticCompoundNum the staticCompoundNum to set
+     */
+    public void setStaticCompoundNum(double staticCompoundNum) {
+        this.staticCompoundNum = staticCompoundNum;
+    }
+
+    /**
+     * @return the staticPrincipalDate
+     */
+    public String getStaticPrincipalDate() {
+        return staticPrincipalDate;
+    }
+
+    /**
+     * @param staticPrincipalDate the staticPrincipalDate to set
+     */
+    public void setStaticPrincipalDate(String staticPrincipalDate) {
+        this.staticPrincipalDate = staticPrincipalDate;
     }
 }
