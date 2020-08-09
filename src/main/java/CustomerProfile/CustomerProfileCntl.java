@@ -43,24 +43,9 @@ public class CustomerProfileCntl {
         }catch(Exception e){ 
             e.printStackTrace();
         }finally{
-            killConnections();
+            connect.killConnections();
         }
-    }
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(getConnect().getMyConnection()!=null){
-                        getConnect().closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
+    }  
     /**
      * Constructor for EditCustomerInfoCntl
      * @param customer

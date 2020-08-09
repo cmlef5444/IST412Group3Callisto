@@ -47,31 +47,7 @@ public class CustomerList {
         
         //addCustomer(email, password, firstName, lastName, address, phoneNumber);
         //editCustomer("Connor@example.com", "NotPa$$w0rd", 3, "Connor543", "ThreeYears", "123 Sesame St", "123-123-1234");
-
-        check();
     }
-    
-    public void check(){
-        connect = new DBConnection();
-        connect.init();
-        try{
-            String selectSql = "select * from customer";
-
-            myStmt = connect.getMyConnection().createStatement();
-            myRs = myStmt.executeQuery(selectSql);
-            
-            while (myRs.next()){
-                System.out.println(myRs.getString("customerId") + ", " + myRs.getString("customerLastName") + ", " + myRs.getString("customerFirstName"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-            System.out.println("Failed to create connection to azure database. conneciton = null");
-		}
-        finally{
-            killConnections();
-        }               
-		System.out.println("Execution finished.");
-    }    
     public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber){
         //Move addCustomer to register when it is implemented
         connect = new DBConnection();
@@ -93,23 +69,8 @@ public class CustomerList {
         }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            killConnections();         
+            connect.killConnections();         
         }
-    }   
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
     }
     //==========================================================================
     //Getter and Setters

@@ -114,7 +114,7 @@ public class PaymentCntl {
         }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            killConnections();            
+            connect.killConnections();            
         }
         
         setStaticPrincipalAmount(0);
@@ -154,7 +154,7 @@ public class PaymentCntl {
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
         finally{
-            killConnections();
+            connect.killConnections();
         }
     }
     public void selectMaxEntryFromLoan(int currentLoanId, int currentUserId){
@@ -177,7 +177,7 @@ public class PaymentCntl {
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
         finally{
-            killConnections();
+            connect.killConnections();
         }
     }
      public void updateCurrentLoan(int entryId){
@@ -194,7 +194,7 @@ public class PaymentCntl {
         }catch(Exception e){ 
             e.printStackTrace();
         }finally{
-            killConnections();
+            connect.killConnections();
         }
     }   
     public void getEntrySQL(int loanId){
@@ -217,26 +217,10 @@ public class PaymentCntl {
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
         finally{
-            killConnections();
+            connect.killConnections();
         }         
         
     }
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(getConnect().getMyConnection()!=null){
-                        getConnect().closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
-
     /**
      * @return the connect
      */

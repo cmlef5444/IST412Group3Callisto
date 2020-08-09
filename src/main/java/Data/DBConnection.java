@@ -14,6 +14,8 @@ import java.sql.*;
 public class DBConnection {
     
     private Connection myConnection;
+    private Statement myStmt;
+    private ResultSet myRs;
     //Azure database info
     //===============================================
         String host = "ist412group3server.database.windows.net:1433";
@@ -43,66 +45,105 @@ public class DBConnection {
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             setMyConnection(DriverManager.getConnection(connectionUrl));
-            
-            
-            
         }catch(Exception e){
             System.out.println("Failed to get connection");
             e.printStackTrace();
         }
     }
-    public void closeMyConnection(){
-        try{
-            getMyConnection().close();
-        }catch(SQLException e){
-            e.printStackTrace();            
-        }
+     public void killConnections(){
+       try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(getMyConnection()!=null){
+                        getMyConnection().close();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
     }
+//==============================================================================
+//check() Methods
+//==============================================================================
+    public void checkCustomers(){
+        try{
+            String selectSql = "select * from customer";
+
+            setMyStmt(getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+            while (getMyRs().next()){
+                System.out.println(getMyRs().getString("customerId") + ", " + getMyRs().getString("customerLastName") + ", " + getMyRs().getString("customerFirstName"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+        finally{
+            killConnections();
+        }               
+		System.out.println("Execution finished.");
+    }
+    public void checkLoans(){
+        try{
+            String selectSql = "select * from loan";
+           
+            setMyStmt(getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+            while (getMyRs().next()){
+                System.out.println(getMyRs().getString("loanId") + ", " + getMyRs().getString("customerId") + ", " + getMyRs().getString("principalAmount")+ ", " + getMyRs().getString("currentTotal")+ ", " + getMyRs().getString("singlePayment") + ", " + getMyRs().getString("currentDate"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+        finally{
+            killConnections();
+        }               
+		System.out.println("Execution finished.");
+    }
+//==============================================================================
+//Getter & Setters
+//==============================================================================
     public Connection getMyConnection(){
         return myConnection;
     }
-    
-   
-    
-//    public void close(ResultSet rs){
-//        
-//        if(rs !=null){
-//            try{
-//               rs.close();
-//            }
-//            catch(Exception e){}
-//        
-//        }
-//    }
-//    
-//     public void close(java.sql.Statement stmt){
-//        
-//        if(stmt !=null){
-//            try{
-//               stmt.close();
-//            }
-//            catch(Exception e){}
-//        
-//        }
-//    }
-//     
-//  public void destroy(){
-//  
-//    if( getMyConnection() !=null){
-//    
-//         try{
-//                getMyConnection().close();
-//            }
-//            catch(Exception e){}
-//        
-//        
-//    }
-//  }
-
     /**
      * @param myConnection the myConnection to set
      */
     public void setMyConnection(Connection myConnection) {
         this.myConnection = myConnection;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
     }
 }

@@ -63,7 +63,7 @@ public class LoginCntl {
             }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            killConnections();        
+            connect.killConnections();        
         }    
         return currentId;
     }
@@ -109,26 +109,10 @@ public class LoginCntl {
             }catch(Exception e){      
                 e.printStackTrace();
             }finally{
-                killConnections();      
+                connect.killConnections();      
             }      
         return isBoolResult();
     }
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(getConnect().getMyConnection()!=null){
-                        getConnect().closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
-    
     public void forgottenPassword(String userEmail){
         //JUnit Test is not yet created, will change once registration email system is set up(they use same basic techniques)
     }

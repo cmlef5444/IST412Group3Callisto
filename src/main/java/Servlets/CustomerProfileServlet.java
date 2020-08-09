@@ -68,7 +68,7 @@ public class CustomerProfileServlet extends HttpServlet {
             e.printStackTrace();
         }
          finally{
-            killConnections();           
+            connect.killConnections();           
         }              
         RequestDispatcher view = request.getRequestDispatcher("customerProfile.jsp");
         view.forward(request, response);
@@ -170,7 +170,7 @@ public class CustomerProfileServlet extends HttpServlet {
             e.printStackTrace();
         }
          finally{
-            killConnections();
+            connect.killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
         CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
@@ -210,7 +210,7 @@ public void processEmail(HttpServletRequest request, HttpServletResponse respons
             e.printStackTrace();
         }
          finally{
-            killConnections();
+            connect.killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
         CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
@@ -250,7 +250,7 @@ public void processPassword(HttpServletRequest request, HttpServletResponse resp
             e.printStackTrace();
         }
          finally{
-            killConnections();
+            connect.killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
         CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
@@ -262,23 +262,6 @@ public void processPassword(HttpServletRequest request, HttpServletResponse resp
                 address, 
                 phoneNumber);
     }
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
-
-
     /**
      * Returns a short description of the servlet.
      *

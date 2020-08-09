@@ -94,26 +94,10 @@ public class ErrorChecks {
         }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            killConnections();        
+            connect.killConnections();        
         }  
         return isEmailBoolResult();
-    }
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(getConnect().getMyConnection()!=null){
-                        getConnect().closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
-
+    }   
     /**
      * @return the connect
      */

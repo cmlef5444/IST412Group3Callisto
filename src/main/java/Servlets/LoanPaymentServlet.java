@@ -170,24 +170,10 @@ public class LoanPaymentServlet extends HttpServlet {
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
         finally{
-            killConnections();
+            connect.killConnections();
         }
     }
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(getConnect().getMyConnection()!=null){
-                        getConnect().closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
+
 
     /**
      * @return the connect

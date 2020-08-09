@@ -75,22 +75,6 @@ public class BalanceCntl {
         nextDue = (currentAmount * currentInterest) + currentAmount;
         return nextDue;
     }
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(getConnect().getMyConnection()!=null){
-                        getConnect().closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
-
     /**
      * @return the customer
      */

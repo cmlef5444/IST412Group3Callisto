@@ -25,31 +25,7 @@ public class LoanList {
      */
     public LoanList(){   
 //        makePayment(1,5,2000.00);
-        check();
-    }
-    public void check(){
-        connect = new DBConnection();
-        connect.init();
-        
-        try{
-            String selectSql = "select * from loan";
-           
-            setMyStmt(connect.getMyConnection().createStatement());
-            setMyRs(getMyStmt().executeQuery(selectSql));
-            
-            while (getMyRs().next()){
-                System.out.println(getMyRs().getString("loanId") + ", " + getMyRs().getString("customerId") + ", " + getMyRs().getString("principalAmount")+ ", " + getMyRs().getString("currentTotal")+ ", " + getMyRs().getString("singlePayment") + ", " + getMyRs().getString("currentDate"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-            System.out.println("Failed to create connection to azure database. conneciton = null");
-		}
-        finally{
-            killConnections();
-        }               
-		System.out.println("Execution finished.");
-    }
-
+    }   
     public void currentMaxLoanId(int currentUserId){
         connect = new DBConnection();
         connect.init();
@@ -70,7 +46,7 @@ public class LoanList {
             System.out.println("Failed to create connection to azure database. conneciton = null");
 		}
         finally{
-            killConnections();
+            connect.killConnections();
         }
     }
     /**
@@ -117,7 +93,7 @@ public class LoanList {
         }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            killConnections();           
+            connect.killConnections();           
         }
     }    
     
@@ -153,24 +129,10 @@ public class LoanList {
         }catch(Exception e){ 
             e.printStackTrace();
         }finally{
-            killConnections();
+            connect.killConnections();
         }
     }    
-    public void killConnections(){
-       try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-    }
+
     
     
     //==========================================================================
