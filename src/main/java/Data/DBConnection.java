@@ -40,7 +40,13 @@ public class DBConnection {
     
     public void init(){
         try{
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net";
+            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;"
+                    + "databaseName=Callisto;"
+                    + "user=azureuser@ist412group3server;"
+                    + "password=IST412Pa$$w0rd;"
+                    //+ "encrypt=true;"
+                    + "trustServerCertificate=false;"
+                    + "hostNameInCertificate=*.database.windows.net";
             String selectSql = "select * from customer";
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
