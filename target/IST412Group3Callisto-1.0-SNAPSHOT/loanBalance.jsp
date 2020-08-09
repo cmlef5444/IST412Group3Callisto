@@ -252,7 +252,7 @@
                             <th>Current Total</th>
                             <th>Single Payment</th>
                             <th>Loan Length Remaining</th>
-                            <th>Annual Rate</th>
+                            <th>Monthly Rate</th>
                             <th>Initial Date</th>
                             <th>Principal Amount</th>
                         </tr>

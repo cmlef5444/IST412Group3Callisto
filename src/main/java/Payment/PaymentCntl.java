@@ -39,23 +39,14 @@ public class PaymentCntl {
     private double staticAnnualRate;
     private double staticCompoundNum;
     private String staticInitialDate;
-    
-    /**
-     * This is a method to make a payment
-     * @param currentTotal A long representing the current balance of the loan
-     * @param payment A Long representing the amount the user chooses to pay
-     * @return - represents the new total after payment has been made
-     */
-    public long makePayment(long currentTotal, long payment){
-        return currentTotal - payment;
-    }
-    
+    double currentAmountDue;
+
     /**
      * A method that returns true/false depending on whether payment is late.
      * @return A boolean state representing late payment.
      */
     public boolean isLate(Date dueDate, Date currentDate){      
-        return dueDate.before(currentDate);
+        return dueDate.before(currentDate);//Mot implemented
     }
     /**
      * A method that returns the (double) late fee amount based on that loan's interest
@@ -64,7 +55,7 @@ public class PaymentCntl {
      * @return a double the represents the late fee amount
      */
     public long lateFee(long loanInterest, long previousTotal){
-        long lateFeeAmount;
+        long lateFeeAmount;//Mot implemented
 //        loanInterest = .2;
 //        loanInterest = loanInterest + .05;
 //        lateFeeAmount = previousTotal * loanInterest;
@@ -77,9 +68,14 @@ public class PaymentCntl {
      * @param previousTotal - a double representing the loan's current total
      * @return - a double representing the current amount base on the interest rate and current total
      */
-    public long amountDue(long loanInterest, long previousTotal){
-        long currentAmountDue = (loanInterest * previousTotal) + previousTotal;
-        return currentAmountDue;
+    public double amountDue(double loanInterest, double currentTotal){
+        currentAmountDue = ((loanInterest/100) * currentTotal);
+        return currentAmountDue;    
+    }
+    public double getLengthOfLoan(double loanInterest, double currentTotal){
+        
+        double remainingLength = getStaticCurrentTotal()/amountDue(loanInterest, currentTotal);
+        return remainingLength;
     }
     public void makePayment(int loanId, int customerId, double singlePayment){
         selectMaxEntryFromLoan(loanId, customerId);
@@ -101,7 +97,7 @@ public class PaymentCntl {
                     + customerId + ", "
                     + getStaticPrincipalAmount() + ", " 
                     + (getStaticCurrentTotal() - singlePayment) + ", " 
-                    + getStaticLoanLength() + ", " 
+                    + getLengthOfLoan(getStaticAnnualRate(), (getStaticCurrentTotal() - singlePayment)) + ", " 
                     + getStaticAnnualRate() + ", "
                     + getStaticCompoundNum() + ", "
                     + singlePayment + ", "
@@ -126,6 +122,7 @@ public class PaymentCntl {
         
         //long methods, long parameters, large class
     }
+
     public void selectStaticData(int entryId){
         connect = new DBConnection();
         connect.init();
