@@ -124,8 +124,8 @@
                                 <label class="checkbox">
                                     <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
                                 </label>
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>                                    
+                                <button class="btn btn-lg btn-primary btn-block" name = "loginButton" type="submit">Login</button>   
+                                <button class="btn btn-lg btn-primary btn-block" name = "registerButton" type="submit" formnovalidate >Register</button>                                    
                             </form>
                             <br>
                             <br>

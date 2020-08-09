@@ -63,29 +63,34 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
         response.setContentType("text/html");  
-        PrintWriter out = response.getWriter();  
         
-        System.out.println("Login button pressed");
-            
-            String email = request.getParameter("customerEmail");
-            String password = request.getParameter("customerPassword");
+        if(request.getParameter("loginButton") != null){
+            PrintWriter out = response.getWriter();  
 
-            Login.LoginCntl loginCntl = new Login.LoginCntl();
-            if(loginCntl.authenticator(email, password)){
-                System.out.println("LoginServlet: authenticator passed");
-                request.getSession().setAttribute("customerId",loginCntl.setupCurrentUser(email, password));
-                response.sendRedirect(request.getContextPath() + "/Navigation");
-            }
-            else{
-                request.setAttribute("errorMessage", "Email or Password is incorrect.");
-                processRequest(request, response);
-            }            
+            System.out.println("Login button pressed");
 
-           
+                String email = request.getParameter("customerEmail");
+                String password = request.getParameter("customerPassword");
+
+                Login.LoginCntl loginCntl = new Login.LoginCntl();
+                if(loginCntl.authenticator(email, password)){
+                    System.out.println("LoginServlet: authenticator passed");
+                    request.getSession().setAttribute("customerId",loginCntl.setupCurrentUser(email, password));
+                    response.sendRedirect(request.getContextPath() + "/Navigation");
+                }
+                else{
+                    request.setAttribute("errorMessage", "Email or Password is incorrect.");
+                    processRequest(request, response);
+                } 
+           out.close();                
+        }
+        else if(request.getParameter("registerButton") != null)
+        {
+            response.sendRedirect(request.getContextPath() + "/Registration");
+        }           
             
             
-        out.close();
-           
+        
         
     }
 
