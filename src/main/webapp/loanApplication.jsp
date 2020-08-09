@@ -129,10 +129,7 @@
     </head>
     <body>
         <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
-            <a href="http://localhost:8080/IST412Group3Callisto/customerProfile.jsp">Customer Profile</a>
-            <a href="http://localhost:8080/IST412Group3Callisto/loanBalance.jsp">Loan Balance</a>
-            <a href="http://localhost:8080/IST412Group3Callisto/loanPayment.jsp">Loan Payment</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Logout</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
             </a>
@@ -200,6 +197,13 @@
                             </select>
 
                             <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                    <div class="grid-container">
+                        <form action="LoanApplication" method="post">
+                            <input type="submit" name="customerProfile" value="Customer Profile" />
+                            <input type="submit" name="loanBalance" value="Loan Balance" />
+                            <input type="submit" name="loanPayment" value="Loan Payment" />
                         </form>
                     </div>
                 </div>

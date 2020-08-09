@@ -28,8 +28,9 @@ public class CustomerProfileServlet extends HttpServlet {
     DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
-    
+
     String firstName, lastName, email, password, password2, address, phoneNumber;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,7 +43,7 @@ public class CustomerProfileServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        customerId = (int)request.getSession().getAttribute("customerId");
+        customerId = (int) request.getSession().getAttribute("customerId");
         System.out.println("CPS customerId: " + customerId);
         String selectSql = "select customerFirstName, "
                 + "customerLastName, "
@@ -53,23 +54,22 @@ public class CustomerProfileServlet extends HttpServlet {
                 + "where customerId = " + customerId;
         connect = new DBConnection();
         connect.init();
-        
-        try{            
+
+        try {
             setMyStmt(connect.getMyConnection().createStatement());
-            setMyRs(getMyStmt().executeQuery(selectSql));            
-            while(getMyRs().next()){
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            while (getMyRs().next()) {
                 request.setAttribute("customerFirstNameInput", getMyRs().getString("customerFirstName"));
-                request.setAttribute("customerLastNameInput", getMyRs().getString("customerlastName") );
+                request.setAttribute("customerLastNameInput", getMyRs().getString("customerlastName"));
                 request.setAttribute("customerAddressInput", getMyRs().getString("customerAddress"));
                 request.setAttribute("customerPhoneNumberInput", getMyRs().getString("customerPhoneNumber"));
-                request.setAttribute("customerEmailInput", getMyRs().getString("customerEmail")); 
-            }        
-        }catch(Exception e){
+                request.setAttribute("customerEmailInput", getMyRs().getString("customerEmail"));
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            connect.killConnections();
         }
-         finally{
-            connect.killConnections();           
-        }              
         RequestDispatcher view = request.getRequestDispatcher("customerProfile.jsp");
         view.forward(request, response);
     }
@@ -100,168 +100,195 @@ public class CustomerProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         ErrorChecks errorChecks = new ErrorChecks();
-        
-        if(request.getParameter("personInfoSubmitButton") != null){                 
-            if(errorChecks.isValidName(request.getParameter("customerFirstNameInput"))||errorChecks.isValidName(request.getParameter("customerLastNameInput"))){
+
+        if (request.getParameter("personInfoSubmitButton") != null) {
+            if (errorChecks.isValidName(request.getParameter("customerFirstNameInput")) || errorChecks.isValidName(request.getParameter("customerLastNameInput"))) {
                 request.setAttribute("errorMessageName", "Names may not have any numbers or special characters save - and '.");
             }
-            if(errorChecks.isValidAddress(request.getParameter("customerAddressInput"))){
+            if (errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
                 request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
             }
-            if(!errorChecks.isValidPhoneNumber(request.getParameter("customerPhoneNumberInput"))){
+            if (!errorChecks.isValidPhoneNumber(request.getParameter("customerPhoneNumberInput"))) {
                 request.setAttribute("errorMessagePhoneNumber", "Phone number must be in the following format 123-456-7890");
-            }
-            else{//Pass
-                processPersonalInfo(request, response); 
+            } else {//Pass
+                processPersonalInfo(request, response);
             }
             processRequest(request, response);
-        }
-        else if(request.getParameter("emailSubmitButton") != null){   
-            if(!errorChecks.isValidEmail(request.getParameter("customerEmailInput"))){
+        } else if (request.getParameter("emailSubmitButton") != null) {
+            if (!errorChecks.isValidEmail(request.getParameter("customerEmailInput"))) {
                 request.setAttribute("errorMessageEmail", "Your email must include an @ and a domain name (.com, .net, .edu, etc.).");
-            }
-            else{//pass
-                processEmail(request, response);   
+            } else {//pass
+                processEmail(request, response);
             }
             processRequest(request, response);
-        }
-        else if(request.getParameter("passwordSubmitButton") != null){
+        } else if (request.getParameter("passwordSubmitButton") != null) {
             password = request.getParameter("customerPasswordInput1");
             password2 = request.getParameter("customerPasswordInput2");
-            if(errorChecks.isValidPassword(password)||errorChecks.isValidPassword(password2)){
-                if(password.equals(password2)){//pass
-                    processPassword(request, response);            
-                }
-                else{
+            if (errorChecks.isValidPassword(password) || errorChecks.isValidPassword(password2)) {
+                if (password.equals(password2)) {//pass
+                    processPassword(request, response);
+                } else {
                     request.setAttribute("errorMessagePassword", "The passwords must match.");
-                }                
+                }
                 processRequest(request, response);
-            }else{
+            } else {
                 request.setAttribute("errorMessagePassword", "Passwords must be between 8 and 20 characters and "
                         + "have at least 1 lower case and 1 upper case letter, at least 1 number, and at least 1 special character.");
                 processRequest(request, response);
             }
-            
-            //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);    
+            //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);
+        }
+        response.setContentType("text/html;charset=UTF-8");
+        customerId = (int) request.getSession().getAttribute("customerId");
+        System.out.println("doGet customerId: " + customerId);
+        if (request.getParameter("loanApplication") != null) {
+            System.out.println("loanAppButton Pressed");
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanApplication");
+        } else if (request.getParameter("loanBalance") != null) {
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanBalance");
+        } else if (request.getParameter("loanPayment") != null) {
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanPayment");
         }
     }
-    
-    public void processPersonalInfo(HttpServletRequest request, HttpServletResponse response){
+/*
+    protected void doTabs(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        customerId = (int) request.getSession().getAttribute("customerId");
+        System.out.println("doGet customerId: " + customerId);
+        if (request.getParameter("loanApplication") != null) {
+            System.out.println("loanAppButton Pressed");
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanApplication");
+        } else if (request.getParameter("loanBalance") != null) {
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanBalance");
+        } else if (request.getParameter("loanPayment") != null) {
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanPayment");
+        }
+
+    }*/
+
+    public void processPersonalInfo(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Testing processPersonalInfo(): ");
         connect = new DBConnection();
         connect.init();
 
-        try{
+        try {
             String selectSql = "select customerEmail, "
-                + "customerPassword "
-                + "from customer "
-                + "where customerId = " + customerId;
-            
+                    + "customerPassword "
+                    + "from customer "
+                    + "where customerId = " + customerId;
+
             setMyStmt(connect.getMyConnection().createStatement());
             setMyRs(getMyStmt().executeQuery(selectSql));
-            
-        while(getMyRs().next()){
-           email = getMyRs().getString("customerEmail");
-           password = getMyRs().getString("customerPassword");
-        }    
-        }catch(Exception e){
+
+            while (getMyRs().next()) {
+                email = getMyRs().getString("customerEmail");
+                password = getMyRs().getString("customerPassword");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-         finally{
+        } finally {
             connect.killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
         CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
-        customerProfileCntl.editCustomer(email, 
-                password, 
-                customerId, 
+        customerProfileCntl.editCustomer(email,
+                password,
+                customerId,
                 request.getParameter("customerFirstNameInput"),
-                request.getParameter("customerLastNameInput"), 
-                request.getParameter("customerAddressInput"), 
+                request.getParameter("customerLastNameInput"),
+                request.getParameter("customerAddressInput"),
                 request.getParameter("customerPhoneNumberInput"));
     }
-public void processEmail(HttpServletRequest request, HttpServletResponse response){
+
+    public void processEmail(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Testing processPersonalInfo(): ");
         connect = new DBConnection();
         connect.init();
 
-        try{
+        try {
             String selectSql = "select customerFirstName, "
-                + "customerLastName, "
-                + "customerAddress, "
-                + "customerPhoneNumber, "
-                + "customerPassword "
-                + "from customer "
-                + "where customerId = " + customerId;
-            
+                    + "customerLastName, "
+                    + "customerAddress, "
+                    + "customerPhoneNumber, "
+                    + "customerPassword "
+                    + "from customer "
+                    + "where customerId = " + customerId;
+
             setMyStmt(connect.getMyConnection().createStatement());
             setMyRs(getMyStmt().executeQuery(selectSql));
-            
-        while(getMyRs().next()){
-           firstName = getMyRs().getString("customerFirstName");
-           lastName = getMyRs().getString("customerLastName");
-           address = getMyRs().getString("customerAddress");
-           phoneNumber = getMyRs().getString("customerPhoneNumber");
-           password = getMyRs().getString("customerPassword");
-        }    
-        }catch(Exception e){
+
+            while (getMyRs().next()) {
+                firstName = getMyRs().getString("customerFirstName");
+                lastName = getMyRs().getString("customerLastName");
+                address = getMyRs().getString("customerAddress");
+                phoneNumber = getMyRs().getString("customerPhoneNumber");
+                password = getMyRs().getString("customerPassword");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-         finally{
+        } finally {
             connect.killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
         CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
-        customerProfileCntl.editCustomer(request.getParameter("customerEmailInput"), 
-                password, 
-                customerId, 
+        customerProfileCntl.editCustomer(request.getParameter("customerEmailInput"),
+                password,
+                customerId,
                 firstName,
-                lastName, 
-                address, 
+                lastName,
+                address,
                 phoneNumber);
     }
-public void processPassword(HttpServletRequest request, HttpServletResponse response){
+
+    public void processPassword(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Testing processPersonalInfo(): ");
         connect = new DBConnection();
         connect.init();
 
-        try{
+        try {
             String selectSql = "select customerFirstName, "
-                + "customerLastName, "
-                + "customerAddress, "
-                + "customerPhoneNumber, "
-                + "customerEmail "
-                + "from customer "
-                + "where customerId = " + customerId;
-            
+                    + "customerLastName, "
+                    + "customerAddress, "
+                    + "customerPhoneNumber, "
+                    + "customerEmail "
+                    + "from customer "
+                    + "where customerId = " + customerId;
+
             setMyStmt(connect.getMyConnection().createStatement());
             setMyRs(getMyStmt().executeQuery(selectSql));
-            
-        while(getMyRs().next()){
-           firstName = getMyRs().getString("customerFirstName");
-           lastName = getMyRs().getString("customerLastName");
-           address = getMyRs().getString("customerAddress");
-           phoneNumber = getMyRs().getString("customerPhoneNumber");
-           email = getMyRs().getString("customerEmail");
-        }    
-        }catch(Exception e){
+
+            while (getMyRs().next()) {
+                firstName = getMyRs().getString("customerFirstName");
+                lastName = getMyRs().getString("customerLastName");
+                address = getMyRs().getString("customerAddress");
+                phoneNumber = getMyRs().getString("customerPhoneNumber");
+                email = getMyRs().getString("customerEmail");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-         finally{
+        } finally {
             connect.killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
         CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
-        customerProfileCntl.editCustomer(email, 
-                request.getParameter("customerPasswordInput1"), 
-                customerId, 
+        customerProfileCntl.editCustomer(email,
+                request.getParameter("customerPasswordInput1"),
+                customerId,
                 firstName,
-                lastName, 
-                address, 
+                lastName,
+                address,
                 phoneNumber);
     }
+
     /**
      * Returns a short description of the servlet.
      *
