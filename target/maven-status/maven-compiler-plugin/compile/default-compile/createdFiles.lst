@@ -1,9 +1,9 @@
 Data\CustomerList.class
 Navigation\NavigationCntl.class
+CustomerProfile\CustomerProfileCntl.class
 Servlets\RegistrationServlet.class
 LoanBalance\BalanceCntl.class
 Servlets\LoanApplicationServlet.class
-EditCustomerInfo\EditCustomerInfoCntl.class
 Servlets\CustomerProfileServlet.class
 Servlets\NavigationServlet.class
 LoanApplication\FactoryMethod\WordDocument.class

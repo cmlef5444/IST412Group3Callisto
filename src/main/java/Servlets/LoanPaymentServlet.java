@@ -109,8 +109,8 @@ public class LoanPaymentServlet extends HttpServlet {
         }
         else if(request.getParameter("paymentSubmitButton") != null){
                 System.out.println("paymentSubmitButton Pressed");
-                LoanList loanList = new LoanList();
-                loanList.makePayment(getLoanOptionId(), getCustomerId(), Double.valueOf(request.getParameter("customerPaymentInput")));
+                PaymentCntl paymentCntl = new PaymentCntl();
+                paymentCntl.makePayment(getLoanOptionId(), getCustomerId(), Double.valueOf(request.getParameter("customerPaymentInput")));
                 
                 request.setAttribute("confirmationMessage", "Payment request recieved. Please give a few minutes to process payment."); 
                 processRequest(request, response);

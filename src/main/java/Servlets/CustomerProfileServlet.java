@@ -5,10 +5,9 @@
  */
 package Servlets;
 
-import Data.CustomerList;
+import CustomerProfile.CustomerProfileCntl;
 import Data.DBConnection;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -54,42 +53,23 @@ public class CustomerProfileServlet extends HttpServlet {
         connect = new DBConnection();
         connect.init();
         
-        try{
-            
+        try{            
             setMyStmt(connect.getMyConnection().createStatement());
-            setMyRs(getMyStmt().executeQuery(selectSql));
-            
-        while(getMyRs().next()){
-            request.setAttribute("customerFirstNameInput", getMyRs().getString("customerFirstName"));
-            request.setAttribute("customerLastNameInput", getMyRs().getString("customerlastName") );
-            request.setAttribute("customerAddressInput", getMyRs().getString("customerAddress"));
-            request.setAttribute("customerPhoneNumberInput", getMyRs().getString("customerPhoneNumber"));
-            request.setAttribute("customerEmailInput", getMyRs().getString("customerEmail")); 
-        }
-        
-        
+            setMyRs(getMyStmt().executeQuery(selectSql));            
+            while(getMyRs().next()){
+                request.setAttribute("customerFirstNameInput", getMyRs().getString("customerFirstName"));
+                request.setAttribute("customerLastNameInput", getMyRs().getString("customerlastName") );
+                request.setAttribute("customerAddressInput", getMyRs().getString("customerAddress"));
+                request.setAttribute("customerPhoneNumberInput", getMyRs().getString("customerPhoneNumber"));
+                request.setAttribute("customerEmailInput", getMyRs().getString("customerEmail")); 
+            }        
         }catch(Exception e){
             e.printStackTrace();
         }
          finally{
-            try{
-                if(getMyRs() != null){
-                    getMyRs().close();
-                }
-                if(getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
-            
-        }      
-        
+            killConnections();           
+        }              
         RequestDispatcher view = request.getRequestDispatcher("customerProfile.jsp");
-        
         view.forward(request, response);
     }
 
@@ -151,8 +131,7 @@ public class CustomerProfileServlet extends HttpServlet {
 //                }
 //                else{
 //                    request.setAttribute("errorMessage", "Please program correct error checks and pass conditions");
-//                }
-                
+//                }                
             }
             else{
                 request.setAttribute("errorMessage", "The passwords must match");
@@ -184,23 +163,11 @@ public class CustomerProfileServlet extends HttpServlet {
             e.printStackTrace();
         }
          finally{
-            try{
-                if(getMyRs() != null){
-                    getMyRs().close();
-                }
-                if(getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
+            killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
-        CustomerList customerList = new CustomerList();
-        customerList.editCustomer(email, 
+        CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
+        customerProfileCntl.editCustomer(email, 
                 password, 
                 customerId, 
                 request.getParameter("customerFirstNameInput"),
@@ -236,23 +203,11 @@ public void processEmail(HttpServletRequest request, HttpServletResponse respons
             e.printStackTrace();
         }
          finally{
-            try{
-                if(getMyRs() != null){
-                    getMyRs().close();
-                }
-                if(getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
+            killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
-        CustomerList customerList = new CustomerList();
-        customerList.editCustomer(request.getParameter("customerEmailInput"), 
+        CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
+        customerProfileCntl.editCustomer(request.getParameter("customerEmailInput"), 
                 password, 
                 customerId, 
                 firstName,
@@ -288,23 +243,11 @@ public void processPassword(HttpServletRequest request, HttpServletResponse resp
             e.printStackTrace();
         }
          finally{
-            try{
-                if(getMyRs() != null){
-                    getMyRs().close();
-                }
-                if(getMyStmt() != null){
-                        getMyStmt().close();
-                }
-                if(connect.getMyConnection()!=null){
-                        connect.closeMyConnection();
-                }
-                }catch(SQLException e){
-                    e.printStackTrace();
-                }
+            killConnections();
         }
         System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
-        CustomerList customerList = new CustomerList();
-        customerList.editCustomer(email, 
+        CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
+        customerProfileCntl.editCustomer(email, 
                 request.getParameter("customerPasswordInput1"), 
                 customerId, 
                 firstName,
@@ -312,6 +255,23 @@ public void processPassword(HttpServletRequest request, HttpServletResponse resp
                 address, 
                 phoneNumber);
     }
+    public void killConnections(){
+       try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(connect.getMyConnection()!=null){
+                        connect.closeMyConnection();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+    }
+
+
     /**
      * Returns a short description of the servlet.
      *

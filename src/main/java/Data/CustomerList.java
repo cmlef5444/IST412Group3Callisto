@@ -23,7 +23,7 @@ public class CustomerList {
 
     private Customer currentUser;
 
-    DBConnection connect;
+    private DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
 
@@ -73,6 +73,7 @@ public class CustomerList {
 		System.out.println("Execution finished.");
     }    
     public void addCustomer(String email, String password, String firstName, String lastName, String address, String phoneNumber){
+        //Move addCustomer to register when it is implemented
         connect = new DBConnection();
         connect.init();
         try{
@@ -94,28 +95,7 @@ public class CustomerList {
         }finally{
             killConnections();         
         }
-    }
-    public void editCustomer(String email, String password, int customerId, String firstName, String lastName, String address, String phoneNumber){
-        connect = new DBConnection();
-        connect.init();
-        try{                
-            String query = "UPDATE customer "
-                    + "set customerFirstName = '" + firstName 
-                    + "', customerLastName = '" + lastName
-                    + "', customerEmail = '" + email
-                    + "', customerPassword = '" + password
-                    + "', customerAddress = '" + address
-                    + "', customerPhoneNumber = '" + phoneNumber
-                    + "' WHERE customerId = " + customerId;
-            
-            myStmt = connect.getMyConnection().createStatement();            
-            myStmt.executeUpdate(query);
-        }catch(Exception e){ 
-            e.printStackTrace();
-        }finally{
-            killConnections();
-        }
-    }
+    }   
     public void killConnections(){
        try{
                 if (getMyRs() != null){

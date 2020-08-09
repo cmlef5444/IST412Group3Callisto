@@ -24,9 +24,11 @@ public class BalanceCntl {
 
      private Customer customer;
      
-     DBConnection connect;
+    private DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
+    
+    private int entryId;
 
     public BalanceCntl(Customer customer){
         this.customer = customer;
@@ -35,9 +37,6 @@ public class BalanceCntl {
     public BalanceCntl() {
 
     }
-
-
-
     /**
      * A method to calculate compound interest
      * @param principleAmount An double representing the principle amount.
@@ -76,5 +75,89 @@ public class BalanceCntl {
         nextDue = (currentAmount * currentInterest) + currentAmount;
         return nextDue;
     }
-    
+    public void killConnections(){
+       try{
+                if (getMyRs() != null){
+                    getMyRs().close();
+                }
+                if( getMyStmt() != null){
+                        getMyStmt().close();
+                }
+                if(getConnect().getMyConnection()!=null){
+                        getConnect().closeMyConnection();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * @return the customer
+     */
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    /**
+     * @param customer the customer to set
+     */
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    /**
+     * @return the connect
+     */
+    public DBConnection getConnect() {
+        return connect;
+    }
+
+    /**
+     * @param connect the connect to set
+     */
+    public void setConnect(DBConnection connect) {
+        this.connect = connect;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
+
+    /**
+     * @return the entryId
+     */
+    public int getEntryId() {
+        return entryId;
+    }
+
+    /**
+     * @param entryId the entryId to set
+     */
+    public void setEntryId(int entryId) {
+        this.entryId = entryId;
+    }
 }

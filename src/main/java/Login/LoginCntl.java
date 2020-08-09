@@ -3,6 +3,7 @@ package Login;
 
 import Data.Customer;
 import Data.CustomerList;
+import Data.DBConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,7 +22,7 @@ public class LoginCntl {
     
     CustomerList customerList;
 
-    private Connection myConnection;
+    private DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
     
@@ -54,20 +55,18 @@ public class LoginCntl {
     private boolean nonDoubleEmail(String userEmail){   //FIX_ME has not been implemented or tested in servlet
          setEmailBoolResult(false);
         try{
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            setConnect(new DBConnection());
+            getConnect().init();
             
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            setMyConnection(DriverManager.getConnection(connectionUrl));
-            
-            setPs(myConnection.prepareStatement("select customerEmail "
+            setPs(getConnect().getMyConnection().prepareStatement("select customerEmail "
                     + "from customer "
                     + "where customerEmail = '" + userEmail + "'"));
             System.out.println("Input: " + userEmail);
-            myRs = getPs().executeQuery();
-            setEmailBoolResult(myRs.next());
+            setMyRs(getPs().executeQuery());
+            setEmailBoolResult(getMyRs().next());
             setEmailBoolResult(!isEmailBoolResult());
-            while(myRs.next()){
-                System.out.println("Email Input: " + userEmail + "Email SQL: " + myRs.getString("customerEmail"));              
+            while(getMyRs().next()){
+                System.out.println("Email Input: " + userEmail + "Email SQL: " + getMyRs().getString("customerEmail"));              
             }
             if(isEmailBoolResult() == false){
                 System.out.println("Email is not double");
@@ -79,54 +78,28 @@ public class LoginCntl {
         }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getPs() != null){
-                        getPs().close();
-                }
-                if( getMyConnection() !=null){
-                        getMyConnection().close();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }          
+            killConnections();        
         }  
         return isEmailBoolResult();
     }
     public int setupCurrentUser(String userEmail, String inputPassword){
 
         try{
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            setConnect(new DBConnection());
+            getConnect().init();
             
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            setMyConnection(DriverManager.getConnection(connectionUrl));
-            
-            setPs(myConnection.prepareStatement("select customerId "
+            setPs(getConnect().getMyConnection().prepareStatement("select customerId "
                     + "from customer "
                     + "where customerEmail = '" + userEmail + "' and customerPassword = '" + inputPassword + "'"));
-            myRs = getPs().executeQuery();
-            if(myRs.next()){
-                currentId = myRs.getInt(1);
+            setMyRs(getPs().executeQuery());
+            if(getMyRs().next()){
+                currentId = getMyRs().getInt(1);
             }
           
             }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            try{
-                if (getMyRs() != null){
-                    getMyRs().close();
-                }
-                if( getPs() != null){
-                        getPs().close();
-                }
-                if( getMyConnection() !=null){
-                        getMyConnection().close();
-                }
-            }catch(SQLException e){
-                e.printStackTrace();
-            }          
+            killConnections();        
         }    
         return currentId;
     }
@@ -150,22 +123,20 @@ public class LoginCntl {
     public boolean authenticator(String userEmail, String inputPassword) {
         setBoolResult(false);
         try{
-            String connectionUrl = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd";
+            setConnect(new DBConnection());
+            getConnect().init();
             
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            setMyConnection(DriverManager.getConnection(connectionUrl));
-            
-            setPs(myConnection.prepareStatement("select customerEmail, customerPassword "
+            setPs(getConnect().getMyConnection().prepareStatement("select customerEmail, customerPassword "
                     + "from customer "
                     + "where customerEmail = '" + userEmail + "' and customerPassword = '" + inputPassword + "'"));
 //            getPs().setString(1, userEmail);
 //            getPs().setString(2, inputPassword);
             System.out.println("Input: " + userEmail + ", " + inputPassword);
-            myRs = getPs().executeQuery();
-            setBoolResult(myRs.next());
-            while(myRs.next()){
-                System.out.println("Email Input: " + userEmail + "Email SQL: " + myRs.getString("customerEmail"));
-                System.out.println("Password Input: " + inputPassword + "Password SQL: " + myRs.getString("customerPassword"));
+            setMyRs(getPs().executeQuery());
+            setBoolResult(getMyRs().next());
+            while(getMyRs().next()){
+                System.out.println("Email Input: " + userEmail + "Email SQL: " + getMyRs().getString("customerEmail"));
+                System.out.println("Password Input: " + inputPassword + "Password SQL: " + getMyRs().getString("customerPassword"));
             }
             if(isBoolResult() == true){
                 System.out.println("Login successful");
@@ -177,21 +148,24 @@ public class LoginCntl {
         }catch(Exception e){      
             e.printStackTrace();
         }finally{
-            try{
+            killConnections();      
+        }  
+        return isBoolResult();
+    }
+    public void killConnections(){
+       try{
                 if (getMyRs() != null){
                     getMyRs().close();
                 }
-                if( getPs() != null){
-                        getPs().close();
+                if( getMyStmt() != null){
+                        getMyStmt().close();
                 }
-                if( getMyConnection() !=null){
-                        getMyConnection().close();
+                if(getConnect().getMyConnection()!=null){
+                        getConnect().closeMyConnection();
                 }
             }catch(SQLException e){
                 e.printStackTrace();
-            }          
-        }  
-        return isBoolResult();
+            }
     }
     
     public void forgottenPassword(String userEmail){
@@ -200,21 +174,6 @@ public class LoginCntl {
     public void forgottenEmail(String securityQuestionResponse, int ssNum){
         //JUnit Test is not yet created, will change once registration email system is set up(they use same basic techniques)
     }
-
-    /**
-     * @return the myConnection
-     */
-    public Connection getMyConnection() {
-        return myConnection;
-    }
-
-    /**
-     * @param myConnection the myConnection to set
-     */
-    public void setMyConnection(Connection myConnection) {
-        this.myConnection = myConnection;
-    }
-
     /**
      * @return the myStmt
      */
@@ -284,6 +243,20 @@ public class LoginCntl {
      */
     public void setEmailBoolResult(boolean emailBoolResult) {
         this.emailBoolResult = emailBoolResult;
+    }
+
+    /**
+     * @return the connect
+     */
+    public DBConnection getConnect() {
+        return connect;
+    }
+
+    /**
+     * @param connect the connect to set
+     */
+    public void setConnect(DBConnection connect) {
+        this.connect = connect;
     }
     
 }
