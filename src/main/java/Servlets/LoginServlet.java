@@ -36,19 +36,7 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,15 +51,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-//        DBConnection connection = new DBConnection();
-//        connection.init();
-//        CustomerList customerList = new CustomerList();
-//        CustomerList customerList = new CustomerList();
-        
-        response.setContentType("text/html;charset=UTF-8");
-        
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -95,21 +75,17 @@ public class LoginServlet extends HttpServlet {
             String password = request.getParameter("customerPassword");
 
             Login.LoginCntl loginCntl = new Login.LoginCntl();
-
             if(loginCntl.authenticator(email, password)){
                 System.out.println("LoginServlet: authenticator passed");
                 request.getSession().setAttribute("customerId",loginCntl.setupCurrentUser(email, password));
-//                NavigationServlet nav = new NavigationServlet();
-//                nav.processRequest(request, response);
-//                RequestDispatcher rd = request.getRequestDispatcher("NavigationServlet");
-//                rd.forward(request, response);
                 response.sendRedirect(request.getContextPath() + "/Navigation");
             }
             else{
-                System.out.println("Email or Password is incorrect.");
-//                RequestDispatcher rd=request.getRequestDispatcher("index.html");  
-//                rd.include(request,response);  
-            }  
+                request.setAttribute("errorMessage", "Email or Password is incorrect.");
+                processRequest(request, response);
+            }            
+
+           
             
             
         out.close();

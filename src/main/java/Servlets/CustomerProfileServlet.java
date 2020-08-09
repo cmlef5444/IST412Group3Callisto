@@ -7,6 +7,7 @@ package Servlets;
 
 import CustomerProfile.CustomerProfileCntl;
 import Data.DBConnection;
+import Data.ErrorChecks;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author cjani
+ * @author Chris Lefebve
  */
 public class CustomerProfileServlet extends HttpServlet {
 
@@ -100,43 +101,49 @@ public class CustomerProfileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        ErrorChecks errorChecks = new ErrorChecks();
+        
         if(request.getParameter("personInfoSubmitButton") != null){                 
-            if(request.getParameter("personInfoSubmitButton") != null){//Replace with correct error checks and pass conditions
-                processPersonalInfo(request, response);  
+            if(errorChecks.isValidName(request.getParameter("customerFirstNameInput"))||errorChecks.isValidName(request.getParameter("customerLastNameInput"))){
+                request.setAttribute("errorMessageName", "Names may not have any numbers or special characters save - and '.");
             }
-            else{//if it fails checks
-                request.setAttribute("errorMessage", "Please program correct error checks and pass conditions"); 
+            if(errorChecks.isValidAddress(request.getParameter("customerAddressInput"))){
+                request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
             }
-            processRequest(request, response);
-            //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);
-        }
-        else if(request.getParameter("emailSubmitButton") != null){    
-            processEmail(request, response);                  
-            if(request.getParameter("emailSubmitButton") != null){//Replace with correct error conditions
-             
+            if(!errorChecks.isValidPhoneNumber(request.getParameter("customerPhoneNumberInput"))){
+                request.setAttribute("errorMessagePhoneNumber", "Phone number must be in the following format 123-456-7890");
             }
-            else{
-                  request.setAttribute("errorMessage", "Please program correct error checks and pass conditions");
+            else{//Pass
+                processPersonalInfo(request, response); 
             }
             processRequest(request, response);
-            //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);
         }
-        else if(request.getParameter("passwordSubmitButton") != null){                  
+        else if(request.getParameter("emailSubmitButton") != null){   
+            if(!errorChecks.isValidEmail(request.getParameter("customerEmailInput"))){
+                request.setAttribute("errorMessageEmail", "Your email must include an @ and a domain name (.com, .net, .edu, etc.).");
+            }
+            else{//pass
+                processEmail(request, response);   
+            }
+            processRequest(request, response);
+        }
+        else if(request.getParameter("passwordSubmitButton") != null){
             password = request.getParameter("customerPasswordInput1");
             password2 = request.getParameter("customerPasswordInput2");
-            if(password.equals(password2)){
-                processPassword(request, response);  
-//                if(request.getParameter("passwordSubmitButton") != null){//Replace with correct error conditions
-//                     
-//                }
-//                else{
-//                    request.setAttribute("errorMessage", "Please program correct error checks and pass conditions");
-//                }                
+            if(errorChecks.isValidPassword(password)||errorChecks.isValidPassword(password2)){
+                if(password.equals(password2)){//pass
+                    processPassword(request, response);            
+                }
+                else{
+                    request.setAttribute("errorMessagePassword", "The passwords must match.");
+                }                
+                processRequest(request, response);
+            }else{
+                request.setAttribute("errorMessagePassword", "Passwords must be between 8 and 20 characters and "
+                        + "have at least 1 lower case and 1 upper case letter, at least 1 number, and at least 1 special character.");
+                processRequest(request, response);
             }
-            else{
-                request.setAttribute("errorMessage", "The passwords must match");
-            }
-            processRequest(request, response);
+            
             //request.getRequestDispatcher("/customerProfile.jsp").forward(request, response);    
         }
     }

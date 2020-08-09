@@ -118,6 +118,7 @@
                         <div class="wrapper">
                             <form class="form-signin" action="Login" method="post" onSubmit = "return > <div class="container">
                                 <h2 class="form-signin-heading">Please login</h2>
+                                <div style="color: #FF0000;">${errorMessage}</div>
                                 <input type="text" class="form-control" name="customerEmail" placeholder="Email Address" required="" autofocus="" />
                                 <input type="password" class="form-control" name="customerPassword" placeholder="Password" required=""/>      
                                 <label class="checkbox">

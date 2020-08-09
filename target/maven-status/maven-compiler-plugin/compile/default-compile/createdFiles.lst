@@ -13,6 +13,7 @@ Payment\PaymentCntl.class
 Servlets\LoanBalanceServlet.class
 Data\Loan.class
 Data\Customer.class
+Data\ErrorChecks.class
 com\mycompany\ist412group3callisto\resources\JavaEE8Resource.class
 Data\DBConnection.class
 Servlets\LoanPaymentServlet.class

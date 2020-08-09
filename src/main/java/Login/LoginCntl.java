@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is the Loan Controller Class. It contains methods that allow a user
@@ -44,46 +46,8 @@ public class LoginCntl {
      * @param userEmail A String representing customer's inputted username
      * @return A boolean return depending on whether username is valid.
      */
-    private boolean isValidEmail(String userEmail){
-        // TODO: check to make sure username is not taken - incorrect location, this should check if email is associated with a user
-        //return userEmail.length() >= 3 && !(userEmail.contains(" "));
-        return false;
-    }
-    private boolean isValidPassword(String inputPassword){
-        return false;
-    }
-    private boolean nonDoubleEmail(String userEmail){   //FIX_ME has not been implemented or tested in servlet
-         setEmailBoolResult(false);
-        try{
-            setConnect(new DBConnection());
-            getConnect().init();
-            
-            setPs(getConnect().getMyConnection().prepareStatement("select customerEmail "
-                    + "from customer "
-                    + "where customerEmail = '" + userEmail + "'"));
-            System.out.println("Input: " + userEmail);
-            setMyRs(getPs().executeQuery());
-            setEmailBoolResult(getMyRs().next());
-            setEmailBoolResult(!isEmailBoolResult());
-            while(getMyRs().next()){
-                System.out.println("Email Input: " + userEmail + "Email SQL: " + getMyRs().getString("customerEmail"));              
-            }
-            if(isEmailBoolResult() == false){
-                System.out.println("Email is not double");
-     
-            }
-            else{
-                System.out.println("Email is double");                
-            }            
-        }catch(Exception e){      
-            e.printStackTrace();
-        }finally{
-            killConnections();        
-        }  
-        return isEmailBoolResult();
-    }
+    
     public int setupCurrentUser(String userEmail, String inputPassword){
-
         try{
             setConnect(new DBConnection());
             getConnect().init();
@@ -122,34 +86,31 @@ public class LoginCntl {
      */
     public boolean authenticator(String userEmail, String inputPassword) {
         setBoolResult(false);
-        try{
-            setConnect(new DBConnection());
-            getConnect().init();
-            
-            setPs(getConnect().getMyConnection().prepareStatement("select customerEmail, customerPassword "
-                    + "from customer "
-                    + "where customerEmail = '" + userEmail + "' and customerPassword = '" + inputPassword + "'"));
-//            getPs().setString(1, userEmail);
-//            getPs().setString(2, inputPassword);
-            System.out.println("Input: " + userEmail + ", " + inputPassword);
-            setMyRs(getPs().executeQuery());
-            setBoolResult(getMyRs().next());
-            while(getMyRs().next()){
-                System.out.println("Email Input: " + userEmail + "Email SQL: " + getMyRs().getString("customerEmail"));
-                System.out.println("Password Input: " + inputPassword + "Password SQL: " + getMyRs().getString("customerPassword"));
-            }
-            if(isBoolResult() == true){
-                System.out.println("Login successful");
-     
-            }
-            else{
-                System.out.println("Login unsuccessful");                
-            }            
-        }catch(Exception e){      
-            e.printStackTrace();
-        }finally{
-            killConnections();      
-        }  
+            try{
+                setConnect(new DBConnection());
+                getConnect().init();
+
+                setPs(getConnect().getMyConnection().prepareStatement("select customerEmail, customerPassword "
+                        + "from customer "
+                        + "where customerEmail = '" + userEmail + "' and customerPassword = '" + inputPassword + "'"));
+//                System.out.println("Input: " + userEmail + ", " + inputPassword);
+                setMyRs(getPs().executeQuery());
+                setBoolResult(getMyRs().next());
+//                while(getMyRs().next()){
+//                    System.out.println("Email Input: " + userEmail + "Email SQL: " + getMyRs().getString("customerEmail"));
+//                    System.out.println("Password Input: " + inputPassword + "Password SQL: " + getMyRs().getString("customerPassword"));
+//                }
+//                if(isBoolResult() == true){
+//                    System.out.println("Login successful");     
+//                }
+//                else{
+//                    System.out.println("Login unsuccessful");                
+//                }            
+            }catch(Exception e){      
+                e.printStackTrace();
+            }finally{
+                killConnections();      
+            }      
         return isBoolResult();
     }
     public void killConnections(){

@@ -133,7 +133,9 @@
                     <div class="grid-container">
                         <center>Update Personal Information</center><br>
                         <form action="CustomerProfile" method="post">
-                            <div style="color: #FF0000;">${errorMessage}</div>
+                            <div style="color: #FF0000;">${errorMessageName}</div>
+                            <div style="color: #FF0000;">${errorMessageAddress}</div>
+                            <div style="color: #FF0000;">${errorMessagePhoneNumber}</div>
                             <label for="customerFirstNameInput">First Name</label>
                             <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
                             <label for="customerLastNameInput">Last Name</label>
@@ -148,6 +150,7 @@
                     <div class="grid-container">
                         <center>Update Email</center><br>
                         <form action="CustomerProfile" method="post">
+                            <div style="color: #FF0000;">${errorMessageEmail}</div>
                             <label for="customerEmailInput">Email</label>
                             <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
                             <input type="submit" value="Submit" name="emailSubmitButton" />
@@ -156,6 +159,7 @@
                     <div class="grid-container">
                         <center>Update Password</center><br>
                         <form action="CustomerProfile" method="post">
+                            <div style="color: #FF0000;">${errorMessagePassword}</div>
                             <label for="customerPasswordInput1">Password</label>
                             <input type="text" placeholder="Enter new password" name="customerPasswordInput1" value="" />
                             <label for="customerPasswordInput2">Confirm Password</label>
