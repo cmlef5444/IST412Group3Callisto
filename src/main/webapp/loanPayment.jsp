@@ -39,14 +39,21 @@
                             <input type="submit" name="dropSubmit" value="Submit"/>
 
                         </form>    
-                    
-                    
+                            <div style="color: #FF0000;">${errorMessage}</div>
+                            <div style="color: #078417;">${confirmationMessage}</div>
+                            <label for="entryIdInput">Entry ID</label>
                             <input type="text" name="entryIdInput" value="${newEntryId}" readonly="readonly"/>
+                            <label for="loanIdInput">Loan ID</label>
                             <input type="text" name="loanIdInput" value="${newLoanId}" readonly="readonly"/>
+                            <label for="currentTotalInput">Loan Remaining</label>
                             <input type="text" name="currentTotalInput" value="${currentTotalInput}" readonly="readonly"/>
+                            <label for="principalAmountInput">Principal Amount</label>
                             <input type="text" name="principalAmountInput" value="${principalAmountInput}" readonly="readonly"/>
+                            <label for="loanLengthInput">Length of Loan</label>
                             <input type="text" name="loanLengthInput" value="${loanLengthInput}" readonly="readonly"/>
+                            <label for="currentDateInput">Date of Payment</label>
                             <input type="text" name="currentDateInput" value="${currentDateInput}" readonly="readonly"/>
+                            <label for="initialDateInput">Initial Date</label>
                             <input type="text" name="initialDateInput" value="${initialDateInput}" readonly="readonly"/>
                     
                     
