@@ -98,7 +98,7 @@ public class RegisterCntl {
 //    API methods for sending verification email and checking if the verification has been completed. Connection to database unresolved.
 //    public void sendVerification(userEmail) {
 //      private final String ACCOUNT_SID = "ACf75d5800803a66da30e66c954349e05c";
-//      private final String AUTH_TOKEN = "feca7f570218fb94a4c6be6081bb87e9";
+//      private final String AUTH_TOKEN = "AUTH_TOKEN";
 //
 //      Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 //      Verification verification = Verification.creator(
@@ -121,7 +121,7 @@ public class RegisterCntl {
 //
 //    public void EmailCheck(String userEmail) {
 //      private final String ACCOUNT_SID = "ACf75d5800803a66da30e66c954349e05c";
-//      private final String AUTH_TOKEN = "feca7f570218fb94a4c6be6081bb87e9";
+//      private final String AUTH_TOKEN = "AUTH_TOKEN";
 //
 //      Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 //      VerificationCheck verificationCheck = VerificationCheck.creator(
