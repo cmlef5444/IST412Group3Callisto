@@ -1,5 +1,7 @@
 This application works best in Netbeans 8.2 using JDK 1.8
 
+View Application in Internet Explorer -- it looks the best
+
 Microsoft SQL Server 2005 Connection information:
  - Driver: mssql-jdbc-8.2.2.jre8
  - Host: ist412group3server.database.windows.net
@@ -10,11 +12,15 @@ Microsoft SQL Server 2005 Connection information:
 
 Once the SQL server is connected in your IDE...
 
-Application login info:
+Application login info -- we added dummy data to two users
 
+User 1:
 user: admin
 pass: admin
 
+User 2:
+user: cml5444@psu.edu
+pass: IST412Pa$$w0rd
 
 From the index page, click the click to access the login page
 Log in with credentials above -- New User Registration is not yet implemented
@@ -26,6 +32,12 @@ User case 1: View customer profile and update profile information -- this will u
 User case 2: View loan balance and payment history
 User case 3: Make a payment - which will also appear in the payment history because it updates the database
 
+Refactoring plan implementations:
+ - firstly, we changed our application from a mobile application to a web application
+ - We implemented the MySQL database as planned
+ - removed liveChat
+ - removed dead code
+ - We did not implement several reductions of long methods because it was not possible to reduce them
 
 Other information stored in the database:
 
