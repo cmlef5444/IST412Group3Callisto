@@ -1,7 +1,7 @@
 <%-- 
     Document   : loanApplication
     Created on : Aug 4, 2020, 9:30:03 AM
-    Author     : cjani, kajunge
+    Author     : Chris Lefebvre, Kristina Mantha
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

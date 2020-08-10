@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * This is the Payment Controller class. It handles payments being made on a 
  * loan.
- * @author cjani
+ * @author Chris Lefebvre
  * @author kristinamantha
  * @author scott
  */
@@ -68,14 +68,19 @@ public class PaymentCntl {
      * @param previousTotal - a double representing the loan's current total
      * @return - a double representing the current amount base on the interest rate and current total
      */
-    public double amountDue(double loanInterest, double currentTotal){
+    public double amountDue(double loanLength, double principalAmount){
+        System.out.println("principal: " + principalAmount + " loanLength: " + loanLength);
+        currentAmountDue = (principalAmount/loanLength);
+        return currentAmountDue;    //needs to be modified
+    }
+    public double interestIncrease(double loanInterest, double currentTotal){
         currentAmountDue = ((loanInterest/100) * currentTotal);
         return currentAmountDue;    
     }
-    public double getLengthOfLoan(double loanInterest, double currentTotal){
+    public double getLengthOfLoan(double loanLength, double currentTotal){
         
-        double remainingLength = getStaticCurrentTotal()/amountDue(loanInterest, currentTotal);
-        return remainingLength;
+        double remainingLength = currentTotal/amountDue(36, currentTotal);
+        return remainingLength;//needs to be modified of keep loan lengths static
     }
     public void makePayment(int loanId, int customerId, double singlePayment){
         selectMaxEntryFromLoan(loanId, customerId);

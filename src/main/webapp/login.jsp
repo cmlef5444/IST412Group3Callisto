@@ -1,7 +1,7 @@
 <%-- 
     Document   : login
     Created on : Jul 31, 2020, 12:58:39 PM
-    Author     : cjani, kajunge
+    Author     : Chris Lefebvre, Kristina Mantha
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

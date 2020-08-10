@@ -16,7 +16,11 @@ import org.apache.pdfbox.pdmodel.PDPage;
 //import com.groupdocs.signature.options.sign.TextSignOptions;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
  *
@@ -28,7 +32,7 @@ import java.io.IOException;
 
 public class PDFDocument implements Document{
 
-    
+    PDDocument document;
     /**
      * A method to create a pdf and then add the inputted fields to the document
      * @param id - represents the data of the current user
@@ -39,7 +43,7 @@ public class PDFDocument implements Document{
     @Override
     public void createDocument(Customer currentUser) {
         //Creating the PDF document object
-        PDDocument document = new PDDocument();
+        document = new PDDocument();
          
         try{                   
             PDPage my_page = new PDPage();
@@ -48,7 +52,27 @@ public class PDFDocument implements Document{
             //Saving the document
             String pdfName = (String.valueOf(currentUser.getCustomerId()) + currentUser.getLastName() + currentUser.getFirstName());
 //            electronicSignature(pdfName);
-            
+            //Creating the PDDocumentInformation object 
+      PDDocumentInformation pdd = document.getDocumentInformation();
+
+      //Setting the author of the document
+      pdd.setAuthor("Callisto Finanace");
+       
+      // Setting the title of the document
+      pdd.setTitle("Callisto Loan Application"); 
+       
+      //Setting the creator of the document 
+      pdd.setCreator("Callisto Finanace"); 
+       
+      //Setting the subject of the document 
+      pdd.setSubject("Callisto Loan Application");
+
+
+
+
+
+
+
             document.save("src/main/resources/OutputFiles/" + pdfName + ".pdf");
             System.out.println("PDF created");
             
@@ -57,6 +81,64 @@ public class PDFDocument implements Document{
             document.close();
         }catch(IOException e){            
         } 
+    }
+    
+    public void writePDFDocument(String pdfName, String customerFirstName, String customerLastName, double principalAmount, double annualRate){
+       try{
+            File file = new File("src/main/resources/OutputFiles/" + pdfName + ".pdf"); 
+            PDDocument doc = document.load(file);
+            PDPage page = doc.getPage(1); 
+            PDPageContentStream contentStream = new PDPageContentStream(doc, page);
+            
+            contentStream.beginText(); 
+            //Setting the position for the line 
+            contentStream.newLineAtOffset(25, 700);
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 20);
+           
+            String header = "Callisto Finance:";   
+            contentStream.showText(header);  
+            contentStream.newLine(); 
+            
+            
+             //Setting the font to the Content stream  
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+            contentStream.setLeading(14.5f);
+            
+            
+        String subject = "Callisto Finance Loan Application";
+        String text1 = "By signing this document you, " + customerFirstName + " " + customerLastName + ", henceforth be simply refered to as customer,";
+        String text2 = "will recieve a loan for the following amount, $" + principalAmount + ". In return the customer agrees to the following conditions";
+        String text3 = "    > The customer will repay the loan at an interest rate of " + annualRate + "%.";
+        String text4 = "    > The customer will make payments on the loan by the first of each month.";
+        String text5 = "    > Failure to pay the loan will result in late fees and/or collections.";
+        String text6 = "    > The customer is informed that these consequences will affect their credit score and future financial decisions.";
+
+            contentStream.showText(subject);  
+            contentStream.newLine(); 
+            contentStream.showText(text1);  
+            contentStream.newLine(); 
+            contentStream.showText(text2);
+            contentStream.newLine(); 
+            contentStream.showText(text3);
+            contentStream.newLine(); 
+            contentStream.showText(text4);
+            contentStream.newLine(); 
+            contentStream.showText(text5);
+            contentStream.newLine(); 
+            contentStream.showText(text6);
+
+            contentStream.endText();    
+            document.save("src/main/resources/OutputFiles/" + pdfName + ".pdf");
+            System.out.println("PDF written");
+            
+            //Closing the document
+            document.close();
+            
+       }catch(IOException e){
+           e.printStackTrace();
+           
+       }
+       
     }
 
     /**

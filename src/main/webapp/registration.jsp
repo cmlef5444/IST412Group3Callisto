@@ -1,7 +1,7 @@
 <%-- 
     Document   : registration
     Created on : Aug 4, 2020, 9:29:21 AM
-    Author     : cjani, kajunge
+    Author     : Chris Lefebvre, Kristina Mantha
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

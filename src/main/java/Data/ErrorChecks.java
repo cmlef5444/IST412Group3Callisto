@@ -67,7 +67,7 @@ public class ErrorChecks {
         boolean value = matcher.matches();
         return value;
     }
-    public boolean nonDoubleEmail(String userEmail){   //FIX_ME has not been implemented or tested in servlet
+    public boolean nonDoubleEmail(String userEmail){   //FIX_ME has not been implemented or tested in servlet, will be in register Use Case
         //Move this to register and customerProfile
         setEmailBoolResult(false);
         try{

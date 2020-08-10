@@ -95,7 +95,7 @@ public class LoanPaymentServlet extends HttpServlet {
             int entryId = paymentCntl.getEntryId();
             
             selectPaymentInfo(entryId);
-            double amountDue = paymentCntl.amountDue(getStaticAnnualRate(), getStaticCurrentTotal());
+            double amountDue = paymentCntl.amountDue(36, getStaticCurrentTotal());
             request.getSession().setAttribute("amountDue", amountDue);
             request.getSession().setAttribute("customerIdentification",customerId);
             request.getSession().setAttribute("newEntryId", entryId); 

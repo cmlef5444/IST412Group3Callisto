@@ -1,7 +1,7 @@
 <%--
     Document   : customerProfile
     Created on : Jul 31, 2020, 4:26:56 PM
-    Author     : cjani, kajunge
+    Author     : Chris Lefebvre, Kristina Mantha
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

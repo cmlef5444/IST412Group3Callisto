@@ -66,8 +66,7 @@ public class LoginServlet extends HttpServlet {
         
         if(request.getParameter("loginButton") != null){
             PrintWriter out = response.getWriter();  
-
-            System.out.println("Login button pressed");
+            System.out.println("Login button 2pressed ");
 
                 String email = request.getParameter("customerEmail");
                 String password = request.getParameter("customerPassword");
