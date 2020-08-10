@@ -77,7 +77,21 @@ public class LoanBalanceServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        response.setContentType("text/html;charset=UTF-8");
+        customerId = (int) request.getSession().getAttribute("customerId");
+        System.out.println("doGet customerId: " + customerId);
+        if (request.getParameter("loanApplication") != null) {
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanApplication");
+        } else if (request.getParameter("customerProfile") != null) {
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/CustomerProfile");
+        } else if (request.getParameter("loanPayment") != null) {
+            request.getSession().setAttribute("customerId", customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanPayment");
+        }
+        //processRequest(request, response);
     }
 
     /**
