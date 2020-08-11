@@ -6,6 +6,10 @@
 package LoanApplication.FactoryMethod;
 
 import Data.Customer;
+import com.itextpdf.text.Document;
+import com.digisigner.client.DigiSignerClient;
+import com.digisigner.client.data.SignatureRequest;
+import com.digisigner.client.data.Signer;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -30,115 +34,132 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
  * overrides Document methods
  */
 
-public class PDFDocument implements Document{
+public class PDFDocument{
 
-    PDDocument document;
+    Document document;
     /**
      * A method to create a pdf and then add the inputted fields to the document
      * @param id - represents the data of the current user
      *           - it will take data such as name, address, phone number, etc
      * 
      */
+    
+    
+//    public void digiMethod(){
+//        DigiSignerClient client = new DigiSignerClient("85f7d775-6226-40d7-9a09-e0ebeb271a3a5");
+//        
+//        SignatureRequest request = new SignatureRequest();
+//        request.setEmbedded(true);
+//        request.setSendEmails(false);
+//
+//        Document document = new Document(new File("document.pdf")); 
+//        request.addDocument(document);
+//
+//        Signer signer = new Signer("cml5444@psu.edu");  //testing email
+//        document.addSigner(signer);
+//
+//        SignatureRequest response = client.sendSignatureRequest(request);
+//    }
     //change to PDDocument
-    @Override
-    public void createDocument(Customer currentUser) {
-        //Creating the PDF document object
-        document = new PDDocument();
-         
-        try{                   
-            PDPage my_page = new PDPage();
-            document.addPage(my_page);            
-            
-            //Saving the document
-            String pdfName = (String.valueOf(currentUser.getCustomerId()) + currentUser.getLastName() + currentUser.getFirstName());
-//            electronicSignature(pdfName);
-            //Creating the PDDocumentInformation object 
-      PDDocumentInformation pdd = document.getDocumentInformation();
-
-      //Setting the author of the document
-      pdd.setAuthor("Callisto Finanace");
-       
-      // Setting the title of the document
-      pdd.setTitle("Callisto Loan Application"); 
-       
-      //Setting the creator of the document 
-      pdd.setCreator("Callisto Finanace"); 
-       
-      //Setting the subject of the document 
-      pdd.setSubject("Callisto Loan Application");
-
-
-
-
-
-
-
-            document.save("src/main/resources/OutputFiles/" + pdfName + ".pdf");
-            System.out.println("PDF created");
-            
-            
-            //Closing the document
-            document.close();
-        }catch(IOException e){            
-        } 
+//    @Override
+    public void createDocument(int currentUser) {
+//        //Creating the PDF document object
+//        document = new Document();
+//         
+//        try{                   
+//            PDPage my_page = new PDPage();
+//            document.addPage(my_page);            
+//            
+//            //Saving the document
+//            String pdfName = (String.valueOf(currentUser.getCustomerId()) + currentUser.getLastName() + currentUser.getFirstName());
+////            electronicSignature(pdfName);
+//            //Creating the PDDocumentInformation object 
+//      PDDocumentInformation pdd = document.getDocumentInformation();
+//
+//      //Setting the author of the document
+//      pdd.setAuthor("Callisto Finanace");
+//       
+//      // Setting the title of the document
+//      pdd.setTitle("Callisto Loan Application"); 
+//       
+//      //Setting the creator of the document 
+//      pdd.setCreator("Callisto Finanace"); 
+//       
+//      //Setting the subject of the document 
+//      pdd.setSubject("Callisto Loan Application");
+//
+//
+//
+//
+//
+//
+//
+//            document.save("src/main/resources/OutputFiles/" + pdfName + ".pdf");
+//            System.out.println("PDF created");
+//            
+//            
+//            //Closing the document
+//            document.close();
+//        }catch(IOException e){            
+//        } 
     }
     
     public void writePDFDocument(String pdfName, String customerFirstName, String customerLastName, double principalAmount, double annualRate){
-       try{
-            File file = new File("src/main/resources/OutputFiles/" + pdfName + ".pdf"); 
-            PDDocument doc = document.load(file);
-            PDPage page = doc.getPage(1); 
-            PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-            
-            contentStream.beginText(); 
-            //Setting the position for the line 
-            contentStream.newLineAtOffset(25, 700);
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 20);
-           
-            String header = "Callisto Finance:";   
-            contentStream.showText(header);  
-            contentStream.newLine(); 
-            
-            
-             //Setting the font to the Content stream  
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-            contentStream.setLeading(14.5f);
-            
-            
-        String subject = "Callisto Finance Loan Application";
-        String text1 = "By signing this document you, " + customerFirstName + " " + customerLastName + ", henceforth be simply refered to as customer,";
-        String text2 = "will recieve a loan for the following amount, $" + principalAmount + ". In return the customer agrees to the following conditions";
-        String text3 = "    > The customer will repay the loan at an interest rate of " + annualRate + "%.";
-        String text4 = "    > The customer will make payments on the loan by the first of each month.";
-        String text5 = "    > Failure to pay the loan will result in late fees and/or collections.";
-        String text6 = "    > The customer is informed that these consequences will affect their credit score and future financial decisions.";
-
-            contentStream.showText(subject);  
-            contentStream.newLine(); 
-            contentStream.showText(text1);  
-            contentStream.newLine(); 
-            contentStream.showText(text2);
-            contentStream.newLine(); 
-            contentStream.showText(text3);
-            contentStream.newLine(); 
-            contentStream.showText(text4);
-            contentStream.newLine(); 
-            contentStream.showText(text5);
-            contentStream.newLine(); 
-            contentStream.showText(text6);
-
-            contentStream.endText();    
-            document.save("src/main/resources/OutputFiles/" + pdfName + ".pdf");
-            System.out.println("PDF written");
-            
-            //Closing the document
-            document.close();
-            
-       }catch(IOException e){
-           e.printStackTrace();
-           
-       }
-       
+//       try{
+//            File file = new File("src/main/resources/OutputFiles/" + pdfName + ".pdf"); 
+//            PDDocument doc = document.load(file);
+//            PDPage page = doc.getPage(1); 
+//            PDPageContentStream contentStream = new PDPageContentStream(doc, page);
+//            
+//            contentStream.beginText(); 
+//            //Setting the position for the line 
+//            contentStream.newLineAtOffset(25, 700);
+//            contentStream.setFont(PDType1Font.TIMES_ROMAN, 20);
+//           
+//            String header = "Callisto Finance:";   
+//            contentStream.showText(header);  
+//            contentStream.newLine(); 
+//            
+//            
+//             //Setting the font to the Content stream  
+//            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+//            contentStream.setLeading(14.5f);
+//            
+//            
+//        String subject = "Callisto Finance Loan Application";
+//        String text1 = "By signing this document you, " + customerFirstName + " " + customerLastName + ", henceforth be simply refered to as customer,";
+//        String text2 = "will recieve a loan for the following amount, $" + principalAmount + ". In return the customer agrees to the following conditions";
+//        String text3 = "    > The customer will repay the loan at an interest rate of " + annualRate + "%.";
+//        String text4 = "    > The customer will make payments on the loan by the first of each month.";
+//        String text5 = "    > Failure to pay the loan will result in late fees and/or collections.";
+//        String text6 = "    > The customer is informed that these consequences will affect their credit score and future financial decisions.";
+//
+//            contentStream.showText(subject);  
+//            contentStream.newLine(); 
+//            contentStream.showText(text1);  
+//            contentStream.newLine(); 
+//            contentStream.showText(text2);
+//            contentStream.newLine(); 
+//            contentStream.showText(text3);
+//            contentStream.newLine(); 
+//            contentStream.showText(text4);
+//            contentStream.newLine(); 
+//            contentStream.showText(text5);
+//            contentStream.newLine(); 
+//            contentStream.showText(text6);
+//
+//            contentStream.endText();    
+//            document.save("src/main/resources/OutputFiles/" + pdfName + ".pdf");
+//            System.out.println("PDF written");
+//            
+//            //Closing the document
+//            document.close();
+//            
+//       }catch(IOException e){
+//           e.printStackTrace();
+//           
+//       }
+//       
     }
 
     /**
@@ -147,7 +168,7 @@ public class PDFDocument implements Document{
      * //@param publicKey A PublicKey for thee users electronic signature.
      * @param pdfName - A String representing the name of the pdf file that the user signs
      */
-    @Override
+//    @Override
     public void eSignature(String documentName) {
 //       Signature signature = new Signature("src/main/resources/OutputFiles/" + documentName);
 //
@@ -175,7 +196,7 @@ public class PDFDocument implements Document{
 //        }
     }
     
-    @Override
+//    @Override
     public void uploadDocToUser(String documentName){
         //to be implemented later
     }

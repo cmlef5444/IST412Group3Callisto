@@ -1,9 +1,15 @@
 
 package LoanApplication;
 
-import LoanApplication.FactoryMethod.Document;
+import com.digisigner.client.DigiSignerClient;
+import com.digisigner.client.data.SignatureRequest;
+import com.digisigner.client.data.Signer;
+
+//import LoanApplication.FactoryMethod.Document;
 import LoanApplication.FactoryMethod.PDFDocument;
 import LoanApplication.FactoryMethod.WordDocument;
+import com.digisigner.client.data.Document;
+import java.io.File;
 //import java.security.PublicKey;
 //import com.groupdocs.signature.Signature;
 //import com.groupdocs.signature.domain.SignatureFont;
@@ -20,7 +26,7 @@ import LoanApplication.FactoryMethod.WordDocument;
  * This is the Loan Application Controller. It is used to handle
  * new loan applications and electronic signatures.
  * @author Chirs Lefebvre
- * @author kristinamantha
+ * @author Kristina Mantha
  * 
  * @apiPdf - https://pdfbox.apache.org/download.cgi#20x
  * @apiPdf tutorial - https://www.tutorialspoint.com/pdfbox/pdfbox_creating_a_pdf_document.htm
@@ -37,6 +43,22 @@ public class LoanApplicationCntl {
     public LoanApplicationCntl(){
         
     }
+    
+     public void digiMethod(){
+        DigiSignerClient client = new DigiSignerClient("85f7d775-6226-40d7-9a09-e0ebeb271a3a5");
+        
+        SignatureRequest request = new SignatureRequest();
+        request.setEmbedded(true);
+        request.setSendEmails(false);
+
+        Document document = new Document(new File("document.pdf")); 
+        request.addDocument(document);
+
+        Signer signer = new Signer("cml5444@psu.edu");  //testing email
+        document.addSigner(signer);
+
+        SignatureRequest response = client.sendSignatureRequest(request);
+    }
     /**
      * The FactoryMethod pattern
      * As the UI is filled out and expanded upon during the implementation phase of 
@@ -49,13 +71,13 @@ public class LoanApplicationCntl {
      * @param docID represents a string that indicates what type of document to create
      * @return 
      */
-    public Document getInstance(String docID){
-        switch(docID){
-            case "PDF": return new PDFDocument();
-            case "Word": return new WordDocument();
-        }
-        return null;
-    }
+//    public Document getInstance(String docID){
+//        switch(docID){
+//            case "PDF": return new PDFDocument();
+//            case "Word": return new WordDocument();
+//        }
+//        return null;
+//    }
 //    /**
 //     * A method to create a pdf and then add the inputted fields to the document
 //     * @param id - represents the user id

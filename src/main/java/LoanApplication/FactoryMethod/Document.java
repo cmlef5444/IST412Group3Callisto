@@ -5,7 +5,7 @@
  */
 package LoanApplication.FactoryMethod;
 
-import Data.Customer;
+//import Data.Customer;
 
 /**
  *
@@ -13,7 +13,7 @@ import Data.Customer;
  */
 public interface Document {
     
-    public void createDocument(Customer currentUser);
+    public void createDocument(int currentUser);
     public void eSignature(String documentName);
     public void uploadDocToUser(String documentName);
     

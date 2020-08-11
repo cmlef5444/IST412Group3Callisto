@@ -16,14 +16,14 @@ import java.awt.Color;
  *
  * @author Chris Lefebvre
  */
-public class WordDocument implements Document{
+public class WordDocument /*implements Document*/{
 
-    @Override
+//    @Override
     public void createDocument(Customer currentUser) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+//    @Override
     public void eSignature(String documentName) {//currenty identical to PDFDocument eSign, will change during implementation stage
 //        Signature signature = new Signature("src/main/resources/OutputFiles/" + documentName);
 //
@@ -50,7 +50,7 @@ public class WordDocument implements Document{
 //        }catch(Exception e){            
 //        }
     }
-    @Override
+//    @Override
     public void uploadDocToUser(String documentName){
         //to be implemented later
     }
