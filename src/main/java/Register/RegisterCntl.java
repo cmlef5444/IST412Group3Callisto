@@ -56,27 +56,27 @@ public class RegisterCntl {
             e.printStackTrace();
         }finally{
             connect.killConnections();            
-        }
+            }
         }
         
 
-    /**
-     * This method generates a unique key for the email verification link
-     * @return
-     */
-    public String generateKey(){
-        String key = "X3rt725cp9S2X";
-        return key;
-    }
-    /**
-     * A void method to send email
-     * @param userEmail a String representing the user Email
-     */
-    public void sendEmail(String userEmail){
-        String key = generateKey();
-
-
-    }
+//    /**
+//     * This method generates a unique key for the email verification link
+//     * @return
+//     */
+//    public String generateKey(){
+//        String key = "X3rt725cp9S2X";
+//        return key;
+//    }
+//    /**
+//     * A void method to send email
+//     * @param userEmail a String representing the user Email
+//     */
+//    public void sendEmail(String userEmail){
+//        String key = generateKey();
+//
+//
+//    }
     /**
      * A method to verify if email is already used
      * @param userEmail A String representing the user Email

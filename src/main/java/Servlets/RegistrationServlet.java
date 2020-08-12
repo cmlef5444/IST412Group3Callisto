@@ -6,6 +6,7 @@
 package Servlets;
 
 import Data.DBConnection;
+import Data.ErrorChecks;
 import Register.RegisterCntl;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,11 +25,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RegistrationServlet extends HttpServlet {
 
-    DBConnection connect;
+    private DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
     
-    String customerFirstName, customerLastName, customerEmail, customerAddress, customerPhoneNumber, customerPassword;
+    private String customerFirstName;
+    private String customerLastName;
+    private String customerEmail;
+    private String customerAddress;
+    private String customerPhoneNumber;
+    private String customerPassword;
 
 /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,6 +48,7 @@ public class RegistrationServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         RequestDispatcher view = request.getRequestDispatcher("registration.jsp");
         view.forward(request, response);
     }
@@ -71,27 +78,50 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             response.setContentType("text/html;charset=UTF-8");
-      
-            customerFirstName = request.getParameter("customerFirstNameInput");
-            customerLastName = request.getParameter("customerLastNameInput");
-            customerEmail = request.getParameter("customerEmailInput");
-            customerAddress = request.getParameter("customerAddressInput");
-            customerPhoneNumber = request.getParameter("customerPhoneNumberInput");
-            customerPassword = request.getParameter("customerPasswordInput2");
-            
-            try {
-                
-                String query = "insert into customer values('"+customerFirstName+"',"
-                        + "'"+customerLastName+"','"+customerEmail+"','"+customerAddress+"',"
-                        + "'"+customerPhoneNumber+"','"+customerPassword+"';)";
-                myStmt.executeQuery(query);
-                System.out.println(query);
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-            }
-        
 
+            setValues(request);
+            ErrorChecks errorChecks = new ErrorChecks();
+            String password = request.getParameter("customerPasswordInput1");
+            String password2 = request.getParameter("customerPasswordInput2");
+            if(request.getAttribute("registrationButton") != null){
+                if(errorChecks.isValidName(request.getParameter("customerFirstNameInput"))|| errorChecks.isValidName(request.getParameter("customerLastNameInput"))){
+                    request.setAttribute("errorMessageName", "Names may not have any numbers or special characters save - and '.");
+                }
+                if (errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
+                    request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
+                }
+                if (!errorChecks.isValidPhoneNumber(request.getParameter("customerPhoneNumberInput"))) {
+                    request.setAttribute("errorMessagePhoneNumber", "Phone number must be in the following format 123-456-7890");
+                }
+                if (!errorChecks.isValidEmail(request.getParameter("customerEmailInput"))) {
+                    request.setAttribute("errorMessageEmail", "Your email must include an @ and a domain name (.com, .net, .edu, etc.).");
+                }
+                if (errorChecks.isValidPassword(password) || errorChecks.isValidPassword(password2)) {
+                    if (!password.equals(password2)) {//pass
+                        request.setAttribute("errorMessagePassword", "The passwords must match.");
+                    }                    
+                }
+                else{
+                    RegisterCntl registerCntl = new RegisterCntl();
+                    registerCntl.registerCustomer(getCustomerFirstName(),
+                            getCustomerLastName(),
+                            getCustomerEmail(),
+                            getCustomerAddress(),
+                            getCustomerEmail(),
+                            getCustomerPassword());
+
+                    processRequest(request, response);                
+                }                
+        }
+    }
+    
+    public void setValues(HttpServletRequest request){
+            setCustomerFirstName(request.getParameter("customerFirstNameInput"));
+            setCustomerLastName(request.getParameter("customerLastNameInput"));
+            setCustomerEmail(request.getParameter("customerEmailInput"));
+            setCustomerAddress(request.getParameter("customerAddressInput"));
+            setCustomerPhoneNumber(request.getParameter("customerPhoneNumberInput"));
+            setCustomerPassword(request.getParameter("customerPasswordInput2"));   
     }
 
     /**
@@ -130,6 +160,104 @@ public class RegistrationServlet extends HttpServlet {
      */
     public void setMyRs(ResultSet myRs) {
         this.myRs = myRs;
+    }
+
+    /**
+     * @return the connect
+     */
+    public DBConnection getConnect() {
+        return connect;
+    }
+
+    /**
+     * @param connect the connect to set
+     */
+    public void setConnect(DBConnection connect) {
+        this.connect = connect;
+    }
+
+    /**
+     * @return the customerFirstName
+     */
+    public String getCustomerFirstName() {
+        return customerFirstName;
+    }
+
+    /**
+     * @param customerFirstName the customerFirstName to set
+     */
+    public void setCustomerFirstName(String customerFirstName) {
+        this.customerFirstName = customerFirstName;
+    }
+
+    /**
+     * @return the customerLastName
+     */
+    public String getCustomerLastName() {
+        return customerLastName;
+    }
+
+    /**
+     * @param customerLastName the customerLastName to set
+     */
+    public void setCustomerLastName(String customerLastName) {
+        this.customerLastName = customerLastName;
+    }
+
+    /**
+     * @return the customerEmail
+     */
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    /**
+     * @param customerEmail the customerEmail to set
+     */
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    /**
+     * @return the customerAddress
+     */
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    /**
+     * @param customerAddress the customerAddress to set
+     */
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
+    /**
+     * @return the customerPhoneNumber
+     */
+    public String getCustomerPhoneNumber() {
+        return customerPhoneNumber;
+    }
+
+    /**
+     * @param customerPhoneNumber the customerPhoneNumber to set
+     */
+    public void setCustomerPhoneNumber(String customerPhoneNumber) {
+        this.customerPhoneNumber = customerPhoneNumber;
+    }
+
+    /**
+     * @return the customerPassword
+     */
+    public String getCustomerPassword() {
+        return customerPassword;
+    }
+
+    /**
+     * @param customerPassword the customerPassword to set
+     */
+    public void setCustomerPassword(String customerPassword) {
+        this.customerPassword = customerPassword;
     }
 
 }

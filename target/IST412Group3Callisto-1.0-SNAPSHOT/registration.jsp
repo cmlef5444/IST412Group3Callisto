@@ -222,8 +222,13 @@
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div class="grid-container">
                         <center>Enter Your Information</center><br>
-                        <form action="CustomerRegistration" method="post">
-                            <div style="color: #FF0000;">${errorMessage}</div>
+                        <form action="Registration" method="post">
+                            <div style="color: #FF0000;">${errorMessageName}</div>
+                            <div style="color: #FF0000;">${errorMessageAddress}</div>
+                            <div style="color: #FF0000;">${errorMessagePhoneNumber}</div>
+                            <div style="color: #FF0000;">${errorMessageEmail}</div>
+                            <div style="color: #FF0000;">${errorMessagePasword}</div>
+                            <div style="color: #078417;">${passMessage}</div>
                             <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
                             <input type="text" placeholder="Enter your last name" name="customerLastNameInput" value="${customerLastNameInput}" />
                             <input type="text" placeholder="Enter your address" name="customerAddressInput" value="${customerAddressInput}" />
