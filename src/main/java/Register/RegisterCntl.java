@@ -3,6 +3,9 @@ package Register;
 
 import Data.Customer;
 import Data.CustomerList;
+import Data.DBConnection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +15,9 @@ import java.util.ArrayList;
  * @author kristinamantha
  */
 public class RegisterCntl {
+    private DBConnection connect;
+    private Statement myStmt;
+    private ResultSet myRs;
     /**
      * The is the initial constructor for the RegisterCntl
      * https://www.c-sharpcorner.com/article/how-to-send-activation-link-in-email-after-user-registration-details-in-mvc/
@@ -27,6 +33,33 @@ public class RegisterCntl {
     public RegisterCntl(){
 
     }
+    
+    public void registerCustomer(String customerFirstName, String customerLastName, String customerEmail, String address,
+            String phoneNum, String password){
+        setConnect(new DBConnection());
+        getConnect().init();
+        
+        try{
+            String query = "insert into customer"
+                    + " values ("
+                    + customerFirstName + ", "
+                    + customerLastName + ", "
+                    + customerEmail + ", " 
+                    + address + ", " 
+                    + phoneNum + ", " 
+                    + password + "')";
+            
+            setMyStmt(getConnect().getMyConnection().createStatement());
+            getMyStmt().executeUpdate(query); 
+            System.out.println(query);
+        }catch(Exception e){      
+            e.printStackTrace();
+        }finally{
+            connect.killConnections();            
+        }
+        }
+        
+
     /**
      * This method generates a unique key for the email verification link
      * @return
@@ -86,15 +119,7 @@ public class RegisterCntl {
 //    public boolean isValidUsername(String username){
 //        return false;
 //    }
-    /**
-     * A method that once all checks have been made, creates a instance of the customer with the inputted email and password
-     * @param userEmail a String representing the customer email
-     * @param password a String representing the customer password
-     */
-    public void createAccount(String userEmail, String password){
-        CustomerList customerList = new CustomerList();
-        customerList.addCustomer(userEmail, password, "", "", "", "");
-    }
+   
 //    API methods for sending verification email and checking if the verification has been completed. Connection to database unresolved.
 //    public void sendVerification(userEmail) {
 //      private final String ACCOUNT_SID = "ACf75d5800803a66da30e66c954349e05c";
@@ -131,4 +156,45 @@ public class RegisterCntl {
 //
 //      System.out.println(verificationCheck.getSid());
 //  }
+     /**
+     * @return the connect
+     */
+    public DBConnection getConnect() {
+        return connect;
+    }
+
+    /**
+     * @param connect the connect to set
+     */
+    public void setConnect(DBConnection connect) {
+        this.connect = connect;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
 }

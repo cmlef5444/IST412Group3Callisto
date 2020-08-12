@@ -17,10 +17,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author Chris Lefebvre
  */
-
 public class LoginServlet extends HttpServlet {
 
     HttpSession session;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -61,47 +61,43 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        response.setContentType("text/html");  
-        
-        if(request.getParameter("loginButton") != null){
-            PrintWriter out = response.getWriter();  
+
+        response.setContentType("text/html");
+
+        if (request.getParameter("loginButton") != null) {
+            PrintWriter out = response.getWriter();
             System.out.println("Login button 2pressed ");
 
-                String email = request.getParameter("customerEmail");
-                String password = request.getParameter("customerPassword");
+            String email = request.getParameter("customerEmail");
+            String password = request.getParameter("customerPassword");
 
-                Login.LoginCntl loginCntl = new Login.LoginCntl();
-                if(loginCntl.authenticator(email, password)){
-                    System.out.println("LoginServlet: authenticator passed");
-                    request.getSession().setAttribute("customerId",loginCntl.setupCurrentUser(email, password));
-                    response.sendRedirect(request.getContextPath() + "/Navigation");
-                }
-                else{
+            Login.LoginCntl loginCntl = new Login.LoginCntl();
+            if (loginCntl.authenticator(email, password)) {
+                System.out.println("LoginServlet: authenticator passed");
+                request.getSession().setAttribute("customerId", loginCntl.setupCurrentUser(email, password));
+                response.sendRedirect(request.getContextPath() + "/Navigation");
+            }
+            else{
                     request.setAttribute("errorMessage", "Email or Password is incorrect.");
                     processRequest(request, response);
-                } 
-           out.close();                
+                }
+                out.close();
+            } else if (request.getParameter("registerButton") != null) {
+                response.sendRedirect(request.getContextPath() + "/Registration");
+            }
+
         }
-        else if(request.getParameter("registerButton") != null)
-        {
-            response.sendRedirect(request.getContextPath() + "/Registration");
-        }           
-            
-            
-        
-        
-    }
 
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+        /**
+         * Returns a short description of the servlet.
+         *
+         * @return a String containing servlet description
+         */
+        @Override
+        public String getServletInfo
+        
+            () {
         return "Short description";
-    }// </editor-fold>
+        }// </editor-fold>
 
-}
+    }

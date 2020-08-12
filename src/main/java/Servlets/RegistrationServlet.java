@@ -5,8 +5,13 @@
  */
 package Servlets;
 
+import Data.DBConnection;
+import Register.RegisterCntl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +20,17 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author cjani
+ * @author kajunge
  */
 public class RegistrationServlet extends HttpServlet {
 
-    /**
+    DBConnection connect;
+    private Statement myStmt;
+    private ResultSet myRs;
+    
+    String customerFirstName, customerLastName, customerEmail, customerAddress, customerPhoneNumber, customerPassword;
+
+/**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -30,20 +42,9 @@ public class RegistrationServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegistrationServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegistrationServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        RequestDispatcher view = request.getRequestDispatcher("registration.jsp");
+        view.forward(request, response);
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -58,7 +59,6 @@ public class RegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -70,7 +70,28 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            response.setContentType("text/html;charset=UTF-8");
+      
+            customerFirstName = request.getParameter("customerFirstNameInput");
+            customerLastName = request.getParameter("customerLastNameInput");
+            customerEmail = request.getParameter("customerEmailInput");
+            customerAddress = request.getParameter("customerAddressInput");
+            customerPhoneNumber = request.getParameter("customerPhoneNumberInput");
+            customerPassword = request.getParameter("customerPasswordInput2");
+            
+            try {
+                
+                String query = "insert into customer values('"+customerFirstName+"',"
+                        + "'"+customerLastName+"','"+customerEmail+"','"+customerAddress+"',"
+                        + "'"+customerPhoneNumber+"','"+customerPassword+"';)";
+                myStmt.executeQuery(query);
+                System.out.println(query);
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        
+
     }
 
     /**
@@ -82,5 +103,33 @@ public class RegistrationServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
 
 }
