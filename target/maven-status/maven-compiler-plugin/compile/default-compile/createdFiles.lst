@@ -1,7 +1,9 @@
 Data\CustomerList.class
 Navigation\NavigationCntl.class
 CustomerProfile\CustomerProfileCntl.class
+LoanApplication\PdfSender.class
 Servlets\RegistrationServlet.class
+LoanApplication\FooterEventHandler.class
 LoanBalance\BalanceCntl.class
 Servlets\LoanApplicationServlet.class
 Servlets\CustomerProfileServlet.class
@@ -19,6 +21,7 @@ Data\DBConnection.class
 Servlets\LoanPaymentServlet.class
 Data\LoanList.class
 LoanApplication\FactoryMethod\Document.class
+LoanApplication\PdfGenerator.class
 LoanApplication\FactoryMethod\PDFDocument.class
 Login\LoginCntl.class
 Servlets\JAXRSConfiguration.class

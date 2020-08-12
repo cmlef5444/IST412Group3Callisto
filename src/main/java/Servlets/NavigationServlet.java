@@ -5,6 +5,8 @@
  */
 package Servlets;
 
+import LoanApplication.PdfGenerator;
+import LoanApplication.PdfSender;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class NavigationServlet extends HttpServlet {
 
     int customerId;
+    private static final String BOOTH_ALLOCATION_PDF_FILE = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/my_doc.pdf";
    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -80,6 +83,21 @@ public class NavigationServlet extends HttpServlet {
         else if(request.getParameter("loanPayment") != null){
             request.getSession().setAttribute("customerId",customerId);
             response.sendRedirect(request.getContextPath() + "/LoanPayment");
+        }
+        else if(request.getParameter("loanApplication") != null){
+            request.getSession().setAttribute("customerId", customerId);
+            try{
+                
+                    PdfGenerator pdfGenerator = new PdfGenerator();
+                    PdfSender pdfSender = new PdfSender();
+                    pdfGenerator.generatePdf(BOOTH_ALLOCATION_PDF_FILE);
+                    pdfSender.sendPdf(BOOTH_ALLOCATION_PDF_FILE);
+            response.sendRedirect(request.getContextPath() + "/LoanApplication/docsign");
+            } catch(Exception e){
+                            e.printStackTrace();
+                            }
+            
+            
         }
   
     }
