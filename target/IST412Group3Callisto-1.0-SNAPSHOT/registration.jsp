@@ -230,7 +230,7 @@
                             <input type="text" placeholder="Enter your phone number" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
                             <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
                             <input type="text" placeholder="Enter password" name="customerPasswordInput1" value="" />
-                            <input type="text" placeholder="Confirm password" name="customerPasswordInput2" value="" />
+                            <input type="text" placeholder="Confirm password" name="customerPasswordInput2" value="" /><br>
                             <input type="submit" value="Submit" name="registrationButton" />
                         </form>
                     </div>
