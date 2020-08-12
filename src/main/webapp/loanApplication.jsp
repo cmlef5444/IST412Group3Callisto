@@ -251,6 +251,18 @@
                             <input type="submit" value="Submit" name="loanAppSubmitButton">
                             </form>
                         </div>
+                                <div class="grid-container">
+                                    <center>Loan Agreements</center><br>
+                                    <p>By clicking submit the user agrees to the following conditions.</p>
+                                    <ol>                                        
+                                        <li> The holder will receive a loan for the amount indicated above.</li>
+                                        <li>At a rate of 2.0% annual interest</li>
+                                        <li>The Holder will pay the loan back in the time limit above.</li>
+                                        <li>The Holder will make minimum payments on the first of each month.</li>
+                                        <li>Failure to pay on time may result in Late Fees.</li>
+                                        <li>Three missed payments or Five late payments will result in the loan going to collections.</li>
+                                    </ol>
+                                    </div>
                     </div>
                     <div class="grid-container">
                         <form action="LoanApplication" method="post">

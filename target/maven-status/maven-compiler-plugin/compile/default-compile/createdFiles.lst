@@ -23,4 +23,5 @@ LoanApplication\PdfGenerator.class
 LoanApplication\FactoryMethod\PDFDocument.class
 Login\LoginCntl.class
 Servlets\JAXRSConfiguration.class
+Servlets\PdfGeneratorServlet.class
 Servlets\LoginServlet.class

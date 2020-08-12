@@ -28,6 +28,10 @@
         <servlet-name>CustomerProfileServlet</servlet-name>
         <servlet-class>Servlets.CustomerProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PdfGeneratorServlet</servlet-name>
+        <servlet-class>Servlets.PdfGeneratorServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>CustomerProfileServlet</servlet-name>
         <url-pattern>/CustomerProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PdfGeneratorServlet</servlet-name>
+        <url-pattern>/PdfGeneratorServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
