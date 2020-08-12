@@ -265,7 +265,7 @@
                     <br>
                     <div>
                         <form action="LoanBalance" method="post">
-                            <input type="submit" name="loanApplication" value="Loan Application" disabled/>
+                            <input type="submit" name="loanApplication" value="Loan Application" />
                             <input type="submit" name="customerProfile" value="Customer Profile" />
                             <input type="submit" name="loanPayment" value="Loan Payment" />
                         </form>

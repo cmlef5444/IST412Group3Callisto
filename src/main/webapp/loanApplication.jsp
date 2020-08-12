@@ -26,6 +26,67 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
+            body {font-family: Arial, Helvetica, sans-serif;}
+            form {border: 3px solid #f1f1f1;}
+
+            input[type=text], input[type=password] {
+                width: 70%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+            }
+
+            button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+            }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+            .cancelbtn {
+                width: auto;
+                padding: 10px 18px;
+                background-color: #f44336;
+            }
+
+            .imgcontainer {
+                text-align: center;
+                margin: 24px 0 12px 0;
+            }
+
+            img.avatar {
+                width: 40%;
+                border-radius: 50%;
+            }
+
+            .container {
+                padding: 16px;
+            }
+
+            span.psw {
+                float: right;
+                padding-top: 16px;
+            }
+
+            /* Change styles for span and cancel button on extra small screens */
+            @media screen and (max-width: 300px) {
+                span.psw {
+                    display: block;
+                    float: none;
+                }
+                .cancelbtn {
+                    width: 100%;
+                }
+            }
             .grid-container {
                 display: grid;
                 grid-template-columns: auto auto;
@@ -33,6 +94,7 @@
                 background-color: rgb(240,240,240);
                 padding: 80px;
             }
+
             .grid-container > div {
                 background-color: rgba(240,240,240, 1.0);
                 border: 2px dark black;
@@ -43,28 +105,6 @@
             .grid-container{
                 max-width: 800px;
                 border: 2px solid #B0B0B0;
-            }
-            input[type=text], select {
-                width: 70%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            input[type=submit] {
-                width: 20%;
-                background-color: #4CAF50;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            input[type=submit]:hover {
-                background-color: #45a049;
             }
             label
             {
@@ -159,45 +199,54 @@
                 </div>
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div>
-                        <form action="loanApplication" method="post">
-                            <label for="customerFirstName">First Name</label>
-                            <input type="text" id="customerFirstName" name="customerFirstName" placeholder="Your first name.." value="${customerFirstNameInput}"/>
-
-                            <label for="customerLastName">Last Name</label>
-                            <input type="text" id="customerLastName" name="customerLastName" placeholder="Your last name.." value="${customerLastNameInput}" />
-
-                            <label for="customerAddress">Address</label>
-                            <input type="text" id="customerAddress" name="customerAddress" placeholder="Your address.." value="${customerAddressInput}" /> 
-
-                            <label for="customerPhoneNumber">Phone Number</label>
-                            <input type="text" id="customerPhoneNumber" name="customerPhoneNumber" placeholder="Your phone number.." value="${customerPhoneNumberInput}" />  
-
-                            <label for="customerEmail">Email</label>
-                            <input type="text" id="customerEmail" name="customerEmail" placeholder="Your email.." value="${customerEmailInput}" /> 
-
+                        <div class="grid-container">
+                            <center>Confirm Personal Information</center><br>
+                            <form action="loanApplication" method="post">
+                                <div style="color: #FF0000;">${errorMessageName}</div>
+                                <div style="color: #FF0000;">${errorMessageAddress}</div>
+                                <div style="color: #FF0000;">${errorMessagePhoneNumber}</div>
+                                <label for="customerFirstNameInput">First Name</label>
+                                <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
+                                <label for="customerLastNameInput">Last Name</label>
+                                <input type="text" placeholder="Enter your last name" name="customerLastNameInput" value="${customerLastNameInput}" />
+                                <label for="customerAddressInput">Address</label>
+                                <input type="text" placeholder="Enter your address" name="customerAddressInput" value="${customerAddressInput}" />
+                                <label for="customerPhoneNumberInput">Phone Number</label>
+                                <input type="text" placeholder="Enter your phone number" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />  
+                                <label for="customerEmailInput">Email</label>
+                                <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
+                            </form>
+                        </div>
+                        <div class="grid-container">
+                            <center>Loan Request Information</center><br>
                             <label for="loanAmt">Loan Amount</label>
                             <input type="text" id="loanAmt" name="loanAmt" placeholder="Loan amount.." value="${loanAmountInput}" />  
-
-                            <label for="loanType">Type of Loan</label>
-                            <select id="loanType" name="loanType" value="${loanTypeInput}" />
-                            <option value="personal">Personal</option>
-                            <option value="renovation">Renovation</option>
-                            <option value="auto">Auto</option>
-                            <option value="project">Project</option>
-                            <option value="business">Business</option>
-                            </select>
-
-                            <label for="repay">Repayment Terms</label>
-                            <select id="repay" name="repay" value="${repayInput}" />
-                            <option value="6mos">6 Months</option>
-                            <option value="12mos">12 Months</option>
-                            <option value="24mos">24 Months</option>
-                            <option value="36mos">36 Months</option>
-                            <option value="48mos">48 Months</option>
-                            </select>
+                            <br>
+                            <center>
+                                <label for="loanType">Type of Loan</label>
+                                <select id="loanType" name="loanType" value="${loanTypeInput}" />
+                                <option value="personal">Personal</option>
+                                <option value="renovation">Renovation</option>
+                                <option value="auto">Auto</option>
+                                <option value="project">Project</option>
+                                <option value="business">Business</option>
+                                </select>
+                            </center>
+                            <br>
+                            <center>
+                                <label for="repay">Repayment Terms</label>
+                                <select id="repay" name="repay" value="${repayInput}" />
+                                <option value="6mos">6 Months</option>
+                                <option value="12mos">12 Months</option>
+                                <option value="24mos">24 Months</option>
+                                <option value="36mos">36 Months</option>
+                                <option value="48mos">48 Months</option>
+                                </select> 
+                            </center>
+                            <br>
 
                             <input type="submit" value="Submit">
-                        </form>
+                        </div>
                     </div>
                     <div class="grid-container">
                         <form action="LoanApplication" method="post">

@@ -81,7 +81,10 @@ public class NavigationServlet extends HttpServlet {
             request.getSession().setAttribute("customerId",customerId);
             response.sendRedirect(request.getContextPath() + "/LoanPayment");
         }
-  
+        else if(request.getParameter("loanApplication") != null){
+            request.getSession().setAttribute("customerId",customerId);
+            response.sendRedirect(request.getContextPath() + "/LoanApplication");
+        }
     }
 
     /**

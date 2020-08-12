@@ -207,6 +207,7 @@
                         <input type="submit" name="custProfile" value="Customer Profile" />
                         <input type="submit" name="loanBalance" value="Loan Balance" />
                         <input type="submit" name="loanPayment" value="Loan Payment" />
+                        <input type="submit" name="loanApplication" value="Loan Application" />
                     </form>
                 </div>
 
