@@ -106,106 +106,11 @@
                 max-width: 800px;
                 border: 2px solid #B0B0B0;
             }
-            input[type=text], select {
-                width: 70%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            input[type=submit] {
-                width: 20%;
-                background-color: #4CAF50;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            input[type=submit]:hover {
-                background-color: #45a049;
-            }
-            label
-            {
-                float: left;
-                width: 10em;
-                margin-right: 1em;
-            }
-            .topnav {
-                overflow: hidden;
-                background-color: #FFFFFF;
-                border-color: black;
-            }
 
-            .topnav a {
-                float: left;
-                display: block;
-                color: white;
-                background-color: lightslategrey;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-                font-size: 17px;
-                border-color: black;
-            }
-
-            .topnav a:hover {
-                background-color: lightsteelblue;
-                color: black;
-            }
-
-            .topnav a.active {
-                background-color: lightslategrey;
-                color: white;
-            }
-
-            .topnav .icon {
-                display: none;
-            }
-            @media screen and (max-width: 800px) {
-                .topnav a:not(:first-child) {display: none;}
-                .topnav a.icon {
-                    float: right;
-                    display: block;
-                }
-            }
-
-            @media screen and (max-width: 800px) {
-                .topnav.responsive {position: relative;}
-                .topnav.responsive .icon {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                }
-                .topnav.responsive a {
-                    float: none;
-                    display: block;
-                    text-align: left;
-                }
-            }
         </style>
         <title>Callisto Finance Registration</title>
     </head>
     <body>
-        <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Logout</a>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                <i class="fa fa-bars"></i>
-            </a>
-        </div>
-        <script>
-            function myFunction() {
-                var x = document.getElementById("myTopnav");
-                if (x.className === "topnav") {
-                    x.className += " responsive";
-                } else {
-                    x.className = "topnav";
-                }
-            }
-        </script>
         <div align="center">
             <div class="container w3-blue-grey pt-4 bg-warning">
                 <div class="form-row">
@@ -231,7 +136,7 @@
                             <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
                             <input type="text" placeholder="Enter password" name="customerPasswordInput1" value="" />
                             <input type="text" placeholder="Confirm password" name="customerPasswordInput2" value="" />
-                            <input type="submit" value="Submit" name="registrationButton" />
+                             <input type="submit" value="Submit" name="registrationButton" />
                         </form>
                     </div>
                 </div>
@@ -239,5 +144,5 @@
             </div>
         </div>
     </body>
-
+    
 </html>

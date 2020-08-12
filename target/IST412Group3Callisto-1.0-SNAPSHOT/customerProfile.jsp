@@ -169,7 +169,10 @@
     </head>
     <body>
         <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Logut</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanApplication.jsp">Loan Application</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanBalance.jsp">Loan Balance</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanPayment.jsp">Loan Payment</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
             </a>
@@ -234,14 +237,6 @@
                             <label for="customerPasswordInput2">Confirm Password</label>
                             <input type="text" placeholder="Confirm new password" name="customerPasswordInput2" value="" />
                             <input type="submit" value="Submit" name="passwordSubmitButton" />
-                        </form>
-                    </div>
-                    <br>
-                    <div>
-                        <form action="CustomerProfile" method="post">
-                            <input type="submit" name="loanApplication" value="Loan Application" disabled/>
-                            <input type="submit" name="loanBalance" value="Loan Balance" />
-                            <input type="submit" name="loanPayment" value="Loan Payment" />
                         </form>
                     </div>
                 </div>

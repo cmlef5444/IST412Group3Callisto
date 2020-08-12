@@ -117,20 +117,6 @@ public class LoanPaymentServlet extends HttpServlet {
                 request.setAttribute("confirmationMessage", "Payment request recieved. Please give a few minutes to process payment."); 
                 processRequest(request, response);
                 }
-        
-        response.setContentType("text/html;charset=UTF-8");
-        customerId = (int) request.getSession().getAttribute("customerId");
-        System.out.println("doGet customerId: " + customerId);
-        if (request.getParameter("loanApplication") != null) {
-            request.getSession().setAttribute("customerId", customerId);
-            response.sendRedirect(request.getContextPath() + "/LoanApplication");
-        } else if (request.getParameter("customerProfile") != null) {
-            request.getSession().setAttribute("customerId", customerId);
-            response.sendRedirect(request.getContextPath() + "/CustomerProfile");
-        } else if (request.getParameter("loanBalance") != null) {
-            request.getSession().setAttribute("customerId", customerId);
-            response.sendRedirect(request.getContextPath() + "/LoanBalance");
-        }
     }
 
     /**

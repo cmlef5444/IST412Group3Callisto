@@ -1,7 +1,7 @@
 
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
-<%--
+<%-- 
     Document   : loanPayment
     Created on : Aug 4, 2020, 9:30:37 AM
     Author     : Chris Lefebvre, Kristina Mantha
@@ -29,67 +29,7 @@
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
-            body {font-family: Arial, Helvetica, sans-serif;}
-            form {border: 3px solid #f1f1f1;}
 
-            input[type=text], input[type=password] {
-                width: 70%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                box-sizing: border-box;
-            }
-
-            button {
-                background-color: #4CAF50;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-            }
-
-            button:hover {
-                opacity: 0.8;
-            }
-
-            .cancelbtn {
-                width: auto;
-                padding: 10px 18px;
-                background-color: #f44336;
-            }
-
-            .imgcontainer {
-                text-align: center;
-                margin: 24px 0 12px 0;
-            }
-
-            img.avatar {
-                width: 40%;
-                border-radius: 50%;
-            }
-
-            .container {
-                padding: 16px;
-            }
-
-            span.psw {
-                float: right;
-                padding-top: 16px;
-            }
-
-            /* Change styles for span and cancel button on extra small screens */
-            @media screen and (max-width: 300px) {
-                span.psw {
-                    display: block;
-                    float: none;
-                }
-                .cancelbtn {
-                    width: 100%;
-                }
-            }
             .grid-container {
                 display: grid;
                 grid-template-columns: auto auto;
@@ -108,6 +48,36 @@
             .grid-container{
                 max-width: 800px;
                 border: 2px solid #B0B0B0;
+            }
+            input[type=text], select {
+                width: 90%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            input[type=submit] {
+                width: 20%;
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            input[type=submit]:hover {
+                background-color: #45a049;
+            }
+            label
+            {
+                float: left;
+                width: 10em;
+                margin-right: 1em;
             }
             label
             {
@@ -173,7 +143,10 @@
     </head>
     <body>
         <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Logout</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/customerProfile.jsp">Customer Profile</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanBalance.jsp">Loan Balance</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanApplication.jsp">Loan Application</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
             </a>
@@ -190,15 +163,15 @@
         </script>
         <sql:setDataSource var = "snapshot" driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
                            url = "jdbc:sqlserver://ist412group3server.database.windows.net:1433;databaseName=Callisto;user=azureuser@ist412group3server;password=IST412Pa$$w0rd;"
-                           />
+                           />   
         <sql:query var="currentBalancesLoan" dataSource="${snapshot}">
             SELECT t.loanId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY loanId ORDER BY entryId DESC) row_num FROM loan WHERE customerId =${customerIdentification})t WHERE t.row_num = 1
         </sql:query>
         <div align="center">
             <div class="container w3-blue-grey pt-4 bg-warning">
-                <div class="form-row">
+                <div class="form-row">  
                     <div class="form-group col-md-12">
-                        <center>
+                        <center> 
                             <br>
                             <center>
                                 <h1 style="font-family: papyrus;">Loan Payment</h1>
@@ -209,23 +182,24 @@
                 </div>
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div>
-                        <div class="grid-container">
-                            <!--, t.entryId -->
-                            <form action ="LoanPayment" method="post" onSubmit="JavaScript:ExampleJS()">
-                                <label for =" loanLabel">Select your Loan id:</label>
-                                <select name ="loanOptions" id=""loans">
-                                        <c:forEach var="row" items="${currentBalancesLoan.rowsByIndex}">
-                                            <option> <c:out value ="${row[0]}"/> </option>
-                                        </c:forEach>
-                                </select>
-                                <br/><br/>
-                                <input type="submit" name="dropSubmit" value="Submit"/>
-                            </form>
-                        </div>
+                        <!--, t.entryId -->    
+                        <form action ="LoanPayment" method="post" onSubmit="JavaScript:ExampleJS()">
+                            <label for =" loanLabel">Select your Loan id:</label>
+                            <select name ="loanOptions" id=""loans">
+                                <c:forEach var="row" items="${currentBalancesLoan.rowsByIndex}">
+                                    <option> <c:out value ="${row[0]}"/> </option>
+                                </c:forEach>
+                            </select>
+                            <br/><br/>
+                            <input type="submit" name="dropSubmit" value="Submit"/>
 
-                        <div class="grid-container">
+                        </form>    
+                            <div style="color: #FF0000;">${errorMessage}</div>
+                            <div style="color: #078417;">${confirmationMessage}</div>
+                            
                             <label for="amountDueInput">Amount Due</label>
                             <input type="text" name="amountDueInput" value="${amountDue}" readonly="readonly"/>
+                            
                             <label for="entryIdInput">Entry ID</label>
                             <br/><br/>
                             <input type="text" name="entryIdInput" value="${newEntryId}" readonly="readonly"/>
@@ -241,26 +215,15 @@
                             <input type="text" name="currentDateInput" value="${currentDateInput}" readonly="readonly"/>
                             <label for="initialDateInput">Initial Date</label>
                             <input type="text" name="initialDateInput" value="${initialDateInput}" readonly="readonly"/>
-                            </form>
-                        </div>
-                        <div class="grid-container">
+                        </form> 
+                        <div>
                             <form action="LoanPayment" method="post">
                                 <div style="color: #FF0000;">${errorMessage}</div>
 
                                 <input type="text" placeholder="Enter payment amount" name="customerPaymentInput""/>
                                 <input type="submit" value="Submit" name="paymentSubmitButton" />
-                                <div style="color: #FF0000;">${errorMessage}</div>
-                                <div style="color: #078417;">${confirmationMessage}</div>
-                            </form>
+                            </form> 
                         </div>
-                    </div>
-                    <br>
-                    <div>
-                        <form action="LoanPayment" method="post">
-                            <input type="submit" name="loanApplication" value="Loan Application" disabled/>
-                            <input type="submit" name="customerProfile" value="Customer Profile" />
-                            <input type="submit" name="loanBalance" value="Loan Balance" />
-                        </form>
                     </div>
                 </div>
                 <div class="container w3-blue-grey pt-3 bg-warning"></div>

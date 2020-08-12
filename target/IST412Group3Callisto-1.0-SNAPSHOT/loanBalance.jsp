@@ -194,7 +194,10 @@
     </head>
     <body>
         <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Logout</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/index.html" class="active" style="background-color: black">Home</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/customerProfile.jsp">Customer Profile</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanApplication.jsp">Loan Application</a>
+            <a href="http://localhost:8080/IST412Group3Callisto/loanPayment.jsp">Loan Payment</a>
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
             </a>
@@ -234,7 +237,7 @@
                     <sql:query var="pastLoanBalances" dataSource="${snapshot}">
                         SELECT entryId, currentDate, loanId, customerId, currentTotal, singlePayment, loanLength, annualRate, initialDate, principalAmount FROM loan WHERE customerId=${customerIdentification} ORDER BY entryId DESC
                     </sql:query>
-
+                    
 
                     <table id="balance" border="1">
                         <!-- column headers -->
@@ -262,14 +265,7 @@
                             </tr>
                         </c:forEach>
                     </table>
-                    <br>
-                    <div>
-                        <form action="LoanBalance" method="post">
-                            <input type="submit" name="loanApplication" value="Loan Application" disabled/>
-                            <input type="submit" name="customerProfile" value="Customer Profile" />
-                            <input type="submit" name="loanPayment" value="Loan Payment" />
-                        </form>
-                    </div>
+
                 </div>
                 <div class="container w3-blue-grey pt-3 bg-warning"></div>
             </div>
