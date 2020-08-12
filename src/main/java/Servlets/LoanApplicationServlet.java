@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import Data.DBConnection;
 import Data.LoanList;
+import LoanApplication.LoanApplicationCntl;
+import LoanApplication.PdfGenerator;
 import Payment.PaymentCntl;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -35,13 +37,14 @@ public class LoanApplicationServlet extends HttpServlet {
     
     private int loanOptionId;
     
-    private double staticPrincipalAmount;
-    private double staticCurrentTotal;
-    private double staticLoanLength;
-    private double staticAnnualRate;
-    private double staticCompoundNum;
-    private String staticCurrentDate;
-    private String staticInitialDate;
+    private String firstName;
+    private String lastName;
+    
+    private double principalAmount;
+    private double loanLength;
+    private double annualRate;
+    private String loanType;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -86,26 +89,81 @@ public class LoanApplicationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getParameter("dropSubmit") != null){
-    
-            
-        
         response.setContentType("text/html;charset=UTF-8");
-        customerId = (int) request.getSession().getAttribute("customerId");
-        System.out.println("doGet customerId: " + customerId);
-        if (request.getParameter("customerProfile") != null) {
-            request.getSession().setAttribute("customerId", customerId);
+        setCustomerId((int) request.getSession().getAttribute("customerId"));
+        System.out.println("doGet customerId: " + getCustomerId());
+        
+        if(request.getParameter("loanAppSubmitButton") != null){
+            System.out.println("LoanAppSubmitButton Pressed");
+            processLoanApplication(request, response);
+            processRequest(request, response);
+        }       
+        else if (request.getParameter("customerProfile") != null) {
+            request.getSession().setAttribute("customerId", getCustomerId());
             response.sendRedirect(request.getContextPath() + "/CustomerProfile");
         } else if (request.getParameter("loanPayment") != null) {
-            request.getSession().setAttribute("customerId", customerId);
+            request.getSession().setAttribute("customerId", getCustomerId());
             response.sendRedirect(request.getContextPath() + "/LoanPayment");
         } else if (request.getParameter("loanBalance") != null) {
-            request.getSession().setAttribute("customerId", customerId);
+            request.getSession().setAttribute("customerId", getCustomerId());
             response.sendRedirect(request.getContextPath() + "/LoanBalance");
         }
     }
+    public void processLoanApplication(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("Testing processLoanApplication(): ");
+        setConnect(new DBConnection());
+        getConnect().init();
+        
+        LoanApplicationCntl loanApplicationCntl = new LoanApplicationCntl();
+        
+        try {            
+            loanApplicationCntl.createLoan(getCustomerId(), 
+                    Double.valueOf(request.getParameter("principalAmountInput")), 
+                    Double.valueOf(request.getParameter("principalAmountInput")), //CurrentTotal
+                    Double.valueOf(request.getParameter("loanLength")),
+                    2.0,    //Annual Rate
+                    0,
+                    request.getParameter("loanType")); //Single Payment
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            getConnect().killConnections();
+        }
+        setupCustomerInfo();
+        setupLoanInfo(request);
     }
+    public void setupCustomerInfo(){
+        System.out.println("Testing setupCustomerInfo(): ");
+        setConnect(new DBConnection());
+        getConnect().init();
+        
+        try {
+            String selectSql = "select customerFirstName, "
+                    + "customerLastName "
+                    + "from customer "
+                    + "where customerId = " + getCustomerId();
 
+            setMyStmt(getConnect().getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+
+            while (getMyRs().next()) {
+                setFirstName(getMyRs().getString("customerFirstName"));
+                setLastName(getMyRs().getString("customerLastName"));
+            }
+            } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            getConnect().killConnections();
+        }
+    }
+    public void setupLoanInfo(HttpServletRequest request){
+        setPrincipalAmount((double) Double.valueOf(request.getParameter("principalAmountInput")));
+        setLoanLength((double) Double.valueOf(request.getParameter("loanLength")));
+        setLoanType(request.getParameter("loanType"));
+        System.out.println("Parameter loanType: " + request.getParameter("loanType"));
+        setAnnualRate(2.0);
+    }
     /**
      * Returns a short description of the servlet.
      *
@@ -127,5 +185,145 @@ public class LoanApplicationServlet extends HttpServlet {
      */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    /**
+     * @return the connect
+     */
+    public DBConnection getConnect() {
+        return connect;
+    }
+
+    /**
+     * @param connect the connect to set
+     */
+    public void setConnect(DBConnection connect) {
+        this.connect = connect;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
+
+    /**
+     * @return the loanOptionId
+     */
+    public int getLoanOptionId() {
+        return loanOptionId;
+    }
+
+    /**
+     * @param loanOptionId the loanOptionId to set
+     */
+    public void setLoanOptionId(int loanOptionId) {
+        this.loanOptionId = loanOptionId;
+    }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * @return the principalAmount
+     */
+    public double getPrincipalAmount() {
+        return principalAmount;
+    }
+
+    /**
+     * @param principalAmount the principalAmount to set
+     */
+    public void setPrincipalAmount(double principalAmount) {
+        this.principalAmount = principalAmount;
+    }
+
+    /**
+     * @return the loanLength
+     */
+    public double getLoanLength() {
+        return loanLength;
+    }
+
+    /**
+     * @param loanLength the loanLength to set
+     */
+    public void setLoanLength(double loanLength) {
+        this.loanLength = loanLength;
+    }
+
+    /**
+     * @return the annualRate
+     */
+    public double getAnnualRate() {
+        return annualRate;
+    }
+
+    /**
+     * @param annualRate the annualRate to set
+     */
+    public void setAnnualRate(double annualRate) {
+        this.annualRate = annualRate;
+    }
+
+    /**
+     * @return the loanType
+     */
+    public String getLoanType() {
+        return loanType;
+    }
+
+    /**
+     * @param loanType the loanType to set
+     */
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
     }
 }

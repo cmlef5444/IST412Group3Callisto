@@ -37,9 +37,9 @@ public class LoanPaymentServlet extends HttpServlet {
     private double staticCurrentTotal;
     private double staticLoanLength;
     private double staticAnnualRate;
-    private double staticCompoundNum;
     private String staticCurrentDate;
     private String staticInitialDate;
+    private String staticLoanType;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -105,6 +105,7 @@ public class LoanPaymentServlet extends HttpServlet {
             request.getSession().setAttribute("loanLengthInput", getStaticLoanLength());
             request.getSession().setAttribute("currentDateInput", getStaticCurrentDate());
             request.getSession().setAttribute("initialDateInput", getStaticInitialDate()); 
+            request.getSession().setAttribute("loanTypeInput", getStaticLoanType());
             
             RequestDispatcher view = request.getRequestDispatcher("loanPayment.jsp");
             view.include(request, response);
@@ -165,9 +166,9 @@ public class LoanPaymentServlet extends HttpServlet {
                    + "currentTotal, "
                    + "loanLength, "
                    + "annualRate, "
-                   + "compoundNum, "
                    + "currentDate, "
-                   + "initialDate from loan where entryId =" + entryId; 
+                   + "initialDate,"
+                   + "loanType from loan where entryId =" + entryId; 
            
             setMyStmt(getConnect().getMyConnection().createStatement());
             setMyRs(getMyStmt().executeQuery(selectSql));
@@ -177,9 +178,9 @@ public class LoanPaymentServlet extends HttpServlet {
                 setStaticPrincipalAmount(getMyRs().getInt("principalAmount"));                
                 setStaticLoanLength(getMyRs().getInt("loanLength"));
                 setStaticAnnualRate(getMyRs().getInt("annualRate"));
-                setStaticCompoundNum(getMyRs().getInt("compoundNum"));
                 setStaticCurrentDate(getMyRs().getString("currentDate"));
                 setStaticInitialDate(getMyRs().getString("initialDate"));
+                setStaticLoanType(getMyRs().getString("loanType"));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -290,20 +291,6 @@ public class LoanPaymentServlet extends HttpServlet {
     }
 
     /**
-     * @return the staticCompoundNum
-     */
-    public double getStaticCompoundNum() {
-        return staticCompoundNum;
-    }
-
-    /**
-     * @param staticCompoundNum the staticCompoundNum to set
-     */
-    public void setStaticCompoundNum(double staticCompoundNum) {
-        this.staticCompoundNum = staticCompoundNum;
-    }
-
-    /**
      * @return the staticInitialDate
      */
     public String getStaticInitialDate() {
@@ -343,6 +330,20 @@ public class LoanPaymentServlet extends HttpServlet {
      */
     public void setLoanOptionId(int loanOptionId) {
         this.loanOptionId = loanOptionId;
+    }
+
+    /**
+     * @return the staticLoanType
+     */
+    public String getStaticLoanType() {
+        return staticLoanType;
+    }
+
+    /**
+     * @param staticLoanType the staticLoanType to set
+     */
+    public void setStaticLoanType(String staticLoanType) {
+        this.staticLoanType = staticLoanType;
     }
 
 }

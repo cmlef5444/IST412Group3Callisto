@@ -19,6 +19,7 @@ Data\DBConnection.class
 Servlets\LoanPaymentServlet.class
 Data\LoanList.class
 LoanApplication\FactoryMethod\Document.class
+LoanApplication\PdfGenerator.class
 LoanApplication\FactoryMethod\PDFDocument.class
 Login\LoginCntl.class
 Servlets\JAXRSConfiguration.class

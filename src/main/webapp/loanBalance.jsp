@@ -232,7 +232,7 @@
                         SELECT t.loanId, t.entryId from (SELECT entryId, loanId, ROW_NUMBER() OVER (PARTITION BY loanId ORDER BY entryId DESC) row_num FROM loan WHERE customerId =${customerIdentification})t WHERE t.row_num = 1
                     </sql:query>
                     <sql:query var="pastLoanBalances" dataSource="${snapshot}">
-                        SELECT entryId, currentDate, loanId, customerId, currentTotal, singlePayment, loanLength, annualRate, initialDate, principalAmount FROM loan WHERE customerId=${customerIdentification} ORDER BY entryId DESC
+                        SELECT entryId, currentDate, loanId, customerId, loanType, currentTotal, singlePayment, loanLength, annualRate, initialDate, principalAmount FROM loan WHERE customerId=${customerIdentification} ORDER BY entryId DESC
                     </sql:query>
 
 
@@ -246,6 +246,7 @@
                             <th>Date</th>
                             <th>Loan ID</th>
                             <th>Customer ID</th>
+                            <th>Loan Type</th>
                             <th>Current Total</th>
                             <th>Single Payment</th>
                             <th>Loan Length Remaining</th>

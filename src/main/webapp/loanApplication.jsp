@@ -199,6 +199,7 @@
                 </div>
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div>
+                        <!--
                         <div class="grid-container">
                             <center>Confirm Personal Information</center><br>
                             <form action="loanApplication" method="post">
@@ -216,11 +217,13 @@
                                 <label for="customerEmailInput">Email</label>
                                 <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
                             </form>
-                        </div>
+                        </div>-->
+                        
                         <div class="grid-container">
+                            <form action="LoanApplication" method="post">
                             <center>Loan Request Information</center><br>
                             <label for="loanAmt">Loan Amount</label>
-                            <input type="text" id="loanAmt" name="loanAmt" placeholder="Loan amount.." value="${loanAmountInput}" />  
+                            <input type="text" id="loanAmt" name="principalAmountInput" placeholder="Loan amount.." value="${loanAmountInput}" />  
                             <br>
                             <center>
                                 <label for="loanType">Type of Loan</label>
@@ -235,17 +238,18 @@
                             <br>
                             <center>
                                 <label for="repay">Repayment Terms</label>
-                                <select id="repay" name="repay" value="${repayInput}" />
-                                <option value="6mos">6 Months</option>
-                                <option value="12mos">12 Months</option>
-                                <option value="24mos">24 Months</option>
-                                <option value="36mos">36 Months</option>
-                                <option value="48mos">48 Months</option>
+                                <select id="repay" name="loanLength" value="${loanTypeInput}" />
+                                <option value="6">6 Months</option>
+                                <option value="12">12 Months</option>
+                                <option value="24">24 Months</option>
+                                <option value="36">36 Months</option>
+                                <option value="48">48 Months</option>
                                 </select> 
                             </center>
                             <br>
 
-                            <input type="submit" value="Submit">
+                            <input type="submit" value="Submit" name="loanAppSubmitButton">
+                            </form>
                         </div>
                     </div>
                     <div class="grid-container">

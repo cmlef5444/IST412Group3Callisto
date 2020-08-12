@@ -14,6 +14,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakartaee>8.0</jakartaee>
+        
+        <itext.version>7.1.12</itext.version>
     </properties>
     
     <dependencies>
@@ -47,6 +49,12 @@
             <version>5.5.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>itext7-core</artifactId>
+        <version>${itext.version}</version>
+        <type>pom</type>
+    </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>

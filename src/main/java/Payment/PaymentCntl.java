@@ -39,6 +39,7 @@ public class PaymentCntl {
     private double staticAnnualRate;
     private double staticCompoundNum;
     private String staticInitialDate;
+    private String staticLoanType;
     double currentAmountDue;
 
     /**
@@ -108,7 +109,8 @@ public class PaymentCntl {
                     + singlePayment + ", "
                     + "'" + date + "',"
                     + "'" + getStaticInitialDate() + "',"
-                    + "'True')";
+                    + "'True', "
+                    + "'" + getStaticLoanType() + "')";
             
             setMyStmt(getConnect().getMyConnection().createStatement());
             getMyStmt().executeUpdate(query);        
@@ -124,6 +126,7 @@ public class PaymentCntl {
         setStaticAnnualRate(0);
         setStaticCompoundNum(0);
         setStaticInitialDate("");
+        setStaticLoanType("");
         
         //long methods, long parameters, large class
     }
@@ -137,7 +140,8 @@ public class PaymentCntl {
                    + "loanLength, "
                    + "annualRate, "
                    + "compoundNum, "
-                   + "initialDate from loan where entryId =" + entryId; 
+                   + "initialDate,"
+                   + "loanType from loan where entryId =" + entryId; 
            
             setMyStmt(connect.getMyConnection().createStatement());
             setMyRs(getMyStmt().executeQuery(selectSql));
@@ -149,6 +153,7 @@ public class PaymentCntl {
                 setStaticAnnualRate(getMyRs().getInt("annualRate"));
                 setStaticCompoundNum(getMyRs().getInt("compoundNum"));
                 setStaticInitialDate(getMyRs().getString("initialDate"));
+                setStaticLoanType(getMyRs().getString("loanType"));
             }
             
         }catch (SQLException e){
@@ -417,5 +422,19 @@ public class PaymentCntl {
      */
     public void setStaticInitialDate(String staticInitialDate) {
         this.staticInitialDate = staticInitialDate;
+    }
+
+    /**
+     * @return the staticLoanType
+     */
+    public String getStaticLoanType() {
+        return staticLoanType;
+    }
+
+    /**
+     * @param staticLoanType the staticLoanType to set
+     */
+    public void setStaticLoanType(String staticLoanType) {
+        this.staticLoanType = staticLoanType;
     }
 }

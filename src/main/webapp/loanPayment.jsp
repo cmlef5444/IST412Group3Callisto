@@ -231,6 +231,8 @@
                             <input type="text" name="entryIdInput" value="${newEntryId}" readonly="readonly"/>
                             <label for="loanIdInput">Loan ID</label>
                             <input type="text" name="loanIdInput" value="${newLoanId}" readonly="readonly"/>
+                            <label for="loanTypeInput">Loan Type</label>
+                            <input type="text" name="loanTypeInput" value="${loanTypeInput}" readonly="readonly"/>
                             <label for="currentTotalInput">Loan Remaining</label>
                             <input type="text" name="currentTotalInput" value="${currentTotalInput}" readonly="readonly"/>
                             <label for="principalAmountInput">Principal Amount</label>
