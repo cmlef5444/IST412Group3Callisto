@@ -29,7 +29,8 @@ pass: MyPa$$w0rd
 From the index page, click the click to access the login page
 Log in with credentials
 
-From this screen you can choose to view your customer profile, view loan balance, or make a payment 
+From this screen you can choose to view your customer profile, view loan balance, make a payment, 
+or apply for a new loan
 
 New Use cases:
 User case 4: New User registration -- from the login screen you may select Register and fill out the form,
