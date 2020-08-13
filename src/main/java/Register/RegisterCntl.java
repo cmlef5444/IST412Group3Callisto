@@ -42,12 +42,12 @@ public class RegisterCntl {
         try{
             String query = "insert into customer"
                     + " values ("
-                    + customerFirstName + ", "
-                    + customerLastName + ", "
-                    + customerEmail + ", " 
-                    + address + ", " 
-                    + phoneNum + ", " 
-                    + password + "')";
+                    + "'" + customerFirstName + "', "
+                    + "'" +customerLastName + "', "
+                    + "'" +customerEmail + "', " 
+                    + "'" +password + "', " 
+                    + "'" +address  + "', " 
+                    + "'" +phoneNum + "')";
             
             setMyStmt(getConnect().getMyConnection().createStatement());
             getMyStmt().executeUpdate(query); 

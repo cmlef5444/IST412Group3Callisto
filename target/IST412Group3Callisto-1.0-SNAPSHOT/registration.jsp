@@ -227,15 +227,16 @@
                             <div style="color: #FF0000;">${errorMessageAddress}</div>
                             <div style="color: #FF0000;">${errorMessagePhoneNumber}</div>
                             <div style="color: #FF0000;">${errorMessageEmail}</div>
-                            <div style="color: #FF0000;">${errorMessagePasword}</div>
+                            <div style="color: #FF0000;">${errorMessagePassword1}</div>
+                            <div style="color: #FF0000;">${errorMessagePassword2}</div>
                             <div style="color: #078417;">${passMessage}</div>
-                            <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
-                            <input type="text" placeholder="Enter your last name" name="customerLastNameInput" value="${customerLastNameInput}" />
-                            <input type="text" placeholder="Enter your address" name="customerAddressInput" value="${customerAddressInput}" />
-                            <input type="text" placeholder="Enter your phone number" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />
-                            <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
-                            <input type="text" placeholder="Enter password" name="customerPasswordInput1" value="" />
-                            <input type="text" placeholder="Confirm password" name="customerPasswordInput2" value="" /><br>
+                            <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}" required=""/>
+                            <input type="text" placeholder="Enter your last name" name="customerLastNameInput" value="${customerLastNameInput}" required=""/>
+                            <input type="text" placeholder="Enter your address" name="customerAddressInput" value="${customerAddressInput}" required="" />
+                            <input type="text" placeholder="Enter your phone number" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" required=""/>
+                            <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" required=""/>
+                            <input type="password" placeholder="Enter password" name="customerPasswordInput1" value="" required=""/>
+                            <input type="password" placeholder="Confirm password" name="customerPasswordInput2" value="" required=""/><br>
                             <input type="submit" value="Submit" name="registrationButton" />
                         </form>
                     </div>

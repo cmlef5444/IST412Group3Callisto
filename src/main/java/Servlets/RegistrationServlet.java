@@ -83,35 +83,38 @@ public class RegistrationServlet extends HttpServlet {
             ErrorChecks errorChecks = new ErrorChecks();
             String password = request.getParameter("customerPasswordInput1");
             String password2 = request.getParameter("customerPasswordInput2");
-            if(request.getAttribute("registrationButton") != null){
+            if(request.getParameter("registrationButton") != null){
+                System.out.println("Registration submit button pushed");
                 if(errorChecks.isValidName(request.getParameter("customerFirstNameInput"))|| errorChecks.isValidName(request.getParameter("customerLastNameInput"))){
                     request.setAttribute("errorMessageName", "Names may not have any numbers or special characters save - and '.");
                 }
-                if (errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
-                    request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
-                }
+//                if (errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
+//                    request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
+//                }
                 if (!errorChecks.isValidPhoneNumber(request.getParameter("customerPhoneNumberInput"))) {
                     request.setAttribute("errorMessagePhoneNumber", "Phone number must be in the following format 123-456-7890");
                 }
                 if (!errorChecks.isValidEmail(request.getParameter("customerEmailInput"))) {
                     request.setAttribute("errorMessageEmail", "Your email must include an @ and a domain name (.com, .net, .edu, etc.).");
                 }
-                if (errorChecks.isValidPassword(password) || errorChecks.isValidPassword(password2)) {
-                    if (!password.equals(password2)) {//pass
-                        request.setAttribute("errorMessagePassword", "The passwords must match.");
-                    }                    
+                if (!errorChecks.isValidPassword(password) || !errorChecks.isValidPassword(password2)) {
+                    request.setAttribute("errorMessagePassword1", "Passwords must be between 8 and 20 characters and "
+                        + "have at least 1 lower case and 1 upper case letter, at least 1 number, and at least 1 special character.");                   
                 }
+                if (!password.equals(password2)) {//pass
+                        request.setAttribute("errorMessagePassword2", "The passwords must match.");
+                    }
                 else{
                     RegisterCntl registerCntl = new RegisterCntl();
                     registerCntl.registerCustomer(getCustomerFirstName(),
                             getCustomerLastName(),
                             getCustomerEmail(),
+                            getCustomerPassword(),
                             getCustomerAddress(),
-                            getCustomerEmail(),
-                            getCustomerPassword());
-
-                    processRequest(request, response);                
-                }                
+                            getCustomerPhoneNumber());
+                    request.setAttribute("passMessage", "Your account has been created.");                     
+                }  
+                processRequest(request, response);    
         }
     }
     
