@@ -55,7 +55,7 @@ public class PdfGeneratorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         setCustomerId((int)request.getSession().getAttribute("customerId"));
-        setLoanId(7);
+        setLoanId((int)request.getSession().getAttribute("loanId"));
         //setLoanId((int)request.getSession().getAttribute("loanId"));
         request.setAttribute("customerIdentification", getCustomerId());
         setNumValues();

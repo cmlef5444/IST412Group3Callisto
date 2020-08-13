@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoanApplicationServlet extends HttpServlet {
 
     private int customerId;
+    private int loanId;
     
     private DBConnection connect;
     private Statement myStmt;
@@ -95,7 +96,8 @@ public class LoanApplicationServlet extends HttpServlet {
         
         if(request.getParameter("loanAppSubmitButton") != null){
             System.out.println("LoanAppSubmitButton Pressed");
-           // processLoanApplication(request, response);
+            processLoanApplication(request, response);
+            request.getSession().setAttribute("loanId", getLoanId());
             response.sendRedirect(request.getContextPath() + "/PdfGenerator");
             //processRequest(request, response);
         }       
@@ -133,6 +135,9 @@ public class LoanApplicationServlet extends HttpServlet {
         }
         setupCustomerInfo();
         setupLoanInfo(request);
+        setLoanId(loanApplicationCntl.getNewLoanId());
+        
+        
     }
     public void setupCustomerInfo(){
         System.out.println("Testing setupCustomerInfo(): ");
@@ -326,5 +331,19 @@ public class LoanApplicationServlet extends HttpServlet {
      */
     public void setLoanType(String loanType) {
         this.loanType = loanType;
+    }
+
+    /**
+     * @return the loanId
+     */
+    public int getLoanId() {
+        return loanId;
+    }
+
+    /**
+     * @param loanId the loanId to set
+     */
+    public void setLoanId(int loanId) {
+        this.loanId = loanId;
     }
 }

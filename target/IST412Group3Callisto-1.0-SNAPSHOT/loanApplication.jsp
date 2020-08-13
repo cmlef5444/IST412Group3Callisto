@@ -199,25 +199,25 @@
                 </div>
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div>
-                        <!--
+                   
                         <div class="grid-container">
-                            <center>Confirm Personal Information</center><br>
-                            <form action="loanApplication" method="post">
-                                <div style="color: #FF0000;">${errorMessageName}</div>
-                                <div style="color: #FF0000;">${errorMessageAddress}</div>
-                                <div style="color: #FF0000;">${errorMessagePhoneNumber}</div>
-                                <label for="customerFirstNameInput">First Name</label>
-                                <input type="text" placeholder="Enter your first name" name="customerFirstNameInput" value="${customerFirstNameInput}"/>
-                                <label for="customerLastNameInput">Last Name</label>
-                                <input type="text" placeholder="Enter your last name" name="customerLastNameInput" value="${customerLastNameInput}" />
-                                <label for="customerAddressInput">Address</label>
-                                <input type="text" placeholder="Enter your address" name="customerAddressInput" value="${customerAddressInput}" />
-                                <label for="customerPhoneNumberInput">Phone Number</label>
-                                <input type="text" placeholder="Enter your phone number" name="customerPhoneNumberInput" value="${customerPhoneNumberInput}" />  
-                                <label for="customerEmailInput">Email</label>
-                                <input type="text" placeholder="Enter your email" name="customerEmailInput" value="${customerEmailInput}" />
-                            </form>
-                        </div>-->
+                                    <hr>Loan Application</hr>
+                                    <p>Please fill out the form below with your desired loan amount, loan length, and type of loan.</p>
+                                    <p>Please note that this is merely an application and not a guarantee of acceptance.</p>
+                                    <p>Upon submitting your application you will then be presented with the option to download your application, </p>
+                                    <p>you will not be given another opportunity to download the copy.</p>
+                                    <p> </p>
+                                    <p>By clicking submit the user agrees to the following conditions.</p>
+                                    <ol>                                        
+                                        <li> The holder will receive a loan for the amount indicated above.</li>
+                                        <li>At a rate of 2.0% annual interest.</li>
+                                        <li>The Holder will pay the loan back in the time limit above.</li>
+                                        <li>The Holder will make minimum payments on the first of each month.</li>
+                                        <li>Failure to pay on time may result in Late Fees.</li>
+                                        <li>Three missed payments or Five late payments will result in the loan going to collections.</li>
+                                    </ol>
+                                    </div>
+                        
                         
                         <div class="grid-container">
                             <form action="LoanApplication" method="post">
@@ -251,18 +251,23 @@
                             <input type="submit" value="Submit" name="loanAppSubmitButton">
                             </form>
                         </div>
-                                <div class="grid-container">
-                                    <center>Loan Agreements</center><br>
+                             <!--   <div class="grid-container">
+                                    <hr>Loan Application</hr>
+                                    <p>Please fill out the form below with your desired loan amount, loan length, and type of loan.</p>
+                                    <p>Please note that this is merely an application and not a guarantee of acceptance.</p>
+                                    <p>Upon submitting your application you will then be presented with the option to download your application, </p>
+                                    <p>you will not be given another opportunity to download the copy.</p>
+                                    <p> </p>
                                     <p>By clicking submit the user agrees to the following conditions.</p>
                                     <ol>                                        
                                         <li> The holder will receive a loan for the amount indicated above.</li>
-                                        <li>At a rate of 2.0% annual interest</li>
+                                        <li>At a rate of 2.0% annual interest.</li>
                                         <li>The Holder will pay the loan back in the time limit above.</li>
                                         <li>The Holder will make minimum payments on the first of each month.</li>
                                         <li>Failure to pay on time may result in Late Fees.</li>
                                         <li>Three missed payments or Five late payments will result in the loan going to collections.</li>
                                     </ol>
-                                    </div>
+                                    </div>-->
                     </div>
                     <div class="grid-container">
                         <form action="LoanApplication" method="post">
