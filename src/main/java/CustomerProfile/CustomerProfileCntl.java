@@ -11,7 +11,7 @@ import java.sql.Statement;
  * This is the Edit Customer Information Controller class. It has methods for 
  * updating the personal information of a customer.
  * @author Chris Lefebvre
- * @author kristinamantha
+ * @author Kristina Mantha
  * @author Scott Crowthers
  */
 public class CustomerProfileCntl {

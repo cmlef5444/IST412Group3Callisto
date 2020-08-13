@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author cjani
+ * @author Chris Lefebvre
  */
 public class ErrorChecks {
     

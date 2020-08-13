@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * This is the Loan Controller Class. It contains methods that allow a user
  * to login to the Callisto mFinance app.
  * @author Chris Lefebvre
- * @author kristinamantha
+ * @author Kristina Mmantha
  * @author Scott Crowthers
  */
 public class LoginCntl {

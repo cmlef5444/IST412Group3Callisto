@@ -17,7 +17,7 @@ import java.util.Date;
  * This is the Payment Controller class. It handles payments being made on a 
  * loan.
  * @author Chris Lefebvre
- * @author kristinamantha
+ * @author Kristina Mantha
  * @author scott
  */
 public class PaymentCntl {

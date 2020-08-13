@@ -6,7 +6,7 @@ import java.io.Serializable;
  * This is the Customer class. It provides fields to store personal information
  * about the customer as well as getters/setters for these fields.
  * @author Chris Lefebvre
- * @author kristinamantha
+ * @author Kristina Mantha
  * @author Scott Crowthers
  */
 public class Customer implements Serializable{

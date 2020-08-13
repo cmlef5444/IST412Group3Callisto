@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author cjani
- * @author kajunge
+ * @author Chris Lefebvre
+ * @author Kristina Mantha
  */
 public class RegistrationServlet extends HttpServlet {
 

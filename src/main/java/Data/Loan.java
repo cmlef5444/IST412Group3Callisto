@@ -6,7 +6,7 @@ import java.io.Serializable;
  * This is the Loan details class. It has fields containing information
  * about the loan and getters/setters for these fields.
  * @author Chris Lefebvre
- * @author kristinamantha
+ * @author Kristina Mantha
  */
 public class Loan implements Serializable{
 

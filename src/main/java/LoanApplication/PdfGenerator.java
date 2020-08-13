@@ -7,7 +7,7 @@ package LoanApplication;
 
 /**
  *
- * @author cjani
+ * @author Chris Lefebvre
  */
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
@@ -39,11 +39,7 @@ public class PdfGenerator {
 
     private static Logger LOG = Logger.getLogger(PdfGenerator.class.getName());
     
-
-    //BaseFont base = BaseFont.createFont("c:/windows/fonts/arial.ttf", BaseFont.WINANSI);
-    //Font font = new Font(base, 11f, Font.BOLD);
-    
-    PdfFont font;
+    private PdfFont font;
     private static Float FONT_TITLE = 26F;
     private static Float FONT_TABLE = 16F;
     private static Float FONT_SMALL = 10F;
@@ -110,7 +106,7 @@ public class PdfGenerator {
 //        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new FooterEventHandler(document));
 
         //==========================================================================================================================================
-        // Generates three pages for this document
+        // Generates One pages for this document
         generatePageOne(document, 
              customerFirstName,
              customerLastName, 

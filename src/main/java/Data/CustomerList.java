@@ -17,7 +17,7 @@ import java.util.Properties;
  * This is the Customer List class. It contains an ArrayList of all Callisto customers
  * and methods to manipulate this ArrayList.
  * @author Chris Lefebvre
- * @author kristinamaantha
+ * @author Kristina Maantha
  */
 public class CustomerList {
 

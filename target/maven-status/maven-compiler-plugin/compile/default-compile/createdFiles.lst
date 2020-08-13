@@ -1,12 +1,10 @@
 Data\CustomerList.class
-Navigation\NavigationCntl.class
 CustomerProfile\CustomerProfileCntl.class
 Servlets\RegistrationServlet.class
 LoanBalance\BalanceCntl.class
 Servlets\LoanApplicationServlet.class
 Servlets\CustomerProfileServlet.class
 Servlets\NavigationServlet.class
-LoanApplication\FactoryMethod\WordDocument.class
 LoanApplication\LoanApplicationCntl.class
 Register\RegisterCntl.class
 Payment\PaymentCntl.class
@@ -18,9 +16,7 @@ com\mycompany\ist412group3callisto\resources\JavaEE8Resource.class
 Data\DBConnection.class
 Servlets\LoanPaymentServlet.class
 Data\LoanList.class
-LoanApplication\FactoryMethod\Document.class
 LoanApplication\PdfGenerator.class
-LoanApplication\FactoryMethod\PDFDocument.class
 Login\LoginCntl.class
 Servlets\JAXRSConfiguration.class
 Servlets\PdfGeneratorServlet.class

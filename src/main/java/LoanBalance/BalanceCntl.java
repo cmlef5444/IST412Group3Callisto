@@ -16,8 +16,8 @@ import java.util.Map;
  * This is the Loan Balance Controller Class. This provides methods to display payment
  * and balance information about a loan.
  * https://facingissuesonit.com/2017/05/16/how-to-create-html-dynamic-table-in-jsp-from-resultset-with-unknown-columns/
- * @author cjani
- * @author kristinamantha
+ * @author Chris Lefebvre
+ * @author Kristina Mantha
  * @author gkhalil
  */
 public class BalanceCntl {

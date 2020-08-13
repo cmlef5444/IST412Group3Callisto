@@ -2,9 +2,6 @@
 package LoanApplication;
 
 import Data.DBConnection;
-import LoanApplication.FactoryMethod.Document;
-import LoanApplication.FactoryMethod.PDFDocument;
-import LoanApplication.FactoryMethod.WordDocument;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,7 +24,7 @@ import java.time.format.FormatStyle;
  * This is the Loan Application Controller. It is used to handle
  * new loan applications and electronic signatures.
  * @author Chirs Lefebvre
- * @author kristinamantha
+ * @author Kristina Mantha
  * 
  * @apiPdf - https://pdfbox.apache.org/download.cgi#20x
  * @apiPdf tutorial - https://www.tutorialspoint.com/pdfbox/pdfbox_creating_a_pdf_document.htm

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * This is the Register Controller class. It handles registering new users
  * to mFinance and provides username and password validity checks.
  * @author Chris Lefebvre
- * @author kristinamantha
+ * @author Kristina Mantha
  */
 public class RegisterCntl {
     private DBConnection connect;

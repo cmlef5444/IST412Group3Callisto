@@ -1,4 +1,4 @@
-//<<<<<<< HEAD
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,7 +7,6 @@
 package Servlets;
 
 import Data.DBConnection;
-import Data.LoanList;
 import Payment.PaymentCntl;
 import java.io.IOException;
 import java.sql.ResultSet;
