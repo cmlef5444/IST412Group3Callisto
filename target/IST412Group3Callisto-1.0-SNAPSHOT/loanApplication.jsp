@@ -164,6 +164,16 @@
                     text-align: left;
                 }
             }
+            ol {
+                display: block;
+                list-style-type: decimal;
+                margin-top: 1em;
+                margin-bottom: 1em;
+                margin-left: 0;
+                margin-right: 0;
+                padding-left: 300px;
+            }
+
         </style>
         <title>Callisto Finance Loan Application</title>
     </head>
@@ -184,101 +194,83 @@
                 }
             }
         </script>
-        <div align="center">
-            <div class="container w3-blue-grey pt-4 bg-warning">
-                <div class="form-row">  
-                    <div class="form-group col-md-12">
-                        <center> 
-                            <br>
-                            <center>
-                                <h1 style="font-family: papyrus;">Loan Application</h1>
-                            </center>
-                            <br>
+
+        <div class="container w3-blue-grey pt-4 bg-warning">
+            <div class="form-row">  
+                <div class="form-group col-md-12">
+                    <center> 
+                        <br>
+                        <center>
+                            <h1 style="font-family: papyrus;">Loan Application</h1>
                         </center>
-                    </div>
+                        <br>
+                    </center>
                 </div>
-                <div class="container w3-light-grey pt-4 bg-warning">
-                    <div>
-                   
-                        <div class="grid-container">              
-                                    <p>Please fill out the form below with your desired loan amount, loan length, and type of loan.</p>
-                                    <p>Please note that this is merely an application and not a guarantee of acceptance.</p>
-                                    <p>Upon submitting your application you will then be presented with the option to download your application, </p>
-                                    <p>you will not be given another opportunity to download the copy.</p>
-                                    <p>                                                               </p>
-                                    <p>By clicking submit the user agrees to the following conditions.</p>
-                                    <ol>                                        
-                                        <li> The holder will receive a loan for the amount indicated above.</li>
-                                        <li>At a rate of 2.0% annual interest.</li>
-                                        <li>The Holder will pay the loan back in the time limit above.</li>
-                                        <li>The Holder will make minimum payments on the first of each month.</li>
-                                        <li>Failure to pay on time may result in Late Fees.</li>
-                                        <li>Three missed payments or Five late payments will result in the loan going to collections.</li>
-                                    </ol>
-                                    </div>
-                        
-                        
+            </div>
+            <div class="container w3-light-grey pt-4 bg-warning">
+                <div>
+                    <center><hr>Loan Application Details</hr></center><br><br>
+                    
+                    <p>
+                        Please fill out the form below with your desired loan amount, loan length, and type of loan.
+                        Please note that this is merely an application and not a guarantee of acceptance. Upon
+                        submitting your application you will then be presented with the option to download your
+                        application, and you will not be given another opportunity to download the copy.
+                    </p>
+                    
+                    <ol>By clicking submit the user agrees to the following conditions.<br><br>
+                        <li>The holder will receive a loan for the amount indicated above.</li>
+                        <li>At a rate of 2.0% annual interest.</li>
+                        <li>The Holder will pay the loan back in the time limit above.</li>
+                        <li>The Holder will make minimum payments on the first of each month.</li>
+                        <li>Failure to pay on time may result in Late Fees.</li>
+                        <li>Three missed payments or Five late payments will result in the loan going to collections.</li>                                                            
+                    </ol>
+
+                    <div align="center">                        
                         <div class="grid-container">
                             <form action="LoanApplication" method="post">
-                            <center>Loan Request Information</center><br>
-                            <label for="loanAmt">Loan Amount</label>
-                            <input type="text" id="loanAmt" name="principalAmountInput" placeholder="Loan amount.." value="${loanAmountInput}" />  
-                            <br>
-                            <center>
-                                <label for="loanType">Type of Loan</label>
-                                <select id="loanType" name="loanType" value="${loanTypeInput}" />
-                                <option value="personal">Personal</option>
-                                <option value="renovation">Renovation</option>
-                                <option value="auto">Auto</option>
-                                <option value="project">Project</option>
-                                <option value="business">Business</option>
-                                </select>
-                            </center>
-                            <br>
-                            <center>
-                                <label for="repay">Repayment Terms</label>
-                                <select id="repay" name="loanLength" value="${loanTypeInput}" />
-                                <option value="6">6 Months</option>
-                                <option value="12">12 Months</option>
-                                <option value="24">24 Months</option>
-                                <option value="36">36 Months</option>
-                                <option value="48">48 Months</option>
-                                </select> 
-                            </center>
-                            <br>
+                                <center>Loan Request Information</center><br>
+                                <label for="loanAmt">Loan Amount</label>
+                                <input type="text" id="loanAmt" name="principalAmountInput" placeholder="Loan amount.." value="${loanAmountInput}" />  
+                                <br>
+                                <center>
+                                    <label for="loanType">Type of Loan</label>
+                                    <select id="loanType" name="loanType" value="${loanTypeInput}" />
+                                    <option value="personal">Personal</option>
+                                    <option value="renovation">Renovation</option>
+                                    <option value="auto">Auto</option>
+                                    <option value="project">Project</option>
+                                    <option value="business">Business</option>
+                                    </select>
+                                </center>
+                                <br>
+                                <center>
+                                    <label for="repay">Repayment Terms</label>
+                                    <select id="repay" name="loanLength" value="${loanTypeInput}" />
+                                    <option value="6">6 Months</option>
+                                    <option value="12">12 Months</option>
+                                    <option value="24">24 Months</option>
+                                    <option value="36">36 Months</option>
+                                    <option value="48">48 Months</option>
+                                    </select> 
+                                </center>
+                                <br>
 
-                            <input type="submit" value="Submit" name="loanAppSubmitButton">
+                                <input type="submit" value="Submit" name="loanAppSubmitButton">
                             </form>
                         </div>
-                             <!--   <div class="grid-container">
-                                    <hr>Loan Application</hr>
-                                    <p>Please fill out the form below with your desired loan amount, loan length, and type of loan.</p>
-                                    <p>Please note that this is merely an application and not a guarantee of acceptance.</p>
-                                    <p>Upon submitting your application you will then be presented with the option to download your application, </p>
-                                    <p>you will not be given another opportunity to download the copy.</p>
-                                    <p> </p>
-                                    <p>By clicking submit the user agrees to the following conditions.</p>
-                                    <ol>                                        
-                                        <li> The holder will receive a loan for the amount indicated above.</li>
-                                        <li>At a rate of 2.0% annual interest.</li>
-                                        <li>The Holder will pay the loan back in the time limit above.</li>
-                                        <li>The Holder will make minimum payments on the first of each month.</li>
-                                        <li>Failure to pay on time may result in Late Fees.</li>
-                                        <li>Three missed payments or Five late payments will result in the loan going to collections.</li>
-                                    </ol>
-                                    </div>-->
-                    </div>
-                    <div class="grid-container">
-                        <form action="LoanApplication" method="post">
-                            <input type="submit" name="customerProfile" value="Customer Profile" />
-                            <input type="submit" name="loanBalance" value="Loan Balance" />
-                            <input type="submit" name="loanPayment" value="Loan Payment" />
-                        </form>
-                    </div>
+                        <div class="grid-container">
+                            <form action="LoanApplication" method="post">
+                                <input type="submit" name="customerProfile" value="Customer Profile" />
+                                <input type="submit" name="loanBalance" value="Loan Balance" />
+                                <input type="submit" name="loanPayment" value="Loan Payment" />
+                            </form>
+                        </div>
+                    </div>       
                 </div>
-                <div class="container w3-blue-grey pt-3 bg-warning"></div>
             </div>
+            <div class="container w3-blue-grey pt-3 bg-warning"></div>
         </div>
-
     </body>
 </html>

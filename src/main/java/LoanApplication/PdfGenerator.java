@@ -144,7 +144,7 @@ public class PdfGenerator {
         // Title
         document.add(new Paragraph("Callisto Finance Loan Application").setMultipliedLeading(2).setFontSize(FONT_TITLE).setBold().setTextAlignment(TextAlignment.CENTER));
 
-        document.add(new Paragraph("This conract is a loan application, if the lender aggrees to permit this loan the holder will automatically hold a contract for the loan and a copy of the official loan will be extended, under the same conditions").setMarginTop(15));
+        document.add(new Paragraph("This contract is a loan application, if the lender aggrees to permit this loan the holder will automatically hold a contract for the loan and a copy of the official loan will be extended, under the same conditions").setMarginTop(15));
 
         // Paragraph
         document.add(new Paragraph("The holder of this contract, " + customerFirstName + " " + customerLastName + ", agrees to a loan with the following conditions:").setMarginTop(15));
