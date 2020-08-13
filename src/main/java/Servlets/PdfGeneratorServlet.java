@@ -11,12 +11,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -56,7 +54,6 @@ public class PdfGeneratorServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         setCustomerId((int)request.getSession().getAttribute("customerId"));
         setLoanId((int)request.getSession().getAttribute("loanId"));
-        //setLoanId((int)request.getSession().getAttribute("loanId"));
         request.setAttribute("customerIdentification", getCustomerId());
         setNumValues();
         setPersonValues();
@@ -76,17 +73,12 @@ public class PdfGeneratorServlet extends HttpServlet {
         }
         
         String basePath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        System.out.println("servletPath: " + basePath);
         basePath = basePath.replace("target/IST412Group3Callisto-1.0-SNAPSHOT/WEB-INF/classes/Servlets/PdfGeneratorServlet.class", "");
-        System.out.println("servletPath2: " + basePath);
+        basePath = basePath.replace("%", "");
+        
         String filePath = basePath + "src/main/resources/OutputFiles/loanApplicationLoanId" + loanId + ".pdf";
-        //String filePath = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf";
         File downloadFile = new File(filePath);
         FileInputStream inStream = new FileInputStream(downloadFile);
-         
-        // if you want to use a relative path to context root:
-        String relativePath = getServletContext().getRealPath("");
-        System.out.println("relativePath = " + relativePath);
          
         // obtains ServletContext
         ServletContext context = getServletContext();
@@ -120,9 +112,6 @@ public class PdfGeneratorServlet extends HttpServlet {
          
         inStream.close();
         outStream.close();
-        
-        RequestDispatcher view = request.getRequestDispatcher("pdfGenerator.jsp");
-       // view.forward(request, response);      
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -8,26 +8,23 @@ package LoanApplication;
 /**
  *
  * @author Chris Lefebvre
+ * 
+ * @ApiTutorialAuthor agoncal
+ * @ApiTutorial https://antoniogoncalves.org/2017/01/30/automating-administrative-tasks-with-itext-and-docusign/
+ * @ApiGitHub https://github.com/agoncal/agoncal-other/tree/master/01-PDFDocusign
  */
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.font.PdfEncodings;
-import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
-import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.pdf.BaseFont;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +40,7 @@ public class PdfGenerator {
     private static Float FONT_TITLE = 26F;
     private static Float FONT_TABLE = 16F;
     private static Float FONT_SMALL = 10F;
-                    //calls the file from Strign pdfFile
+
     public void generatePdf(int loanId,
             String customerFirstName, 
             String customerLastName, 
@@ -54,20 +51,16 @@ public class PdfGenerator {
             String loanType) throws Exception {
         
         String basePath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        System.out.println("pdfGenerator path: " + basePath);
         basePath = basePath.replace("target/IST412Group3Callisto-1.0-SNAPSHOT/WEB-INF/classes/LoanApplication/PdfGenerator.class", "");
-        System.out.println("pdfGenerator path 2: " + basePath);
+        basePath = basePath.replace("%", "");
         
         String fontPath = basePath + "src/main/resources/Fonts/Popsies.ttf";
         String pdfPath = basePath + "src/main/resources/OutputFiles/loanApplicationLoanId" + loanId + ".pdf";
         
-        
-        //"C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/src/main/resources/Fonts/Popsies.ttf"
         FontProgram fontProgram = FontProgramFactory.createFont(fontPath);
         font = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
         
         String pdfFile = pdfPath;
-        //"C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf"
         File file = new File(pdfFile);
         if (file.exists())
             file.delete();
@@ -100,12 +93,7 @@ public class PdfGenerator {
 
         // Adds metadata to the document
         addDocumentMetadata(pdf);
-        //==========================================================================================================================================
 
-        // Adds a footer to each page of the document
-//        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, new FooterEventHandler(document));
-
-        //==========================================================================================================================================
         // Generates One pages for this document
         generatePageOne(document, 
              customerFirstName,

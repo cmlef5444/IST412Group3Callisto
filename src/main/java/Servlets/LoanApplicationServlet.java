@@ -6,7 +6,6 @@
 package Servlets;
 
 import Data.DBConnection;
-import Data.LoanList;
 import LoanApplication.LoanApplicationCntl;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -342,3 +341,39 @@ public class LoanApplicationServlet extends HttpServlet {
         this.loanId = loanId;
     }
 }
+
+///**
+//     * Deprecated: may have use in a Tech background
+//     * Edits a loan profile based on the inputs data and adds it to the loanArray
+//     * @param loanID - a long representing the load id in a loan profile
+//     * @param customerID - a long representing the customer id in a loan profile
+//     * @param amountTotal - a long representing the total amount of the loan in the loan profile
+//     * @param singlePayment - a long representing the amount payed in a single transaction
+//     * @param date - the date the loan was created or a payment made
+//     */
+//    public void editLoan(int loanId, int customerId, double principalAmount, 
+//            double currentTotal, double loanLength, double annualRate, 
+//            double compoundNum, double singlePayment){
+//        connect = new DBConnection();
+//        connect.init();
+//        try{    
+//            
+//            String query = "UPDATE loan "
+//                    + "set customerId = " + customerId 
+//                    + ", principalAmount = " + principalAmount
+//                    + ", currentTotal = " + currentTotal
+//                    + ", loanLength = " + loanLength
+//                    + ", annualRate = " + annualRate
+//                    + ", compoundNum = " + compoundNum
+//                    + ", singlePayment = " + singlePayment
+//                    //+ ", currentDate = '" + date
+//                    + " WHERE loanId = " + loanId;
+//            
+//            myStmt = connect.getMyConnection().createStatement();            
+//            myStmt.executeUpdate(query);
+//        }catch(Exception e){ 
+//            e.printStackTrace();
+//        }finally{
+//            connect.killConnections();
+//        }
+//    }   

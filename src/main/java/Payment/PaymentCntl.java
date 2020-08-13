@@ -2,12 +2,9 @@
 package Payment;
 
 import Data.DBConnection;
-import Data.Loan;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -72,7 +69,7 @@ public class PaymentCntl {
     public double amountDue(double loanLength, double principalAmount){
         System.out.println("principal: " + principalAmount + " loanLength: " + loanLength);
         currentAmountDue = (principalAmount/loanLength);
-        return currentAmountDue;    //needs to be modified
+        return currentAmountDue;
     }
     public double interestIncrease(double loanInterest, double currentTotal){
         currentAmountDue = ((loanInterest/100) * currentTotal);
@@ -118,8 +115,7 @@ public class PaymentCntl {
             e.printStackTrace();
         }finally{
             connect.killConnections();            
-        }
-        
+        }        
         setStaticPrincipalAmount(0);
         setStaticCurrentTotal(0);
         setStaticLoanLength(0);
@@ -127,8 +123,6 @@ public class PaymentCntl {
         setStaticCompoundNum(0);
         setStaticInitialDate("");
         setStaticLoanType("");
-        
-        //long methods, long parameters, large class
     }
 
     public void selectStaticData(int entryId){

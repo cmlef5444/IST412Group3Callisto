@@ -1,7 +1,6 @@
 Data\CustomerList.class
 CustomerProfile\CustomerProfileCntl.class
 Servlets\RegistrationServlet.class
-LoanBalance\BalanceCntl.class
 Servlets\LoanApplicationServlet.class
 Servlets\CustomerProfileServlet.class
 Servlets\NavigationServlet.class
@@ -12,12 +11,10 @@ Servlets\LoanBalanceServlet.class
 Data\Loan.class
 Data\Customer.class
 Data\ErrorChecks.class
-com\mycompany\ist412group3callisto\resources\JavaEE8Resource.class
 Data\DBConnection.class
 Servlets\LoanPaymentServlet.class
 Data\LoanList.class
 LoanApplication\PdfGenerator.class
 Login\LoginCntl.class
-Servlets\JAXRSConfiguration.class
 Servlets\PdfGeneratorServlet.class
 Servlets\LoginServlet.class

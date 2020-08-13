@@ -5,7 +5,6 @@
  */
 package Servlets;
 
-import LoanBalance.BalanceCntl;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,9 +34,7 @@ public class LoanBalanceServlet extends HttpServlet {
         
         customerId = (int)request.getSession().getAttribute("customerId");        
         request.setAttribute("customerIdentification", customerId);
-        System.out.println("LBS customerId: " + customerId);
-        
-        BalanceCntl balance = new BalanceCntl();
+//        System.out.println("LBS customerId: " + customerId);
         
         RequestDispatcher view = request.getRequestDispatcher("loanBalance.jsp");
         view.forward(request, response);
@@ -83,7 +80,6 @@ public class LoanBalanceServlet extends HttpServlet {
             request.getSession().setAttribute("customerId", customerId);
             response.sendRedirect(request.getContextPath() + "/LoanPayment");
         }
-        //processRequest(request, response);
     }
 
     /**

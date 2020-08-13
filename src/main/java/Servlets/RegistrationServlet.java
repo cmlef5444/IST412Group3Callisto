@@ -9,7 +9,6 @@ import Data.DBConnection;
 import Data.ErrorChecks;
 import Register.RegisterCntl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.servlet.RequestDispatcher;

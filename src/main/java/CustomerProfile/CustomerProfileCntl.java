@@ -1,7 +1,6 @@
 
 package CustomerProfile;
 
-import Data.Customer;
 import Data.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,8 +14,6 @@ import java.sql.Statement;
  * @author Scott Crowthers
  */
 public class CustomerProfileCntl {
-    
-    private Customer customer;
     
     private DBConnection connect;
     private Statement myStmt;
@@ -46,31 +43,6 @@ public class CustomerProfileCntl {
             connect.killConnections();
         }
     }  
-    /**
-     * Constructor for EditCustomerInfoCntl
-     * @param customer
-     */
-    public CustomerProfileCntl(Customer customer){
-        this.customer = customer;
-        
-    }
-    
-    public Customer getCustomer(){
-        return customer;
-    }   
-    
-    public Customer updateCustomer(){
-        Customer updatedCustomer = new Customer();
-        
-        return updatedCustomer;
-    }
-    /**
-     * @param customer the customer to set
-     */
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     /**
      * @return the connect
      */

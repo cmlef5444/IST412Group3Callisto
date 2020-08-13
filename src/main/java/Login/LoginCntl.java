@@ -1,17 +1,10 @@
 
 package Login;
 
-import Data.Customer;
-import Data.CustomerList;
 import Data.DBConnection;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This is the Loan Controller Class. It contains methods that allow a user
@@ -22,8 +15,6 @@ import java.util.regex.Pattern;
  */
 public class LoginCntl {
     
-    CustomerList customerList;
-
     private DBConnection connect;
     private Statement myStmt;
     private ResultSet myRs;
@@ -37,9 +28,7 @@ public class LoginCntl {
     /**
      * This is the initial constructor
      */
-    public LoginCntl(){
-        
-        customerList = new CustomerList();
+    public LoginCntl(){        
     }
     /**
      * A method to verify if the inputted email is associated with a user account
@@ -67,16 +56,6 @@ public class LoginCntl {
         }    
         return currentId;
     }
-    
-//    /**
-//     * A method to verify password
-//     * @param password A String representing the user password
-//     * @return This returns the validity of the password
-//     */
-//    public boolean isValidPassword(String password){
-//        // TODO: checks if password is the correct password associated with the given email
-//        return password.length() >= 8;
-//    }
     /**
      * A method to verify email and password
      * @param userEmail A String representing customer's email
@@ -93,19 +72,8 @@ public class LoginCntl {
                 setPs(getConnect().getMyConnection().prepareStatement("select customerEmail, customerPassword "
                         + "from customer "
                         + "where customerEmail = '" + userEmail + "' and customerPassword = '" + inputPassword + "'"));
-//                System.out.println("Input: " + userEmail + ", " + inputPassword);
                 setMyRs(getPs().executeQuery());
-                setBoolResult(getMyRs().next());
-//                while(getMyRs().next()){
-//                    System.out.println("Email Input: " + userEmail + "Email SQL: " + getMyRs().getString("customerEmail"));
-//                    System.out.println("Password Input: " + inputPassword + "Password SQL: " + getMyRs().getString("customerPassword"));
-//                }
-//                if(isBoolResult() == true){
-//                    System.out.println("Login successful");     
-//                }
-//                else{
-//                    System.out.println("Login unsuccessful");                
-//                }            
+                setBoolResult(getMyRs().next());         
             }catch(Exception e){      
                 e.printStackTrace();
             }finally{
