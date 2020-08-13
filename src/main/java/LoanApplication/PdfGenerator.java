@@ -10,12 +10,12 @@ package LoanApplication;
  * @author cjani
  */
 import com.itextpdf.io.image.ImageDataFactory;
-//import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
-//import com.itextpdf.layout.border.Border;
+import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.HorizontalAlignment;
@@ -24,6 +24,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Date;
 import java.util.logging.Logger;
 
 public class PdfGenerator {
@@ -39,19 +40,42 @@ public class PdfGenerator {
     private static Float FONT_TITLE = 26F;
     private static Float FONT_TABLE = 16F;
     private static Float FONT_SMALL = 10F;
-
-    public static void generatePdf(String pdfFile, String customerFirstName, String customerLastName, double principalAmount, int annualRate) throws Exception {
+                    //calls the file from Strign pdfFile
+    public void generatePdf(int loanId,
+            String customerFirstName, 
+            String customerLastName, 
+            double principalAmount, 
+            double annualRate,
+            double loanLength,
+            Date currentDate,
+            String loanType) throws Exception {
+        String pdfFile = "src/main/resources/OutputFiles/loanApplicationLoanId" + loanId + ".pdf";
+        //"C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf"
         File file = new File(pdfFile);
         if (file.exists())
             file.delete();
         file.getParentFile().mkdirs();
 
-        generateDocument(pdfFile, customerFirstName, customerLastName, principalAmount, annualRate);
+        generateDocument(pdfFile, 
+             customerFirstName, 
+             customerLastName, 
+             principalAmount, 
+             annualRate,
+             loanLength,
+             currentDate,
+             loanType);
 
         LOG.info("PDF has been generated");
     }
 
-    private static void generateDocument(String pdfFile, String customerFirstName, String customerLastName, double principalAmount, int annualRate) throws Exception {
+    private static void generateDocument(String pdfFile, 
+            String customerFirstName, 
+            String customerLastName, 
+            double principalAmount, 
+            double annualRate,
+            double loanLength,
+            Date currentDate,
+            String loanType) throws Exception {
         OutputStream fos = new FileOutputStream(pdfFile);
         PdfWriter writer = new PdfWriter(fos);
         PdfDocument pdf = new PdfDocument(writer);
@@ -66,7 +90,14 @@ public class PdfGenerator {
 
         //==========================================================================================================================================
         // Generates three pages for this document
-        generatePageOne(document, customerFirstName, customerLastName, principalAmount, annualRate);
+        generatePageOne(document, 
+             customerFirstName,
+             customerLastName, 
+             principalAmount, 
+             annualRate,
+             loanLength,
+             currentDate,
+             loanType);
 //        generatePageTwo(document);
 //        generatePageThree(document);
 
@@ -83,7 +114,13 @@ public class PdfGenerator {
         info.setKeywords("contract, business, 2020");
     }
 
-    private static Document generatePageOne(Document document, String customerFirstName, String customerLastName, double principalAmount, int annualRate) throws Exception {
+    private static Document generatePageOne(Document document, String customerFirstName, 
+            String customerLastName, 
+            double principalAmount, 
+            double annualRate,
+            double loanLength,
+            Date currentDate,
+            String loanType) throws Exception {
 
         // Top image
 //        Image logo = new Image(ImageDataFactory.create(PATH_IMG_LOGO));
@@ -99,7 +136,7 @@ public class PdfGenerator {
         List list = new List().setSymbolIndent(12).setListSymbol("\u2022");
         list.add(new ListItem("The Holder will recieve a loan of $" + principalAmount))
             .add(new ListItem("At a rate of " + annualRate + "% annual interest"))
-            .add(new ListItem("The Holder will pay the loan back in a three year term"))
+            .add(new ListItem("The Holder will pay the " + loanType + " loan back in a " + loanLength + " month term"))
             .add(new ListItem("The Holder will make mininum payments on the first of each month"))
             .add(new ListItem("Failure to pay on time may result in Late Fees"))
             .add(new ListItem("Three missed payments or Five late payments will result in the loan going to Collections"));
@@ -111,28 +148,28 @@ public class PdfGenerator {
 
         // Signature
         document.add(new Paragraph("Please add your full name, date and signature below.").setMarginTop(15).setMarginBottom(15));
-//        document.add(drawSignature(customerFirstName, customerLastName));
+        document.add(drawSignature(customerFirstName, customerLastName));
 
         return document;
     }
 
-//    private static Table drawTable(String title, String content) {
-//        Table table = new Table(1).setWidthPercent(50).setHorizontalAlignment(HorizontalAlignment.CENTER);
-//        table.addHeaderCell(new Cell().add(new Paragraph(title).setMultipliedLeading(2).setFontSize(FONT_TABLE).setBold().setTextAlignment(TextAlignment.CENTER)));
-//        table.addCell(new Cell().add(new Paragraph(content).setMultipliedLeading(2).setFontSize(FONT_TABLE + 6).setBold().setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.LIGHT_GRAY)).setPaddings(0, 0, 0, 0));
-//        return table;
-//    }
+    private static Table drawTable(String title, String content) {
+        Table table = new Table(1).setWidthPercent(50).setHorizontalAlignment(HorizontalAlignment.CENTER);
+        table.addHeaderCell(new Cell().add(new Paragraph(title).setMultipliedLeading(2).setFontSize(FONT_TABLE).setBold().setTextAlignment(TextAlignment.CENTER)));
+        table.addCell(new Cell().add(new Paragraph(content).setMultipliedLeading(2).setFontSize(FONT_TABLE + 6).setBold().setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.LIGHT_GRAY)).setPaddings(0, 0, 0, 0));
+        return table;
+    }
 
-//    private static Table drawSignature(String customerFirstName, String customerLastName) {   
-////        Table table = new Table(2).setWidthPercent(60).setHorizontalAlignment(HorizontalAlignment.CENTER).setBackgroundColor(Color.LIGHT_GRAY);
-////        table.addCell(new Cell().add(new Paragraph("Name").setMultipliedLeading(3).setBold()).setBorder(Border.NO_BORDER));
-//////        table.addCell(new Cell().add(new Paragraph(customerFirstName + " " customerLastName).setMultipliedLeading(3)).setBorder(Border.NO_BORDER).setFontColor(Color.LIGHT_GRAY));
-////        table.addCell(new Cell().add(new Paragraph("Date").setMultipliedLeading(2).setBold()).setBorder(Border.NO_BORDER));
-////        table.addCell(new Cell().add(new Paragraph("/dateAnchor1/").setMultipliedLeading(2)).setBorder(Border.NO_BORDER).setFontColor(Color.LIGHT_GRAY));
-////        table.addCell(new Cell().add(new Paragraph("Signature").setMultipliedLeading(5).setBold()).setBorder(Border.NO_BORDER));
-//////        table.addCell(new Cell().add(new Paragraph(customerFirstName + " " customerLastName).setMultipliedLeading(5)).setBorder(Border.NO_BORDER).setFontColor(Color.LIGHT_GRAY));
-//        return table;
-//    }
+    private static Table drawSignature(String customerFirstName, String customerLastName) {   
+        Table table = new Table(2).setWidthPercent(60).setHorizontalAlignment(HorizontalAlignment.CENTER).setBackgroundColor(Color.LIGHT_GRAY);
+        table.addCell(new Cell().add(new Paragraph("Name").setMultipliedLeading(3).setBold()).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(new Paragraph(customerFirstName + " " + customerLastName).setMultipliedLeading(3)).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(new Paragraph("Date").setMultipliedLeading(2).setBold()).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(new Paragraph("/dateAnchor1/").setMultipliedLeading(2)).setBorder(Border.NO_BORDER).setFontColor(Color.LIGHT_GRAY));
+        table.addCell(new Cell().add(new Paragraph("Signature").setMultipliedLeading(5).setBold()).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(new Paragraph(customerFirstName + " " + customerLastName).setMultipliedLeading(5)).setBorder(Border.NO_BORDER).setFontColor(Color.LIGHT_GRAY));
+        return table;
+    }
 
 //    private static Document generatePageTwo(Document document) throws Exception {
 //        // Break page rotate

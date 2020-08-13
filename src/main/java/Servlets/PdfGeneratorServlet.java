@@ -5,11 +5,17 @@
  */
 package Servlets;
 
+import Data.DBConnection;
+import LoanApplication.PdfGenerator;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -23,8 +29,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PdfGeneratorServlet extends HttpServlet {
 
+    private DBConnection connect;
+    private Statement myStmt;
+    private ResultSet myRs;
+    
     private int customerId;
     private int loanId;
+    private String customerFirstName;
+    private String customerLastName;
+    private double principalAmount;
+    private double annualRate;
+    private double loanLength;
+    private Date currentDate;
+    private String loanType;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,11 +55,27 @@ public class PdfGeneratorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         setCustomerId((int)request.getSession().getAttribute("customerId"));
-        setLoanId((int)request.getSession().getAttribute("loanId"));
+        setLoanId(7);
+        //setLoanId((int)request.getSession().getAttribute("loanId"));
         request.setAttribute("customerIdentification", getCustomerId());
+        setNumValues();
+        setPersonValues();
         
-        
-        String filePath = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf";
+        try{
+            PdfGenerator pdfGenerator = new PdfGenerator();
+            pdfGenerator.generatePdf(getLoanId(),
+                    getCustomerFirstName(), 
+                    getCustomerLastName(),
+                    getPrincipalAmount(), 
+                    getAnnualRate(),
+                    getLoanLength(),
+                    getCurrentDate(),
+                    getLoanType());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        String filePath = "src/main/resources/OutputFiles/loanApplicationLoanId" + loanId + ".pdf";
+        //String filePath = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf";
         File downloadFile = new File(filePath);
         FileInputStream inStream = new FileInputStream(downloadFile);
          
@@ -84,7 +117,7 @@ public class PdfGeneratorServlet extends HttpServlet {
         outStream.close();
         
         RequestDispatcher view = request.getRequestDispatcher("pdfGenerator.jsp");
-        view.forward(request, response);      
+       // view.forward(request, response);      
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -126,6 +159,58 @@ public class PdfGeneratorServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public void setNumValues(){
+        setConnect(new DBConnection());
+        getConnect().init();
+        
+        try{
+           String selectSql = "select principalAmount, "
+                   + "loanLength, "
+                   + "annualRate, "
+                   + "currentDate, "
+                   + "loanType from loan where loanId =" + getLoanId(); 
+           
+            setMyStmt(getConnect().getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+            while (getMyRs().next()){
+                setPrincipalAmount(getMyRs().getInt("principalAmount"));                
+                setLoanLength(getMyRs().getInt("loanLength"));
+                setAnnualRate(getMyRs().getInt("annualRate"));
+                setCurrentDate(getMyRs().getDate("currentDate"));
+                setLoanType(getMyRs().getString("loanType"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+        finally{
+            getConnect().killConnections();
+        }
+    }
+    public void setPersonValues(){
+        setConnect(new DBConnection());
+        getConnect().init();
+        
+        try{
+           String selectSql = "select customerFirstName, "
+                   + "customerLastName from customer where customerId =" + getCustomerId(); 
+           
+            setMyStmt(getConnect().getMyConnection().createStatement());
+            setMyRs(getMyStmt().executeQuery(selectSql));
+            
+            while (getMyRs().next()){
+                setCustomerFirstName(getMyRs().getString("customerFirstName"));                
+                setCustomerLastName(getMyRs().getString("customerLastname"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("Failed to create connection to azure database. conneciton = null");
+		}
+        finally{
+            getConnect().killConnections();
+        }
+    }
     /**
      * @return the customerId
      */
@@ -152,6 +237,146 @@ public class PdfGeneratorServlet extends HttpServlet {
      */
     public void setLoanId(int loanId) {
         this.loanId = loanId;
+    }
+
+    /**
+     * @return the connect
+     */
+    public DBConnection getConnect() {
+        return connect;
+    }
+
+    /**
+     * @param connect the connect to set
+     */
+    public void setConnect(DBConnection connect) {
+        this.connect = connect;
+    }
+
+    /**
+     * @return the myStmt
+     */
+    public Statement getMyStmt() {
+        return myStmt;
+    }
+
+    /**
+     * @param myStmt the myStmt to set
+     */
+    public void setMyStmt(Statement myStmt) {
+        this.myStmt = myStmt;
+    }
+
+    /**
+     * @return the myRs
+     */
+    public ResultSet getMyRs() {
+        return myRs;
+    }
+
+    /**
+     * @param myRs the myRs to set
+     */
+    public void setMyRs(ResultSet myRs) {
+        this.myRs = myRs;
+    }
+
+    /**
+     * @return the customerFirstName
+     */
+    public String getCustomerFirstName() {
+        return customerFirstName;
+    }
+
+    /**
+     * @param customerFirstName the customerFirstName to set
+     */
+    public void setCustomerFirstName(String customerFirstName) {
+        this.customerFirstName = customerFirstName;
+    }
+
+    /**
+     * @return the customerLastName
+     */
+    public String getCustomerLastName() {
+        return customerLastName;
+    }
+
+    /**
+     * @param customerLastName the customerLastName to set
+     */
+    public void setCustomerLastName(String customerLastName) {
+        this.customerLastName = customerLastName;
+    }
+
+    /**
+     * @return the principalAmount
+     */
+    public double getPrincipalAmount() {
+        return principalAmount;
+    }
+
+    /**
+     * @param principalAmount the principalAmount to set
+     */
+    public void setPrincipalAmount(double principalAmount) {
+        this.principalAmount = principalAmount;
+    }
+
+    /**
+     * @return the annualRate
+     */
+    public double getAnnualRate() {
+        return annualRate;
+    }
+
+    /**
+     * @param annualRate the annualRate to set
+     */
+    public void setAnnualRate(double annualRate) {
+        this.annualRate = annualRate;
+    }
+
+    /**
+     * @return the loanLength
+     */
+    public double getLoanLength() {
+        return loanLength;
+    }
+
+    /**
+     * @param loanLength the loanLength to set
+     */
+    public void setLoanLength(double loanLength) {
+        this.loanLength = loanLength;
+    }
+
+    /**
+     * @return the currentDate
+     */
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    /**
+     * @param currentDate the currentDate to set
+     */
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
+    }
+
+    /**
+     * @return the loanType
+     */
+    public String getLoanType() {
+        return loanType;
+    }
+
+    /**
+     * @param loanType the loanType to set
+     */
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
     }
 
 }
