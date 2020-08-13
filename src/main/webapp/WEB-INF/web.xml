@@ -62,7 +62,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PdfGeneratorServlet</servlet-name>
-        <url-pattern>/PdfGeneratorServlet</url-pattern>
+        <url-pattern>/PdfGenerator</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

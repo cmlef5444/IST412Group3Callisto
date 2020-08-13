@@ -96,7 +96,8 @@ public class LoanApplicationServlet extends HttpServlet {
         if(request.getParameter("loanAppSubmitButton") != null){
             System.out.println("LoanAppSubmitButton Pressed");
             processLoanApplication(request, response);
-            processRequest(request, response);
+            response.sendRedirect(request.getContextPath() + "/PdfGenerator");
+            //processRequest(request, response);
         }       
         else if (request.getParameter("customerProfile") != null) {
             request.getSession().setAttribute("customerId", getCustomerId());

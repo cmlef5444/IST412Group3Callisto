@@ -5,9 +5,13 @@
  */
 package Servlets;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class PdfGeneratorServlet extends HttpServlet {
 
     private int customerId;
+    private int loanId;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,9 +38,53 @@ public class PdfGeneratorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         setCustomerId((int)request.getSession().getAttribute("customerId"));
+        setLoanId((int)request.getSession().getAttribute("loanId"));
         request.setAttribute("customerIdentification", getCustomerId());
+        
+        
+        String filePath = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf";
+        File downloadFile = new File(filePath);
+        FileInputStream inStream = new FileInputStream(downloadFile);
+         
+        // if you want to use a relative path to context root:
+        String relativePath = getServletContext().getRealPath("");
+        System.out.println("relativePath = " + relativePath);
+         
+        // obtains ServletContext
+        ServletContext context = getServletContext();
+         
+        // gets MIME type of the file
+        String mimeType = context.getMimeType(filePath);
+        if (mimeType == null) {        
+            // set to binary type if MIME mapping not found
+            mimeType = "application/octet-stream";
+        }
+        System.out.println("MIME type: " + mimeType);
+         
+        // modifies response
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+         
+        // forces download
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
+        response.setHeader(headerKey, headerValue);
+         
+        // obtains response's output stream
+        OutputStream outStream = response.getOutputStream();
+         
+        byte[] buffer = new byte[4096];
+        int bytesRead = -1;
+         
+        while ((bytesRead = inStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+         
+        inStream.close();
+        outStream.close();
+        
         RequestDispatcher view = request.getRequestDispatcher("pdfGenerator.jsp");
-        view.forward(request, response);
+        view.forward(request, response);      
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -89,6 +138,20 @@ public class PdfGeneratorServlet extends HttpServlet {
      */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    /**
+     * @return the loanId
+     */
+    public int getLoanId() {
+        return loanId;
+    }
+
+    /**
+     * @param loanId the loanId to set
+     */
+    public void setLoanId(int loanId) {
+        this.loanId = loanId;
     }
 
 }
