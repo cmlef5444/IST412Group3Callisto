@@ -74,7 +74,12 @@ public class PdfGeneratorServlet extends HttpServlet {
         }catch(Exception e){
             e.printStackTrace();
         }
-        String filePath = "src/main/resources/OutputFiles/loanApplicationLoanId" + loanId + ".pdf";
+        
+        String basePath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        System.out.println("servletPath: " + basePath);
+        basePath = basePath.replace("target/IST412Group3Callisto-1.0-SNAPSHOT/WEB-INF/classes/Servlets/PdfGeneratorServlet.class", "");
+        System.out.println("servletPath2: " + basePath);
+        String filePath = basePath + "src/main/resources/OutputFiles/loanApplicationLoanId" + loanId + ".pdf";
         //String filePath = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf";
         File downloadFile = new File(filePath);
         FileInputStream inStream = new FileInputStream(downloadFile);

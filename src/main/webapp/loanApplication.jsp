@@ -200,13 +200,12 @@
                 <div class="container w3-light-grey pt-4 bg-warning">
                     <div>
                    
-                        <div class="grid-container">
-                                    <hr>Loan Application</hr>
+                        <div class="grid-container">              
                                     <p>Please fill out the form below with your desired loan amount, loan length, and type of loan.</p>
                                     <p>Please note that this is merely an application and not a guarantee of acceptance.</p>
                                     <p>Upon submitting your application you will then be presented with the option to download your application, </p>
                                     <p>you will not be given another opportunity to download the copy.</p>
-                                    <p> </p>
+                                    <p>                                                               </p>
                                     <p>By clicking submit the user agrees to the following conditions.</p>
                                     <ol>                                        
                                         <li> The holder will receive a loan for the amount indicated above.</li>
