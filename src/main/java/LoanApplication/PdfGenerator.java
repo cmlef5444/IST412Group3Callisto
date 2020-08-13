@@ -9,9 +9,14 @@ package LoanApplication;
  *
  * @author cjani
  */
+import com.itextpdf.io.font.FontProgram;
+import com.itextpdf.io.font.FontProgramFactory;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.Document;
@@ -20,6 +25,9 @@ import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.pdf.BaseFont;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,12 +39,11 @@ public class PdfGenerator {
 
     private static Logger LOG = Logger.getLogger(PdfGenerator.class.getName());
     
-//
-//BaseFont base = BaseFont.createFont("c:/windows/fonts/arial.ttf", BaseFont.WINANSI);
-//Font font = new Font(base, 11f, Font.BOLD);
-//    private static String PATH_IMG_LOGO = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/src/main/resources/logo.jpg";
-//    private static String PATH_IMG_HALL = "C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/src/main/resources/map.gif";
 
+    //BaseFont base = BaseFont.createFont("c:/windows/fonts/arial.ttf", BaseFont.WINANSI);
+    //Font font = new Font(base, 11f, Font.BOLD);
+    
+    PdfFont font;
     private static Float FONT_TITLE = 26F;
     private static Float FONT_TABLE = 16F;
     private static Float FONT_SMALL = 10F;
@@ -49,6 +56,12 @@ public class PdfGenerator {
             double loanLength,
             Date currentDate,
             String loanType) throws Exception {
+        
+//        FontFactory.register("src/main/resources/Fonts/Popsies.ttf");
+//        textFont = FontFactory.getFont("Popsies", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 10); //10 is the size
+        FontProgram fontProgram = FontProgramFactory.createFont("C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/src/main/resources/Fonts/Popsies.ttf");
+        font = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
+        
         String pdfFile = "src/main/resources/OutputFiles/loanApplicationLoanId" + loanId + ".pdf";
         //"C:/Users/cjani/OneDrive/Documents/GitHub/IST412Group3Callisto/target/pdf/loanApplicationId" + getLoanId() + ".pdf"
         File file = new File(pdfFile);
@@ -68,7 +81,7 @@ public class PdfGenerator {
         LOG.info("PDF has been generated");
     }
 
-    private static void generateDocument(String pdfFile, 
+    private  void generateDocument(String pdfFile, 
             String customerFirstName, 
             String customerLastName, 
             double principalAmount, 
@@ -104,7 +117,7 @@ public class PdfGenerator {
         pdf.close();
     }
 
-    private static void addDocumentMetadata(PdfDocument pdf) {
+    private  void addDocumentMetadata(PdfDocument pdf) {
         pdf.getCatalog().put(PdfName.Lang, new PdfString("EN"));
         PdfDocumentInfo info = pdf.getDocumentInfo();
         info.setTitle("Callisto Finance Loan Application");
@@ -114,7 +127,7 @@ public class PdfGenerator {
         info.setKeywords("contract, business, 2020");
     }
 
-    private static Document generatePageOne(Document document, String customerFirstName, 
+    private  Document generatePageOne(Document document, String customerFirstName, 
             String customerLastName, 
             double principalAmount, 
             double annualRate,
@@ -148,28 +161,30 @@ public class PdfGenerator {
 
         // Signature
         document.add(new Paragraph("Please add your full name, date and signature below.").setMarginTop(15).setMarginBottom(15));
-        document.add(drawSignature(customerFirstName, customerLastName));
+        document.add(drawSignature(customerFirstName, customerLastName, currentDate));
 
         return document;
     }
 
-    private static Table drawTable(String title, String content) {
+    private Table drawTable(String title, String content) {
         Table table = new Table(1).setWidthPercent(50).setHorizontalAlignment(HorizontalAlignment.CENTER);
         table.addHeaderCell(new Cell().add(new Paragraph(title).setMultipliedLeading(2).setFontSize(FONT_TABLE).setBold().setTextAlignment(TextAlignment.CENTER)));
         table.addCell(new Cell().add(new Paragraph(content).setMultipliedLeading(2).setFontSize(FONT_TABLE + 6).setBold().setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.LIGHT_GRAY)).setPaddings(0, 0, 0, 0));
         return table;
     }
 
-    private static Table drawSignature(String customerFirstName, String customerLastName) {   
+    private Table drawSignature(String customerFirstName, String customerLastName, Date currentDate) {   
         Table table = new Table(2).setWidthPercent(60).setHorizontalAlignment(HorizontalAlignment.CENTER).setBackgroundColor(Color.LIGHT_GRAY);
         table.addCell(new Cell().add(new Paragraph("Name").setMultipliedLeading(3).setBold()).setBorder(Border.NO_BORDER));
         table.addCell(new Cell().add(new Paragraph(customerFirstName + " " + customerLastName).setMultipliedLeading(3)).setBorder(Border.NO_BORDER));
         table.addCell(new Cell().add(new Paragraph("Date").setMultipliedLeading(2).setBold()).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("/dateAnchor1/").setMultipliedLeading(2)).setBorder(Border.NO_BORDER).setFontColor(Color.LIGHT_GRAY));
+        table.addCell(new Cell().add(new Paragraph(currentDate.toString()).setMultipliedLeading(2)).setBorder(Border.NO_BORDER));
         table.addCell(new Cell().add(new Paragraph("Signature").setMultipliedLeading(5).setBold()).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph(customerFirstName + " " + customerLastName).setMultipliedLeading(5)).setBorder(Border.NO_BORDER).setFontColor(Color.LIGHT_GRAY));
+        table.addCell(new Cell().add(new Paragraph(customerFirstName + " " + customerLastName).setMultipliedLeading(5)).setBorder(Border.NO_BORDER).setFont(font));
         return table;
     }
+    
+ 
 
 //    private static Document generatePageTwo(Document document) throws Exception {
 //        // Break page rotate
