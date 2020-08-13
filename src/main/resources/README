@@ -12,7 +12,7 @@ Microsoft SQL Server 2005 Connection information:
 
 Once the SQL server is connected in your IDE...
 
-Application login info -- we added dummy data to two users
+Application login info -- 
 
 User 1:
 user: admin
@@ -37,7 +37,7 @@ User case 4: New User registration -- from the login screen you may select Regis
 
 User case 5: Apply for a new Loan. Once logged in the user may now select Loan Application from the Navigation
             screen. Once the user fills out the form and clicks submit, the user is prompted
-            to download a copy of the loan terms agreement, complete with eSignature.
+            to download a copy of the loan terms agreement.
 
 Already Established use cases:
 User case 1: View customer profile and update profile information -- this will update the database
