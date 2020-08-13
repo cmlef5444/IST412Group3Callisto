@@ -22,12 +22,24 @@ User 2:
 user: cml5444@psu.edu
 pass: IST412Pa$$w0rd
 
+User 3:
+user: kam6564@psu.edu
+pass: MyPa$$w0rd
+
 From the index page, click the click to access the login page
-Log in with credentials above -- New User Registration is not yet implemented
+Log in with credentials
 
 From this screen you can choose to view your customer profile, view loan balance, or make a payment 
-** Note only the admin account has loan data loaded for testing purposes
 
+New Use cases:
+User case 4: New User registration -- from the login screen you may select Register and fill out the form,
+            new user information is immediately ready to use to login, just click the Logout button to go back
+
+User case 5: Apply for a new Loan. Once logged in the user may now select Loan Application from the Navigation
+            screen. Once the user fills out the form and clicks submit, the user is prompted
+            to download a copy of the loan terms agreement, complete with eSignature.
+
+Already Established use cases:
 User case 1: View customer profile and update profile information -- this will update the database
 User case 2: View loan balance and payment history
 User case 3: Make a payment - which will also appear in the payment history because it updates the database
