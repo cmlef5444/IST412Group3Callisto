@@ -30,8 +30,12 @@ public class RegisterCntl {
 
     }    
     
-    public void registerCustomer(String customerFirstName, String customerLastName, String customerEmail, String address,
-            String phoneNum, String password){
+    public void registerCustomer(String customerFirstName, 
+            String customerLastName, 
+            String customerEmail, 
+            String password,
+            String address,
+            String phoneNum){
         setConnect(new DBConnection());
         getConnect().init();
         

@@ -87,9 +87,9 @@ public class RegistrationServlet extends HttpServlet {
                 if(errorChecks.isValidName(request.getParameter("customerFirstNameInput"))|| errorChecks.isValidName(request.getParameter("customerLastNameInput"))){
                     request.setAttribute("errorMessageName", "Names may not have any numbers or special characters save - and '.");
                 }
-//                if (errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
-//                    request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
-//                }
+                if (errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
+                    request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
+                }
                 if (!errorChecks.isValidPhoneNumber(request.getParameter("customerPhoneNumberInput"))) {
                     request.setAttribute("errorMessagePhoneNumber", "Phone number must be in the following format 123-456-7890");
                 }

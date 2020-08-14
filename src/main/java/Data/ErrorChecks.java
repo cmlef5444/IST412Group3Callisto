@@ -38,12 +38,15 @@ public class ErrorChecks {
         boolean value = matcher.find();
         return value;
     }
-//    public boolean isValidAddress(String inputAddress){
-//        Pattern pattern = Pattern.compile("[^a-zA-Z0-9|^'-]", Pattern.CASE_INSENSITIVE);
-//        Matcher matcher = pattern.matcher(inputAddress);        
-//        boolean value = matcher.find();
-//        return value;
-//    }
+    public boolean isValidAddress(String inputAddress){
+        Pattern pattern = Pattern.compile("^(?=.*[0-9])" 
+                        + "(?=.*[a-z])(?=.*[A-Z])" 
+                        +"(?=.*[#.-])"
+                        + "(?=\\S+$)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputAddress);        
+        boolean value = matcher.find();
+        return value;
+    }//"[^a-zA-Z0-9|^'-]"
     public boolean isValidPhoneNumber(String inputPhoneNumber){  
         Pattern pattern = Pattern.compile("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}");
         Matcher matcher = pattern.matcher(inputPhoneNumber);        
