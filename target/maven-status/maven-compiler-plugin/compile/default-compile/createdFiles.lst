@@ -1,4 +1,3 @@
-Data\CustomerList.class
 CustomerProfile\CustomerProfileCntl.class
 Servlets\RegistrationServlet.class
 Servlets\LoanApplicationServlet.class
@@ -8,12 +7,9 @@ LoanApplication\LoanApplicationCntl.class
 Register\RegisterCntl.class
 Payment\PaymentCntl.class
 Servlets\LoanBalanceServlet.class
-Data\Loan.class
-Data\Customer.class
 Data\ErrorChecks.class
 Data\DBConnection.class
 Servlets\LoanPaymentServlet.class
-Data\LoanList.class
 LoanApplication\PdfGenerator.class
 Login\LoginCntl.class
 Servlets\PdfGeneratorServlet.class

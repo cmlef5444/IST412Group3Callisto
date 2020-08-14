@@ -34,7 +34,6 @@ public class PaymentCntl {
     private double staticCurrentTotal;
     private double staticLoanLength;
     private double staticAnnualRate;
-    private double staticCompoundNum;
     private String staticInitialDate;
     private String staticLoanType;
     double currentAmountDue;
@@ -102,7 +101,6 @@ public class PaymentCntl {
                     + (getStaticCurrentTotal() - singlePayment) + ", " 
                     + getLengthOfLoan(getStaticAnnualRate(), (getStaticCurrentTotal() - singlePayment)) + ", " 
                     + getStaticAnnualRate() + ", "
-                    + getStaticCompoundNum() + ", "
                     + singlePayment + ", "
                     + "'" + date + "',"
                     + "'" + getStaticInitialDate() + "',"
@@ -120,7 +118,6 @@ public class PaymentCntl {
         setStaticCurrentTotal(0);
         setStaticLoanLength(0);
         setStaticAnnualRate(0);
-        setStaticCompoundNum(0);
         setStaticInitialDate("");
         setStaticLoanType("");
     }
@@ -133,7 +130,6 @@ public class PaymentCntl {
                    + "currentTotal, "
                    + "loanLength, "
                    + "annualRate, "
-                   + "compoundNum, "
                    + "initialDate,"
                    + "loanType from loan where entryId =" + entryId; 
            
@@ -145,7 +141,6 @@ public class PaymentCntl {
                 setStaticCurrentTotal(getMyRs().getInt("currentTotal"));
                 setStaticLoanLength(getMyRs().getInt("loanLength"));
                 setStaticAnnualRate(getMyRs().getInt("annualRate"));
-                setStaticCompoundNum(getMyRs().getInt("compoundNum"));
                 setStaticInitialDate(getMyRs().getString("initialDate"));
                 setStaticLoanType(getMyRs().getString("loanType"));
             }
@@ -388,20 +383,6 @@ public class PaymentCntl {
      */
     public void setStaticAnnualRate(double staticAnnualRate) {
         this.staticAnnualRate = staticAnnualRate;
-    }
-
-    /**
-     * @return the staticCompoundNum
-     */
-    public double getStaticCompoundNum() {
-        return staticCompoundNum;
-    }
-
-    /**
-     * @param staticCompoundNum the staticCompoundNum to set
-     */
-    public void setStaticCompoundNum(double staticCompoundNum) {
-        this.staticCompoundNum = staticCompoundNum;
     }
 
     /**
