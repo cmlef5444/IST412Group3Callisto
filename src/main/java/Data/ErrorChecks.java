@@ -80,7 +80,7 @@ public class ErrorChecks {
             System.out.println("Input: " + userEmail);
             setMyRs(getPs().executeQuery());
             setEmailBoolResult(getMyRs().next());
-            setEmailBoolResult(!isEmailBoolResult());
+//            setEmailBoolResult(!isEmailBoolResult());
             while(getMyRs().next()){
                 System.out.println("Email Input: " + userEmail + "Email SQL: " + getMyRs().getString("customerEmail"));              
             }

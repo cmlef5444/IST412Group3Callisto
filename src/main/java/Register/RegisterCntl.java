@@ -28,7 +28,7 @@ public class RegisterCntl {
 
     public RegisterCntl(){
 
-    }
+    }    
     
     public void registerCustomer(String customerFirstName, String customerLastName, String customerEmail, String address,
             String phoneNum, String password){

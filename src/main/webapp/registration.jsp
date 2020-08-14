@@ -227,6 +227,7 @@
                             <div style="color: #FF0000;">${errorMessageAddress}</div>
                             <div style="color: #FF0000;">${errorMessagePhoneNumber}</div>
                             <div style="color: #FF0000;">${errorMessageEmail}</div>
+                            <div style="color: #FF0000;">${errorMessageEmail2}</div>
                             <div style="color: #FF0000;">${errorMessagePassword1}</div>
                             <div style="color: #FF0000;">${errorMessagePassword2}</div>
                             <div style="color: #078417;">${passMessage}</div>

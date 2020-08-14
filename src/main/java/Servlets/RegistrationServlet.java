@@ -95,7 +95,11 @@ public class RegistrationServlet extends HttpServlet {
                 }
                 if (!errorChecks.isValidEmail(request.getParameter("customerEmailInput"))) {
                     request.setAttribute("errorMessageEmail", "Your email must include an @ and a domain name (.com, .net, .edu, etc.).");
-                }
+                   
+                } 
+                if(errorChecks.nonDoubleEmail(request.getParameter("customerEmailInput"))){
+                       request.setAttribute("errorMessageEmail2", "That email is already in use."); 
+                    }
                 if (!errorChecks.isValidPassword(password) || !errorChecks.isValidPassword(password2)) {
                     request.setAttribute("errorMessagePassword1", "Passwords must be between 8 and 20 characters and "
                         + "have at least 1 lower case and 1 upper case letter, at least 1 number, and at least 1 special character.");                   
