@@ -39,10 +39,7 @@ public class ErrorChecks {
         return value;
     }
     public boolean isValidAddress(String inputAddress){
-        Pattern pattern = Pattern.compile("^(?=.*[0-9])" 
-                        + "(?=.*[a-z])(?=.*[A-Z])" 
-                        +"(?=.*[#.-])"
-                        + "(?=\\S+$)", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^[A-Za-z][A-Za-z0-9!#-']*$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(inputAddress);        
         boolean value = matcher.find();
         return value;

@@ -107,12 +107,12 @@ public class CustomerProfileServlet extends HttpServlet {
             if (errorChecks.isValidName(request.getParameter("customerFirstNameInput")) || errorChecks.isValidName(request.getParameter("customerLastNameInput"))) {
                 request.setAttribute("errorMessageName", "Names may not have any numbers or special characters save - and '.");
             }
-            if (errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
+            if (!errorChecks.isValidAddress(request.getParameter("customerAddressInput"))) {
                 request.setAttribute("errorMessageAddress", "Addresses may not have any special characters save - and '.");
             }
             if (!errorChecks.isValidPhoneNumber(request.getParameter("customerPhoneNumberInput"))) {
                 request.setAttribute("errorMessagePhoneNumber", "Phone number must be in the following format 123-456-7890");
-            } else {//Pass
+            }else{//Pass
                 processPersonalInfo(request, response);
             }
             processRequest(request, response);
@@ -155,25 +155,6 @@ public class CustomerProfileServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/LoanPayment");
         }
     }
-/*
-    protected void doTabs(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        customerId = (int) request.getSession().getAttribute("customerId");
-        System.out.println("doGet customerId: " + customerId);
-        if (request.getParameter("loanApplication") != null) {
-            System.out.println("loanAppButton Pressed");
-            request.getSession().setAttribute("customerId", customerId);
-            response.sendRedirect(request.getContextPath() + "/LoanApplication");
-        } else if (request.getParameter("loanBalance") != null) {
-            request.getSession().setAttribute("customerId", customerId);
-            response.sendRedirect(request.getContextPath() + "/LoanBalance");
-        } else if (request.getParameter("loanPayment") != null) {
-            request.getSession().setAttribute("customerId", customerId);
-            response.sendRedirect(request.getContextPath() + "/LoanPayment");
-        }
-
-    }*/
 
     public void processPersonalInfo(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("Testing processPersonalInfo(): ");
@@ -210,7 +191,7 @@ public class CustomerProfileServlet extends HttpServlet {
     }
 
     public void processEmail(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("Testing processPersonalInfo(): ");
+        System.out.println("Testing processEmail(): ");
         connect = new DBConnection();
         connect.init();
 
@@ -238,7 +219,7 @@ public class CustomerProfileServlet extends HttpServlet {
         } finally {
             connect.killConnections();
         }
-        System.out.println("ProcessPersonInfo Email: " + email + " password: " + password);
+        System.out.println("ProcessPassword Email: " + email + " password: " + password);
         CustomerProfileCntl customerProfileCntl = new CustomerProfileCntl();
         customerProfileCntl.editCustomer(request.getParameter("customerEmailInput"),
                 password,
@@ -250,7 +231,7 @@ public class CustomerProfileServlet extends HttpServlet {
     }
 
     public void processPassword(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("Testing processPersonalInfo(): ");
+        System.out.println("Testing processPassword(): ");
         connect = new DBConnection();
         connect.init();
 
